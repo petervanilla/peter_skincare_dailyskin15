@@ -1,0 +1,294 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>Before &amp; After Comparison</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#091f18",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#536960",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1b1c1a",
+                        "surface-tint": "#2e685d",
+                        "tertiary-fixed-dim": "#cbbeff",
+                        "on-secondary-fixed-variant": "#354b43",
+                        "surface-container-highest": "#e3e2df",
+                        "primary-fixed": "#b3eee0",
+                        "surface-container-low": "#f5f4f0",
+                        "secondary-fixed": "#cfe8dc",
+                        "on-tertiary-fixed": "#1d045c",
+                        "secondary-fixed-dim": "#b3ccc1",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#e6deff",
+                        "primary": "#004339",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#544594",
+                        "surface-variant": "#e3e2df",
+                        "on-primary-container": "#96d1c2",
+                        "on-tertiary-fixed-variant": "#493a89",
+                        "on-tertiary-container": "#c9bcff",
+                        "surface-container-high": "#e9e8e4",
+                        "pure-white": "#FFFFFF",
+                        "secondary-container": "#cfe8dc",
+                        "inverse-primary": "#97d2c4",
+                        "inverse-surface": "#30312e",
+                        "secondary": "#4d635a",
+                        "graphite": "#202026",
+                        "primary-container": "#1f5b50",
+                        "background": "#faf9f5",
+                        "outline-variant": "#bfc9c5",
+                        "surface-container": "#efeeea",
+                        "on-primary-fixed-variant": "#105045",
+                        "on-background": "#1b1c1a",
+                        "on-error-container": "#93000a",
+                        "outline": "#707976",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface": "#faf9f5",
+                        "glass-overlay": "rgba(255, 255, 255, 0.7)",
+                        "on-surface-variant": "#404946",
+                        "inverse-on-surface": "#f2f1ed",
+                        "on-primary-fixed": "#00201b",
+                        "primary-fixed-dim": "#97d2c4",
+                        "surface-bright": "#faf9f5",
+                        "surface-dim": "#dbdad6",
+                        "error": "#ba1a1a",
+                        "tertiary": "#3d2d7b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1.5rem"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "margin-main": "24px",
+                        "stack-md": "16px",
+                        "gutter": "16px",
+                        "stack-sm": "8px",
+                        "safe-area-bottom": "34px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["\"Source Serif 4\""],
+                        "body-md": ["Hanken Grotesk"],
+                        "display-hero": ["\"Source Serif 4\""],
+                        "label-bold": ["Hanken Grotesk"],
+                        "display-hero-mobile": ["\"Source Serif 4\""],
+                        "label-sm": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-hero": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-bold": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "display-hero-mobile": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .split-slider {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: rgba(255, 255, 255, 0.8);
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: ew-resize;
+            z-index: 10;
+        }
+        .split-slider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background-image: url('data:image/svg+xml;utf8,<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23202026" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>');
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .clip-left {
+            clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+        }
+        .clip-right {
+            clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+        }
+        
+        /* Hide scrollbar for horizontal tabs */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md selection:bg-secondary-container selection:text-primary">
+<!-- Top App Bar -->
+<header class="flex justify-between items-center w-full px-margin-main py-4 bg-background z-20 sticky top-0 md:hidden">
+<button aria-label="Go back" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface" style="font-variation-settings: 'wght' 300;">arrow_back_ios_new</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface">Analysis</h1>
+<button aria-label="Settings" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface" style="font-variation-settings: 'wght' 300;">more_horiz</span>
+</button>
+</header>
+<main class="flex-grow flex flex-col px-margin-main pb-24 md:pb-12 max-w-lg mx-auto w-full">
+<!-- Tab Bar -->
+<nav class="flex space-x-2 overflow-x-auto no-scrollbar py-2 mb-stack-md">
+<button class="px-4 py-2 rounded-full bg-secondary-container text-primary font-label-bold text-label-bold whitespace-nowrap transition-colors">Original</button>
+<button class="px-4 py-2 rounded-full bg-pure-white text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap border border-surface-variant hover:bg-surface-container transition-colors">Trouble Map</button>
+<button class="px-4 py-2 rounded-full bg-pure-white text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap border border-surface-variant hover:bg-surface-container transition-colors">Spot Map</button>
+<button class="px-4 py-2 rounded-full bg-pure-white text-on-surface-variant font-label-bold text-label-bold whitespace-nowrap border border-surface-variant hover:bg-surface-container transition-colors">Line Map</button>
+</nav>
+<!-- Comparison Area -->
+<div class="relative w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-[0_4px_20px_rgba(46,104,93,0.08)] mb-stack-lg bg-surface-container-high">
+<!-- Day 1 (Left) -->
+<div class="absolute inset-0 clip-left" id="img-left-container">
+<img alt="Day 1 Skin" class="w-full h-full object-cover" data-alt="Close up portrait of a young woman with minor skin blemishes and slight redness, early morning soft lighting, natural look, raw and untouched, clinical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkIfOvh_3-v1bXCPADznRtsBqeEvgHmdIEdL-VeJYYfatfAY1IAB-d3v9TN8L0gUBXpb36udVYNv36rkhkXpEn2-tgOJYVT07KXJumXHnfBm9K_-lApJDEcrpfajyE2RN8Q7O65gC-8IgE1k2JNlRA52-C7Q41rMHBIh_4ef8QftM-CmvvS8K_1WHquoNPXuHbW7_9qf1_S37eCTuxjQXEsRS4ThHIJ3twJrqjcCvk-BPBmh2Aslsgxw">
+<div class="absolute top-4 left-4 bg-glass-overlay backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm">
+<span class="font-label-bold text-label-bold text-graphite tracking-wide">DAY 1</span>
+</div>
+</div>
+<!-- Today (Right) -->
+<div class="absolute inset-0 clip-right" id="img-right-container">
+<img alt="Today Skin" class="w-full h-full object-cover" data-alt="Close up portrait of the same young woman with visibly clearer, glowing skin, subtle highlight on cheekbones, bright clinical soft lighting, healthy and hydrated look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCS-GmQo2aERnvO_PBhl4aCnt4MBounQARCdaEJvbFkJ6HKB945-pqMclW-mdvD1Fntn86-H4p-5pqTlrcJa-Ycac2xH6zOYWTlpCpDnVCuRORUuWKE1emj8iev0KKLJO_-EADLwirJ3EH26vsgNJUUNWzOm6snTRBR2x3iJJzP-Rrq6JuHS-Jimv6pbSp12Gich_lPpA6oF3jVd70vOWwJLSuJbuXaiQ6uwrHzdGN_6tvwieTpDfgjDQ" style="filter: brightness(1.05) contrast(1.02) saturate(1.1);">
+<div class="absolute top-4 right-4 bg-primary px-3 py-1.5 rounded-full shadow-sm">
+<span class="font-label-bold text-label-bold text-pure-white tracking-wide">TODAY</span>
+</div>
+</div>
+<!-- Slider Handle -->
+<div class="split-slider" id="split-handle"></div>
+</div>
+<!-- Result Summary -->
+<div class="bg-pure-white rounded-2xl p-6 shadow-[0_4px_20px_rgba(46,104,93,0.05)] border border-surface-variant/50">
+<h2 class="font-headline-md text-headline-md text-center text-primary mb-2">15일 동안 <span class="text-secondary font-bold">+12점</span> 성장했어요!</h2>
+<p class="text-center font-body-md text-on-surface-variant mb-6">You've improved by 12 points in 15 days!</p>
+<div class="grid grid-cols-2 gap-4">
+<!-- Metric 1 -->
+<div class="flex items-center p-3 bg-surface-container-low rounded-xl">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center mr-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Hydration</p>
+<p class="font-label-bold text-label-bold text-primary">+15%</p>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="flex items-center p-3 bg-surface-container-low rounded-xl">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center mr-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">blur_on</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Pores</p>
+<p class="font-label-bold text-label-bold text-primary">-8%</p>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="flex items-center p-3 bg-surface-container-low rounded-xl">
+<div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center mr-3">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">texture</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Redness</p>
+<p class="font-label-bold text-label-bold text-error">-12%</p>
+</div>
+</div>
+<!-- Metric 4 -->
+<div class="flex items-center p-3 bg-surface-container-low rounded-xl">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center mr-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Texture</p>
+<p class="font-label-bold text-label-bold text-primary">+20%</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Hidden on md as per mandate, though this is a detailed view, it might be suppressed, but we'll include it for the shell requirement unless it's a deep sub-page. The prompt implies a primary tracking flow, so we'll keep it as "Progress" active) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-safe-area-bottom pt-3 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] bg-pure-white dark:bg-surface-container rounded-t-xl md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors rounded-xl p-2 w-16" href="#">
+<span class="material-symbols-outlined mb-1">calendar_today</span>
+<span class="font-label-sm text-label-sm">Today</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-primary-container text-primary dark:text-on-primary-container rounded-full px-4 py-1 hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors w-16 active:scale-95 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">insights</span>
+<span class="font-label-sm text-label-sm">Progress</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors rounded-xl p-2 w-16" href="#">
+<span class="material-symbols-outlined mb-1">self_improvement</span>
+<span class="font-label-sm text-label-sm">Routine</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors rounded-xl p-2 w-16" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple slider logic for the before/after comparison
+        const slider = document.getElementById('split-handle');
+        const leftImg = document.getElementById('img-left-container');
+        const rightImg = document.getElementById('img-right-container');
+        const container = slider.parentElement;
+
+        let isDragging = false;
+
+        slider.addEventListener('mousedown', () => isDragging = true);
+        slider.addEventListener('touchstart', () => isDragging = true, {passive: true});
+
+        window.addEventListener('mouseup', () => isDragging = false);
+        window.addEventListener('touchend', () => isDragging = false);
+
+        const moveSlider = (clientX) => {
+            if (!isDragging) return;
+            const rect = container.getBoundingClientRect();
+            let x = clientX - rect.left;
+            
+            // Constrain
+            if (x < 0) x = 0;
+            if (x > rect.width) x = rect.width;
+
+            const percentage = (x / rect.width) * 100;
+            
+            slider.style.left = `${percentage}%`;
+            leftImg.style.clipPath = `polygon(0 0, ${percentage}% 0, ${percentage}% 100%, 0 100%)`;
+            rightImg.style.clipPath = `polygon(${percentage}% 0, 100% 0, 100% 100%, ${percentage}% 100%)`;
+        };
+
+        window.addEventListener('mousemove', (e) => moveSlider(e.clientX));
+        window.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                // Prevent scrolling while dragging slider
+                e.preventDefault(); 
+            }
+            moveSlider(e.touches[0].clientX);
+        }, {passive: false});
+    </script>
+</body></html>

@@ -6,6 +6,9 @@
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
+    // src/lib is plain TS and runs under `node --experimental-strip-types` for
+    // the analysis tests, which requires explicit .ts specifiers.
+    "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",

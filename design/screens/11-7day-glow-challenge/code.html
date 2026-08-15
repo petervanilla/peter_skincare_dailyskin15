@@ -1,0 +1,260 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>DailySkin 15 - 7-Day Glow Challenge</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#faf9f5",
+                        "tertiary-fixed-dim": "#cbbeff",
+                        "on-surface-variant": "#404946",
+                        "glass-overlay": "rgba(255, 255, 255, 0.7)",
+                        "outline-variant": "#bfc9c5",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#f2f1ed",
+                        "on-primary-fixed-variant": "#105045",
+                        "inverse-surface": "#30312e",
+                        "primary": "#004339",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#1f5b50",
+                        "on-surface": "#1b1c1a",
+                        "on-tertiary-fixed-variant": "#493a89",
+                        "inverse-primary": "#97d2c4",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed": "#e6deff",
+                        "surface-container-high": "#e9e8e4",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container": "#efeeea",
+                        "on-secondary-container": "#536960",
+                        "outline": "#707976",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#4d635a",
+                        "on-secondary-fixed-variant": "#354b43",
+                        "pure-white": "#FFFFFF",
+                        "secondary-fixed": "#cfe8dc",
+                        "graphite": "#202026",
+                        "on-tertiary-fixed": "#1d045c",
+                        "primary-fixed": "#b3eee0",
+                        "on-primary-fixed": "#00201b",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface": "#faf9f5",
+                        "tertiary-container": "#544594",
+                        "primary-fixed-dim": "#97d2c4",
+                        "on-secondary-fixed": "#091f18",
+                        "surface-container-highest": "#e3e2df",
+                        "surface-variant": "#e3e2df",
+                        "on-tertiary-container": "#c9bcff",
+                        "surface-container-low": "#f5f4f0",
+                        "surface-tint": "#2e685d",
+                        "surface-bright": "#faf9f5",
+                        "secondary-fixed-dim": "#b3ccc1",
+                        "surface-dim": "#dbdad6",
+                        "tertiary": "#3d2d7b",
+                        "secondary-container": "#cfe8dc",
+                        "on-primary-container": "#96d1c2",
+                        "on-background": "#1b1c1a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1.5rem"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "margin-main": "24px",
+                        "gutter": "16px",
+                        "safe-area-bottom": "34px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Hanken Grotesk"],
+                        "label-bold": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "display-hero": ["\"Source Serif 4\""],
+                        "headline-md": ["Hanken Grotesk"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "display-hero-mobile": ["\"Source Serif 4\""],
+                        "headline-lg": ["\"Source Serif 4\""]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-bold": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-hero": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "display-hero-mobile": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }]
+                    },
+                    boxShadow: {
+                        'ambient': '0 4px 20px rgba(0, 67, 57, 0.08)',
+                        'ambient-sm': '0 2px 10px rgba(0, 67, 57, 0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #F7F6F2; /* Warm Ivory Base */
+            -webkit-tap-highlight-color: transparent;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 0.5px solid rgba(191, 201, 197, 0.3);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface antialiased min-h-screen pb-safe-area-bottom">
+<!-- TopAppBar (Hidden on Mobile Nav Shell, but intent is a main feature, let's include it for context) -->
+<header class="hidden md:flex flex justify-between items-center w-full px-margin-main py-4 bg-background dark:bg-background flat no shadows docked full-width top-0 z-40">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A close-up portrait of a young woman with glowing, healthy skin, looking confidently at the camera. Soft natural daylight illuminates her face, highlighting a minimal, clean beauty aesthetic. The background is a soft, out-of-focus light ivory, matching a sophisticated skincare editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsuPR_15nsYOtMAf2mPJNcNopj6yGNzNC-DkUjLjWuL8O3u2r9YTbXFUs3iUlAOpYnUdonVeD3pyh6aaTh_CHpSNulkidaOAK0vVQQSnwtwOnPxpr0bf0j4qVD5kX7iENl8b8FNXFqQfbefx6CqcS0eKBf7dBAXN7DI1UdRXjrZMGGXQ4N0cz8x1Ot2VYgeKCPHklN_pUK8Vm73FrUNFY0Smx1JKqH4pKC8H85BgC5WjSYxoYR0n1M1g">
+</div>
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary">DailySkin 15</span>
+</div>
+<div class="flex gap-6 items-center">
+<span class="font-label-bold text-label-bold text-on-surface-variant dark:text-on-surface-variant hover:opacity-80 cursor-pointer">Progress</span>
+<span class="font-label-bold text-label-bold text-on-surface-variant dark:text-on-surface-variant hover:opacity-80 cursor-pointer">Routine</span>
+<span class="font-label-bold text-label-bold text-primary dark:text-inverse-primary font-bold hover:opacity-80 cursor-pointer">Challenges</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:opacity-80 cursor-pointer">settings</span>
+</div>
+</header>
+<!-- Mobile Header Replacement (Non-Nav) -->
+<div class="md:hidden flex justify-between items-center px-margin-main py-4 z-40 sticky top-0 bg-background/90 backdrop-blur-md">
+<span class="font-headline-md text-headline-md font-bold text-primary">DailySkin 15</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:opacity-80 cursor-pointer">settings</span>
+</div>
+<main class="max-w-md mx-auto md:max-w-3xl px-margin-main pt-stack-sm pb-[100px]">
+<!-- Hero Section -->
+<section class="mb-stack-lg text-center mt-stack-md">
+<span class="inline-block px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-container font-label-bold text-label-bold mb-4">Live Event</span>
+<h1 class="font-display-hero-mobile text-display-hero-mobile md:font-display-hero md:text-display-hero text-primary mb-2">7-Day Glow Challenge</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">See who's improving the fastest this week.</p>
+</section>
+<!-- Current Status Bento -->
+<section class="grid grid-cols-2 gap-gutter mb-stack-lg">
+<div class="bg-pure-white rounded-2xl p-6 shadow-ambient flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-tertiary mb-2" style="font-size: 32px; font-variation-settings: 'FILL' 1;">timer</span>
+<span class="font-label-bold text-label-bold text-on-surface-variant">Time Left</span>
+<span class="font-headline-md text-headline-md text-primary mt-1">2 Days</span>
+</div>
+<div class="bg-primary-container rounded-2xl p-6 shadow-ambient flex flex-col justify-center items-center text-center text-on-primary-container relative overflow-hidden">
+<div class="absolute inset-0 bg-tertiary-fixed-dim opacity-10 blur-xl rounded-full scale-150 transform translate-y-1/2"></div>
+<span class="material-symbols-outlined mb-2" style="font-size: 32px; font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-label-bold text-label-bold opacity-90">Your Rank</span>
+<span class="font-headline-md text-headline-md font-bold mt-1">1st Place</span>
+</div>
+</section>
+<!-- Leaderboard -->
+<section class="bg-pure-white rounded-2xl shadow-ambient p-4 mb-stack-lg">
+<div class="flex justify-between items-center mb-6 px-2">
+<h2 class="font-headline-md text-headline-md text-primary" style="font-size: 20px;">Leaderboard</h2>
+<span class="font-label-sm text-label-sm text-outline">Delta Score</span>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Rank 1 (Me) -->
+<div class="flex items-center p-3 rounded-xl bg-surface-container-low border border-outline-variant/30">
+<div class="w-8 flex justify-center mr-2">
+<span class="font-headline-md text-headline-md text-tertiary">1</span>
+</div>
+<div class="w-12 h-12 rounded-full overflow-hidden mr-4 border-2 border-tertiary-fixed-dim shadow-sm flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A close-up profile picture of a young woman with clear skin, smiling gently. The background is a soft ivory color. The lighting is bright and even, giving a clean, modern aesthetic suitable for a wellness app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3UzQfY2HM3Y2ngWvG6EH-Q9HjndHq5pKYdiG7evuolxdG3PFTGDxHcFrgYa3ldhp-RIdrsJrMsrX2jRVpHhNCEPKkzjaURjAQlxAE-m1fCqiUnOPwp-p53CNvs5vTLrztckDKwsFlF43qc88x3eSUp-eJl-OrP-X_5bbQ_E_1MJlalGaaoeKjJcceht7rpc89il28o8vmJBrQIN7UojUEH3rLNHHMi6SmxakhplhxQ6mfdcx6d7hP-Q">
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-1">
+<span class="font-label-bold text-label-bold text-on-surface truncate">You</span>
+<span class="font-label-bold text-label-bold text-primary">+14 pts</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-2 overflow-hidden">
+<div class="bg-tertiary h-2 rounded-full" style="width: 85%;"></div>
+</div>
+</div>
+</div>
+<!-- Rank 2 (Mina) -->
+<div class="flex items-center p-3 rounded-xl hover:bg-surface-container-lowest transition-colors">
+<div class="w-8 flex justify-center mr-2">
+<span class="font-headline-md text-headline-md text-on-surface-variant opacity-70">2</span>
+</div>
+<div class="w-12 h-12 rounded-full overflow-hidden mr-4 border border-outline-variant/50 flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A portrait of a young woman with dark hair in a sleek bun, looking fresh-faced. She is framed against a soft mint background. The lighting is soft and flattering, emphasizing a healthy skincare glow." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB78yoFZ6as9CDwFWosgymyP9TeTvlxTorL1ANeBfJE_DqasSLf2I5sUeoSLKXT5QBMP0hHQPH92qrnCURBXSXZbL1-UXGhzPL6OPL6rVY3skq7npBq0HUXPtXF-P4A7XV04b1R8-pC3ony9laN9g94qSoQNwO7NQi7Ep5gOIm0qohRwzO6P84-DgChhqScC9kLmGk3E4XK9N-1JoYs1brU7dEqWqVY75RtfPc3DqgEGjcdV9c-jDjyTQ">
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-1">
+<span class="font-label-bold text-label-bold text-on-surface truncate">Mina</span>
+<span class="font-label-bold text-label-bold text-secondary">+11 pts</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-2 overflow-hidden">
+<div class="bg-primary-fixed-dim h-2 rounded-full" style="width: 65%;"></div>
+</div>
+</div>
+</div>
+<!-- Rank 3 (Peter) -->
+<div class="flex items-center p-3 rounded-xl hover:bg-surface-container-lowest transition-colors">
+<div class="w-8 flex justify-center mr-2">
+<span class="font-headline-md text-headline-md text-on-surface-variant opacity-70">3</span>
+</div>
+<div class="w-12 h-12 rounded-full overflow-hidden mr-4 border border-outline-variant/50 flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A portrait of a young man with a clear complexion and short hair, looking relaxed. The background is a pale lavender. The lighting is soft, studio quality, emphasizing skin health in a modern wellness context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDW1VCeVqJm0KAaOp8b6xjn_2KDJYDL9TcA8W_cLbOYXHBvtd_f1YDlV9m85gMwKruy_tCk2-1X-B6TCvaxjcAv_s7dYGwfxMy_-VMMLtIWVFjem2QzAze4U7OImYaOURXwDKUmUEd0kCz2lUipJjdTxUqHqZPqAQlz9tcEJFTeM4w3kUm5EwJKZr7MwnJpzAXYCo0bIJQBAiWrlYHQsd_Wo8x0prxeaRk4tROTKe6fa8l4BC4j39H9BQ">
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-1">
+<span class="font-label-bold text-label-bold text-on-surface truncate">Peter</span>
+<span class="font-label-bold text-label-bold text-secondary">+8 pts</span>
+</div>
+<div class="w-full bg-surface-variant rounded-full h-2 overflow-hidden">
+<div class="bg-secondary-fixed-dim h-2 rounded-full" style="width: 45%;"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Action Area -->
+<section class="mt-stack-lg">
+<button class="w-full bg-primary hover:bg-primary/90 text-on-primary font-label-bold text-label-bold py-4 rounded-full shadow-ambient transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">ios_share</span>
+                Share My Progress
+            </button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-safe-area-bottom pt-3 bg-pure-white dark:bg-surface-container shadow-[0_-4px_20px_rgba(0,0,0,0.05)] rounded-t-xl transition-all duration-200">
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors p-2 rounded-lg cursor-pointer">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-sm text-label-sm mt-1">Today</span>
+</div>
+<!-- Assuming Progress is closest semantic match for a Challenge leaderboard -->
+<div class="flex flex-col items-center justify-center bg-secondary-container dark:bg-primary-container text-primary dark:text-on-primary-container rounded-full px-4 py-1 scale-95 transition-all duration-200 cursor-pointer shadow-ambient-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">insights</span>
+<span class="font-label-sm text-label-sm mt-1 font-bold">Progress</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors p-2 rounded-lg cursor-pointer">
+<span class="material-symbols-outlined">self_improvement</span>
+<span class="font-label-sm text-label-sm mt-1">Routine</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors p-2 rounded-lg cursor-pointer">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm mt-1">Profile</span>
+</div>
+</nav>
+</body></html>

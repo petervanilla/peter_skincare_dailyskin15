@@ -1,0 +1,335 @@
+<!DOCTYPE html><html lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>DailySkin 15 - Progress</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#97d2c4",
+                        "outline-variant": "#bfc9c5",
+                        "surface-container": "#efeeea",
+                        "background": "#faf9f5",
+                        "inverse-surface": "#30312e",
+                        "error-container": "#ffdad6",
+                        "pure-white": "#FFFFFF",
+                        "error": "#ba1a1a",
+                        "primary": "#004339",
+                        "surface-variant": "#e3e2df",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1b1c1a",
+                        "on-tertiary-container": "#c9bcff",
+                        "on-primary-fixed": "#00201b",
+                        "graphite": "#202026",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#091f18",
+                        "on-secondary-fixed-variant": "#354b43",
+                        "surface": "#faf9f5",
+                        "tertiary": "#3d2d7b",
+                        "tertiary-container": "#544594",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f5f4f0",
+                        "inverse-on-surface": "#f2f1ed",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#cfe8dc",
+                        "primary-container": "#1f5b50",
+                        "glass-overlay": "rgba(255, 255, 255, 0.7)",
+                        "outline": "#707976",
+                        "primary-fixed": "#b3eee0",
+                        "secondary-fixed-dim": "#b3ccc1",
+                        "surface-dim": "#dbdad6",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#e6deff",
+                        "secondary-fixed": "#cfe8dc",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#e9e8e4",
+                        "on-background": "#1b1c1a",
+                        "on-secondary-container": "#536960",
+                        "surface-container-highest": "#e3e2df",
+                        "tertiary-fixed-dim": "#cbbeff",
+                        "surface-tint": "#2e685d",
+                        "on-tertiary-fixed": "#1d045c",
+                        "on-surface-variant": "#404946",
+                        "on-primary-container": "#96d1c2",
+                        "on-tertiary-fixed-variant": "#493a89",
+                        "surface-bright": "#faf9f5",
+                        "on-primary-fixed-variant": "#105045",
+                        "inverse-primary": "#97d2c4",
+                        "secondary": "#4d635a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-main": "24px",
+                        "stack-sm": "8px",
+                        "safe-area-bottom": "34px",
+                        "stack-lg": "32px",
+                        "gutter": "16px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "display-hero": ["\"Source Serif 4\""],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-hero-mobile": ["\"Source Serif 4\""],
+                        "headline-lg": ["\"Source Serif 4\""],
+                        "body-lg": ["Hanken Grotesk"],
+                        "label-bold": ["Hanken Grotesk"],
+                        "label-sm": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "display-hero": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "display-hero-mobile": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-bold": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; }
+        .font-serif { font-family: 'Source Serif 4', serif; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-safe-area-bottom antialiased">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-margin-main py-2 bg-background sticky top-0 z-40 flat no shadows relative">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/30">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="A high-quality, professional headshot of a young woman with glowing, healthy skin against a soft ivory background, exuding a serene and approachable 'Soft Lab' aesthetic, perfect for a premium skincare app profile picture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdQUkVcvIlEmS2CP_pesbvHuxrbjNo_oViCg-vcuaNqsPisICmAm9Gz8bBwGNPYClqjpEgXIXrQh2C5gxWhH3q4_vghtVoc687hcUqsf7bbV6jZGRRGFY4o5F1ZVCQ63Ku8Q9y0YdfKWgatGO19cm--hfBZvxDoywK2Z07y3d-M1Wj9G2pxYL2TvoTtkfwg_DMdoDW_1xk50DY7Q5WFPBfBB-m7OdY9iLnLEn9PvazjS0lccMjZbnD0Q">
+</div>
+<div class="absolute -translate-x-1/2 left-[20%]">
+<h1 class="font-black text-primary text-[21px]">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DailySkin 15</h1>
+</div>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-primary hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 0;">settings</span>
+</button>
+</header>
+<main class="px-margin-main space-y-stack-md pt-1 pb-24">
+<!-- Header Subtitle -->
+<section>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile font-serif text-primary mb-2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Day 7 of 15</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 와~ 이제 반환점을 돌았어요!</p><div><br></div><p></p>
+</section>
+<!-- Journey Tracker -->
+<section class="space-y-2">
+<div class="flex items-center justify-between">
+<h3 class="font-label-bold text-label-bold text-primary uppercase tracking-wider">The Journey</h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high px-2 py-1 rounded-full">46% Complete</span>
+</div>
+<div class="w-full overflow-x-auto scrollbar-hide py-2 -mx-margin-main px-margin-main"><div class="grid grid-cols-8 gap-y-2 gap-x-4 justify-items-center">
+<!-- Row 1: Days 1-8 -->
+<div class="flex flex-col items-center gap-1">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-primary border border-pure-white shrink-0">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: &quot;FILL&quot; 1;">check</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">D1</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-primary border border-pure-white shrink-0">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: &quot;FILL&quot; 1;">check</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">D2</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-primary border border-pure-white shrink-0">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: &quot;FILL&quot; 1;">check</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">D3</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-primary border border-pure-white shrink-0">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: &quot;FILL&quot; 1;">check</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">D4</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-primary border border-pure-white shrink-0">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: &quot;FILL&quot; 1;">check</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">D5</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-primary border border-pure-white shrink-0">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: &quot;FILL&quot; 1;">check</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">D6</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-primary border border-pure-white shrink-0">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: &quot;FILL&quot; 1;">check</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">D7</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-primary shrink-0">
+<span class="text-[12px] font-bold">8</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">D8</span>
+</div>
+<!-- Row 2: Days 9-15 -->
+<div class="flex flex-col items-center gap-1">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-primary shrink-0">
+<span class="text-[12px] font-bold">9</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">D9</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-primary shrink-0">
+<span class="text-[12px] font-bold">10</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">D10</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-primary shrink-0">
+<span class="text-[12px] font-bold">11</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">D11</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-primary shrink-0">
+<span class="text-[12px] font-bold">12</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">D12</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-primary shrink-0">
+<span class="text-[12px] font-bold">13</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">D13</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-primary shrink-0">
+<span class="text-[12px] font-bold">14</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">D14</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-primary shrink-0">
+<span class="text-[12px] font-bold">15</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">D15</span>
+</div>
+</div></div>
+</section>
+<!-- Metrics Bento Grid -->
+<section class="grid grid-cols-2 gap-gutter">
+<!-- Streak Card -->
+<div class="bg-pure-white rounded-2xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col items-center justify-center text-center space-y-2 border border-outline-variant/20">
+<div class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary-container mb-1">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: &quot;FILL&quot; 1;">local_fire_department</span>
+</div>
+<h4 class="font-display-hero-mobile leading-tight font-serif text-primary text-display-hero-mobile">7 Days</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Streak</p>
+</div>
+<!-- Summary of Change Card -->
+<div class="bg-pure-white rounded-2xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] flex flex-col justify-between border border-outline-variant/20 relative overflow-hidden">
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[100px]">trending_up</span>
+</div>
+<div>
+<h4 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Skin Score</h4>
+<div class="flex items-end gap-2">
+<span class="font-display-hero-mobile leading-none font-serif text-primary text-display-hero-mobile">84</span>
+<span class="font-label-bold text-label-bold text-[#b8a8ff] mb-1">+12</span>
+</div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-3">Since Day 1</p>
+</div>
+</section>
+<!-- Scan Gallery -->
+<section class="space-y-2">
+<div class="flex items-center justify-between">
+<h3 class="font-label-bold text-label-bold text-primary uppercase tracking-wider">Progress Gallery</h3>
+</div>
+<div class="bg-pure-white rounded-2xl p-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-outline-variant/20">
+<div class="flex gap-3 overflow-x-auto scrollbar-hide pb-2">
+<div class="flex flex-col gap-1 shrink-0">
+<div class="w-16 h-20 rounded-lg overflow-hidden border border-outline-variant/30">
+<img alt="Day 1 Scan" class="w-full h-full object-cover grayscale opacity-80" data-alt="A close-up, high-resolution portrait of a young woman's face, specifically focusing on skin texture. Day 1 scan showing initial state before treatment, under consistent, soft, clinical-style white lighting, embodying a clean 'Soft Lab' aesthetic with no harsh shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYrAbTbp-eh0tatnQCUz5iYR0CwnrJgcfn_jnVWAor0Zx7nF8n2EuIWiOAELOOLIDVw_BsbzXlHUHVx86tyVWUl_OZT2a7dYLFi-ozSt9YZvT_-tb7rXXKU0HFuU4uQ5yH01mXg_c4TxHn6K2U5-21G8V0cbU8zCV6eJgatKpshYF36PoVGfjcN-zo5oJi6IfbMpiiR1F2BQ4jMpqtVutlJZPGels_DpRBM2fEITWgr8yBJO0ANTeDTg">
+</div>
+<span class="text-[10px] text-center text-on-surface-variant">D-1</span>
+</div>
+<div class="flex flex-col gap-1 shrink-0">
+<div class="w-16 h-20 rounded-lg overflow-hidden border border-outline-variant/30">
+<img alt="Day 3 Scan" class="w-full h-full object-cover grayscale opacity-90" data-alt="A close-up, high-resolution portrait of a young woman's face, specifically focusing on skin texture. Day 3 scan showing slight improvement, under consistent, soft, clinical-style white lighting, embodying a clean 'Soft Lab' aesthetic with no harsh shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdBdz-o9Vf11HcimBhHO2GYydh-ux4a6uNmfzkgi2OAIpT1eWFWVo1PCmIPs0Bj6DieWs8UggpDAg7YKUkQ-82fiT8YBxXoFduFu-DZmuxk4GeR_Y0ym7_Cb3kxFzAR42hKzrbJCHjOGnTN818cdyATl9t_S9nu00wBcURbXCD42hoP6ivY8ZALsieOhOujdOLbgojdX-Kld2Uq5yT-wa7DOvJyMzAj6eZ4I8vfk56A7pn808SSYcFqg">
+</div>
+<span class="text-[10px] text-center text-on-surface-variant">D-3</span>
+</div>
+<div class="flex flex-col gap-1 shrink-0">
+<div class="w-16 h-20 rounded-lg overflow-hidden border border-outline-variant/30">
+<img alt="Day 5 Scan" class="w-full h-full object-cover" data-alt="A close-up, high-resolution portrait of a young woman's face, specifically focusing on skin texture. Day 5 scan showing clearer skin, under consistent, soft, clinical-style white lighting, embodying a clean 'Soft Lab' aesthetic with no harsh shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRloYjVEF0OLD3k1bmG2GY9sz2Wu16QAoQO8tEt8VfHmF_JCOebk1dGG6SbV3QV3CHfxslCv_2UKMxXh54qwsqPjUtNKipys0TAg3T9sdohkvqbrRWaGW43QfiKUBOvEYbkax75YzLJSYbBNa1o_Cb7IpKWzzkSDZoQM41ejV0ppYxHM4dnpfyriDKl5_SZzZdrPZjmeesOm55xKr-IM8AH9yLNQaEv928Dl_eriS-9bBoMul26X0gAQ">
+</div>
+<span class="text-[10px] text-center text-on-surface-variant">D-5</span>
+</div>
+<div class="flex flex-col gap-1 shrink-0">
+<div class="w-16 h-20 rounded-lg overflow-hidden border-2 border-primary relative">
+<img alt="Day 7 Scan" class="w-full h-full object-cover" data-alt="A close-up, high-resolution portrait of a young woman's face, specifically focusing on skin texture. Day 7 scan showing radiant, healthy skin, under consistent, soft, clinical-style white lighting, embodying a clean 'Soft Lab' aesthetic with no harsh shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrqP8MfVjEbwq6-Y861iTAlszB412hxtiyiJO5qNNl98ZKM5_AhZ_5KpBPsrLf_9AtmK6ppkH5arSWwqXLo3TzZOwcu8IX2S-TA_Z5Np6_0JwwzN4XfcyetqkbntHA6TdoYPST5rM1x-2-EgNYW61uoSLS2GwhwF2HrAm1pYVsE6ZfBZmYotMp094oImuImYPNr_aa4NQkQwpblTXirysJGxRbRJJhVNA56kYLp-Rc4n2NyQlVk_pKkw">
+<div class="absolute bottom-0 w-full bg-glass-overlay backdrop-blur-sm py-0.5 text-center">
+<span class="material-symbols-outlined text-[12px] text-primary">star</span>
+</div>
+</div>
+<span class="font-label-bold text-[10px] text-center text-primary">D-7</span>
+</div>
+<div class="flex flex-col gap-1 shrink-0">
+<div class="w-16 h-20 rounded-lg bg-surface-container flex items-center justify-center border border-dashed border-outline-variant">
+<span class="material-symbols-outlined text-outline">lock</span>
+</div>
+<span class="text-[10px] text-center text-outline">D-15</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Actions -->
+<section class="space-y-3 pt-2">
+<button class="w-full bg-primary text-pure-white font-label-bold text-label-bold py-4 rounded-full flex items-center justify-center gap-2 hover:bg-primary-container transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-[20px]">photo_camera</span>
+                오늘의 8일차 기록 준비하기
+            </button>
+<button class="w-full bg-pure-white text-primary border border-outline-variant/40 font-label-bold text-label-bold py-4 rounded-full flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[20px]">analytics</span>
+                7일간의 변화 리포트 보기
+            </button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-safe-area-bottom pt-3 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] bg-pure-white rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-xl p-2" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: &quot;FILL&quot; 0;">calendar_today</span>
+<span class="font-label-sm text-[10px]">Today</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-primary rounded-full px-5 py-1.5 hover:bg-surface-container-low transition-colors" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: &quot;FILL&quot; 1;">insights</span>
+<span class="font-label-bold text-[10px]">Progress</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-xl p-2" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: &quot;FILL&quot; 0;">self_improvement</span>
+<span class="font-label-sm text-[10px]">Routine</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-xl p-2" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: &quot;FILL&quot; 0;">person</span>
+<span class="font-label-sm text-[10px]">Profile</span>
+</a>
+</nav>
+
+
+</body></html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>DailySkin 15 - Skin Analysis Result</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-variant": "#e3e2df",
+                        "surface-container-highest": "#e3e2df",
+                        "inverse-primary": "#97d2c4",
+                        "primary-fixed": "#b3eee0",
+                        "on-primary-container": "#96d1c2",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#dbdad6",
+                        "on-surface": "#1b1c1a",
+                        "primary-fixed-dim": "#97d2c4",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#cfe8dc",
+                        "on-tertiary-fixed-variant": "#493a89",
+                        "on-secondary-container": "#536960",
+                        "tertiary-fixed": "#e6deff",
+                        "inverse-on-surface": "#f2f1ed",
+                        "on-background": "#1b1c1a",
+                        "surface": "#F7F6F2", // Updated Warm Ivory
+                        "pure-white": "#FFFFFF",
+                        "outline-variant": "#bfc9c5",
+                        "on-secondary-fixed-variant": "#354b43",
+                        "graphite": "#202026",
+                        "background": "#F7F6F2", // Updated Warm Ivory
+                        "tertiary": "#3d2d7b",
+                        "surface-container-high": "#e9e8e4",
+                        "secondary-fixed-dim": "#b3ccc1",
+                        "on-surface-variant": "#404946",
+                        "glass-overlay": "rgba(255, 255, 255, 0.7)",
+                        "inverse-surface": "#30312e",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#cbbeff",
+                        "outline": "#707976",
+                        "surface-container": "#efeeea",
+                        "surface-tint": "#2e685d",
+                        "on-primary-fixed-variant": "#105045",
+                        "on-tertiary-fixed": "#1d045c",
+                        "tertiary-container": "#544594",
+                        "on-secondary-fixed": "#091f18",
+                        "on-primary-fixed": "#00201b",
+                        "surface-bright": "#F7F6F2",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#1F5B50", // Deep Green
+                        "on-tertiary-container": "#c9bcff",
+                        "surface-container-low": "#f5f4f0",
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#4d635a",
+                        "secondary-fixed": "#CFE8DC", // Soft Mint
+                        "primary": "#1F5B50", // Deep Green
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "accent-lavender": "#B8A8FF" // Lavender
+                    },
+                    borderRadius: {
+                        "DEFAULT": "8px", // ROUND_EIGHT
+                        "lg": "8px",
+                        "xl": "8px",
+                        "2xl": "8px",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "gutter": "16px",
+                        "safe-area-bottom": "34px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "margin-main": "24px",
+                        "stack-sm": "8px"
+                    },
+                    fontFamily: {
+                        "headline-lg": ["\"Source Serif 4\""],
+                        "label-sm": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "label-bold": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-hero-mobile": ["\"Source Serif 4\""],
+                        "display-hero": ["\"Source Serif 4\""]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .soft-shadow {
+            box-shadow: 0 4px 20px rgba(0, 67, 57, 0.05);
+        }
+        .scan-line {
+            background: linear-gradient(to bottom, transparent 0%, rgba(31, 91, 80, 0.1) 50%, transparent 100%);
+            background-size: 100% 4px;
+        }
+        .grid-bg {
+            background-image: linear-gradient(rgba(31, 91, 80, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(31, 91, 80, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col">
+<!-- Top App Bar -->
+<header class="bg-background/90 backdrop-blur-sm docked full-width top-0 flat no shadows flex justify-between items-center w-full px-margin-main py-4 sticky z-40 border-b border-surface-variant/30">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-variant flex-shrink-0 border border-primary/10">
+<img alt="User profile photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkpQcPwCiRXIt7dR-BtiKmEpUKscbR9QiM-QLhhMxF_gd0u20RhjykG0wpWqrdxwt-3hmICKHsBkCvtCpgrUQ_URod9r6ShauSr1Bo6VMTbntcQjzWYOPRrOVXza5xmzrChJuByRjDElqS4EAp-z48_YvPwdgufN2loLTrbgMU9JXlMaLo7nXO8aIRFJiCkhKHAYW3B6wK5fEDagQ1LyulfLeUJCxhy7FbcnmUwOCoGuUSrUGynpbo7g">
+</div>
+<h1 class="font-headline-md text-[20px] font-bold text-primary tracking-tight">DailySkin Analysis</h1>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[24px]">more_vert</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow px-margin-main pb-32 pt-4 flex flex-col gap-6 max-w-md mx-auto w-full">
+<!-- Face Scan Visualization -->
+<section class="relative w-full aspect-[3/4] bg-pure-white rounded-lg overflow-hidden soft-shadow border border-surface-variant/50">
+<!-- High-fidelity 3D Skin Analysis Image -->
+<div class="absolute inset-0">
+<img alt="Futuristic 3D Skin Analysis" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtVhuJjpUrsEM6DTLsi28hmItJkQoaxfh7Vv-Hrwlfs0KypHj-sfGSSOu80n4Hkmwi7fHNebhUHWmnrO4Cj4_mRUt_lV0H-Zj_Wk15K2SR3pjqpPFEEBuC6YEYh5zzOOlGc4aDblhQFQR1C73wFtYB53tDCDcIbyKLb2YjS6OINkCtjjYwUj4QPmCZtY7F_Fx717_dr6tVz7x7tNJ4oCEwTZpEQfVTI8ad6B6nu5Z6_4w_INvMuo__Vw">
+</div>
+<!-- Minimalist Glassmorphic Score Overlay -->
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-pure-white/30 backdrop-blur-md px-6 py-3 rounded-lg border border-pure-white/40 shadow-sm flex flex-col items-center z-10">
+<p class="font-label-sm text-[10px] text-on-surface tracking-widest uppercase mb-1 opacity-80">Overall Score</p>
+<div class="flex items-baseline gap-1">
+<span class="font-display-hero-mobile text-primary leading-none">74</span>
+<span class="font-label-sm text-primary/60">/100</span>
+</div>
+</div>
+<!-- Subtle Scan Line Effect -->
+<div class="absolute inset-0 scan-line animate-[pulse_4s_ease-in-out_infinite] opacity-30 pointer-events-none"></div>
+</section>
+<!-- Metrics Grid (Clinical Lab Style) -->
+<section class="grid grid-cols-2 gap-3">
+<!-- Trouble Index -->
+<div class="bg-pure-white border border-surface-variant/60 rounded-lg p-4 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-8 h-8 bg-secondary-fixed/20 rounded-bl-lg"></div>
+<div class="flex justify-between items-start mb-3">
+<span class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider font-semibold">Trouble</span>
+<span class="material-symbols-outlined text-primary text-[16px] opacity-70">healing</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-primary">72</span>
+<span class="font-label-sm text-[10px] text-primary-container bg-secondary-fixed px-1.5 py-0.5 rounded flex items-center">
+<span class="material-symbols-outlined text-[10px] mr-0.5">arrow_downward</span> 12%
+                </span>
+</div>
+<div class="w-full bg-surface-variant/50 h-1 rounded-full mt-3">
+<div class="bg-primary h-1 rounded-full" style="width: 72%"></div>
+</div>
+</div>
+<!-- Spot & Freckle -->
+<div class="bg-pure-white border border-surface-variant/60 rounded-lg p-4 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-8 h-8 bg-surface-variant/20 rounded-bl-lg"></div>
+<div class="flex justify-between items-start mb-3">
+<span class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider font-semibold">Pigment</span>
+<span class="material-symbols-outlined text-secondary text-[16px] opacity-70">grain</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-on-surface">81</span>
+</div>
+<div class="w-full bg-surface-variant/50 h-1 rounded-full mt-3">
+<div class="bg-secondary h-1 rounded-full" style="width: 81%"></div>
+</div>
+</div>
+<!-- Nasolabial Fold -->
+<div class="bg-pure-white border border-error/20 rounded-lg p-4 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-8 h-8 bg-error/10 rounded-bl-lg"></div>
+<div class="flex justify-between items-start mb-3">
+<span class="font-label-sm text-[11px] text-error uppercase tracking-wider font-semibold">Smile Line</span>
+<span class="material-symbols-outlined text-error text-[16px] opacity-70">warning</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-error">66</span>
+<span class="font-label-sm text-[10px] text-error bg-error/10 px-1.5 py-0.5 rounded">Action Needed</span>
+</div>
+<div class="w-full bg-error/10 h-1 rounded-full mt-3">
+<div class="bg-error h-1 rounded-full" style="width: 66%"></div>
+</div>
+</div>
+<!-- Forehead Line -->
+<div class="bg-pure-white border border-surface-variant/60 rounded-lg p-4 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-8 h-8 bg-surface-variant/20 rounded-bl-lg"></div>
+<div class="flex justify-between items-start mb-3">
+<span class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider font-semibold">Forehead</span>
+<span class="material-symbols-outlined text-secondary text-[16px] opacity-70">horizontal_rule</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-on-surface">74</span>
+</div>
+<div class="w-full bg-surface-variant/50 h-1 rounded-full mt-3">
+<div class="bg-secondary h-1 rounded-full" style="width: 74%"></div>
+</div>
+</div>
+</section>
+<!-- Highlight Section (Actionable Insight) -->
+<section class="bg-accent-lavender/10 border border-accent-lavender/30 rounded-lg p-5 relative overflow-hidden">
+<div class="absolute inset-0 grid-bg opacity-20 pointer-events-none"></div>
+<div class="relative z-10 flex flex-col">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-tertiary-container text-[18px]">biotech</span>
+<h3 class="font-label-sm text-[11px] text-tertiary-container uppercase tracking-wider font-bold">Priority Protocol</h3>
+</div>
+<p class="font-body-md text-tertiary-container mb-4">오늘 가장 관리가 필요한 부분: <span class="font-bold border-b border-tertiary-container/30 pb-0.5">Smile Line</span></p>
+<a class="inline-flex items-center justify-center bg-pure-white text-tertiary-container font-label-bold text-sm px-5 py-2.5 rounded-lg border border-accent-lavender/40 hover:bg-surface-bright transition-colors w-full" href="#">
+                Start Recommended Routine
+                <span class="material-symbols-outlined text-[16px] ml-2">science</span>
+</a>
+</div>
+</section>
+<!-- Trend Chart -->
+<section class="bg-pure-white border border-surface-variant/60 rounded-lg p-5">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-label-sm text-[11px] text-on-surface-variant uppercase tracking-wider font-bold">7-Day Analysis</h3>
+<button class="text-secondary"><span class="material-symbols-outlined text-[18px]">more_horiz</span></button>
+</div>
+<!-- Simplified CSS-based Line Chart (Lab Style) -->
+<div class="h-32 w-full flex items-end justify-between relative pt-4 pb-6 border-b border-surface-variant/50">
+<!-- Grid lines -->
+<div class="absolute left-0 right-0 bottom-1/2 border-b border-dashed border-surface-variant/60 z-0"></div>
+<div class="absolute left-0 right-0 bottom-1/4 border-b border-dashed border-surface-variant/30 z-0"></div>
+<div class="absolute left-0 right-0 bottom-3/4 border-b border-dashed border-surface-variant/30 z-0"></div>
+<!-- SVG Line overlay -->
+<svg class="absolute inset-0 w-full h-full z-0 pointer-events-none" preserveAspectRatio="none" viewBox="0 0 100 100">
+<path d="M 5,80 L 20,60 L 35,65 L 50,40 L 65,30 L 80,45 L 95,20" fill="none" stroke="#1F5B50" stroke-linejoin="round" stroke-width="1.5"></path>
+<path d="M 5,80 L 20,60 L 35,65 L 50,40 L 65,30 L 80,45 L 95,20 L 95,100 L 5,100 Z" fill="url(#trend-gradient)" opacity="0.1"></path>
+<defs>
+<linearGradient id="trend-gradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#1F5B50"></stop>
+<stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"></stop>
+</linearGradient>
+</defs>
+</svg>
+<!-- Data points & Labels -->
+<div class="flex flex-col items-center z-10 w-full relative h-full justify-end">
+<div class="absolute bottom-[20%] w-1.5 h-1.5 bg-pure-white border border-primary rounded-full"></div>
+<span class="absolute -bottom-5 font-label-sm text-[9px] text-outline uppercase">Mon</span>
+</div>
+<div class="flex flex-col items-center z-10 w-full relative h-full justify-end">
+<div class="absolute bottom-[40%] w-1.5 h-1.5 bg-pure-white border border-primary rounded-full"></div>
+<span class="absolute -bottom-5 font-label-sm text-[9px] text-outline uppercase">Tue</span>
+</div>
+<div class="flex flex-col items-center z-10 w-full relative h-full justify-end">
+<div class="absolute bottom-[35%] w-1.5 h-1.5 bg-pure-white border border-primary rounded-full"></div>
+<span class="absolute -bottom-5 font-label-sm text-[9px] text-outline uppercase">Wed</span>
+</div>
+<div class="flex flex-col items-center z-10 w-full relative h-full justify-end">
+<div class="absolute bottom-[60%] w-1.5 h-1.5 bg-pure-white border border-primary rounded-full"></div>
+<span class="absolute -bottom-5 font-label-sm text-[9px] text-outline uppercase">Thu</span>
+</div>
+<div class="flex flex-col items-center z-10 w-full relative h-full justify-end">
+<div class="absolute bottom-[70%] w-1.5 h-1.5 bg-pure-white border border-primary rounded-full"></div>
+<span class="absolute -bottom-5 font-label-sm text-[9px] text-outline uppercase">Fri</span>
+</div>
+<div class="flex flex-col items-center z-10 w-full relative h-full justify-end">
+<div class="absolute bottom-[55%] w-1.5 h-1.5 bg-pure-white border border-primary rounded-full"></div>
+<span class="absolute -bottom-5 font-label-sm text-[9px] text-outline uppercase">Sat</span>
+</div>
+<div class="flex flex-col items-center z-10 w-full relative h-full justify-end">
+<div class="absolute bottom-[80%] w-2 h-2 bg-accent-lavender border-2 border-pure-white rounded-full"></div>
+<span class="absolute -bottom-5 font-label-sm text-[9px] text-on-surface font-bold uppercase">Sun</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Nav Bar -->
+<nav class="bg-pure-white border-t border-surface-variant/40 w-full z-50 fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-safe-area-bottom pt-2 h-[80px]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors p-2 w-16" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1">calendar_today</span>
+<span class="font-label-sm text-[10px]">Today</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary w-16 relative" href="#">
+<div class="absolute -top-1 w-8 h-1 bg-primary rounded-b-full"></div>
+<span class="material-symbols-outlined text-[24px] mb-1" style="font-variation-settings: 'FILL' 1;">insights</span>
+<span class="font-label-sm text-[10px] font-bold">Analysis</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors p-2 w-16" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1">science</span>
+<span class="font-label-sm text-[10px]">Routine</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors p-2 w-16" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1">person</span>
+<span class="font-label-sm text-[10px]">Profile</span>
+</a>
+</nav>
+</body></html>

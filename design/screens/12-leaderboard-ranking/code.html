@@ -1,0 +1,274 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>DailySkin 15 - Leaderboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "primary": "#004339",
+                        "on-error": "#ffffff",
+                        "secondary-fixed-dim": "#b3ccc1",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#2e685d",
+                        "on-tertiary-fixed-variant": "#493a89",
+                        "on-primary-container": "#96d1c2",
+                        "surface-container-low": "#f5f4f0",
+                        "secondary-fixed": "#cfe8dc",
+                        "on-secondary-container": "#536960",
+                        "on-secondary-fixed-variant": "#354b43",
+                        "error-container": "#ffdad6",
+                        "graphite": "#202026",
+                        "surface-container-highest": "#e3e2df",
+                        "background": "#faf9f5",
+                        "surface": "#faf9f5",
+                        "tertiary": "#3d2d7b",
+                        "inverse-on-surface": "#f2f1ed",
+                        "on-surface": "#1b1c1a",
+                        "on-primary-fixed": "#00201b",
+                        "error": "#ba1a1a",
+                        "pure-white": "#FFFFFF",
+                        "surface-container": "#efeeea",
+                        "primary-fixed": "#b3eee0",
+                        "surface-variant": "#e3e2df",
+                        "on-surface-variant": "#404946",
+                        "outline": "#707976",
+                        "on-tertiary-fixed": "#1d045c",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#97d2c4",
+                        "on-primary-fixed-variant": "#105045",
+                        "on-error-container": "#93000a",
+                        "glass-overlay": "rgba(255, 255, 255, 0.7)",
+                        "tertiary-fixed-dim": "#cbbeff",
+                        "on-tertiary-container": "#c9bcff",
+                        "surface-bright": "#faf9f5",
+                        "surface-container-high": "#e9e8e4",
+                        "tertiary-container": "#544594",
+                        "primary-container": "#1f5b50",
+                        "inverse-surface": "#30312e",
+                        "primary-fixed-dim": "#97d2c4",
+                        "tertiary-fixed": "#e6deff",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#cfe8dc",
+                        "on-background": "#1b1c1a",
+                        "secondary": "#4d635a",
+                        "outline-variant": "#bfc9c5",
+                        "surface-dim": "#dbdad6",
+                        "on-secondary-fixed": "#091f18"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-main": "24px",
+                        "gutter": "16px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px",
+                        "safe-area-bottom": "34px"
+                    },
+                    "fontFamily": {
+                        "display-hero": ["\"Source Serif 4\""],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-hero-mobile": ["\"Source Serif 4\""],
+                        "label-sm": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-lg": ["\"Source Serif 4\""],
+                        "label-bold": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "display-hero": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "display-hero-mobile": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "label-bold": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #faf9f5; /* surface / background */ }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .soft-shadow {
+            box-shadow: 0 4px 20px rgba(31, 91, 80, 0.05); /* slightly tinted shadow */
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-background antialiased pb-safe-area-bottom">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-40 bg-background flex justify-between items-center w-full px-margin-main py-4">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover border border-surface-variant" data-alt="A small, circular avatar portrait of a young woman with glowing skin, soft studio lighting, soft lab aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDqfG2dvdhDIk640erbvWn6h33ntEpB7FRJOsCOrKLhQPI5POPdDSHNCJQrvaFgWGNODEr-2Oqp7fyvVlNsrMxpsdLinIB2Bl_FDdmlo_pQAEViVD3-nUQ3aiiCKWDmom31Oj2f4ItRyuD-xSalWgwymJEDjTtnUfwkOlCtcAYLXgGD_mwZW6af7LXsdG5p1h9FNwEJyz27prVNoG4MzuzdDrp6FaOt6pkhzZdLUt4biPViCU-c0s1kw">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">DailySkin 15</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</header>
+<main class="px-margin-main pb-24">
+<!-- Header / Context -->
+<div class="pt-stack-md pb-stack-lg text-center">
+<h2 class="font-display-hero-mobile text-display-hero-mobile text-primary mb-2">Glow Board</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Compare your skin improvement progress.</p>
+</div>
+<!-- Scope Tabs -->
+<div class="flex bg-surface-container-low rounded-full p-1 mb-stack-lg border border-surface-variant/50">
+<button class="flex-1 py-2 rounded-full bg-secondary-container text-on-secondary-container font-label-bold text-label-bold shadow-sm transition-all">Friends</button>
+<button class="flex-1 py-2 rounded-full text-on-surface-variant font-label-bold text-label-bold hover:bg-surface-container transition-all">School</button>
+<button class="flex-1 py-2 rounded-full text-on-surface-variant font-label-bold text-label-bold hover:bg-surface-container transition-all">Class</button>
+</div>
+<!-- Highlighted User Section (Current User) -->
+<div class="bg-pure-white rounded-[24px] p-6 soft-shadow mb-stack-lg border border-primary-fixed-dim/30 relative overflow-hidden">
+<!-- decorative background accent -->
+<div class="absolute -right-10 -top-10 w-32 h-32 bg-secondary-container rounded-full opacity-50 blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between relative z-10">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img class="w-16 h-16 rounded-full object-cover border-2 border-pure-white shadow-sm" data-alt="A clear, bright portrait of a young woman smiling slightly, natural makeup, soft lighting, circular crop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZedq0DQdfycYYZYQqUJwQ5GwZQJVIaoauyi7kpUl1mgI4BXI2NKTOB2oPFS6MP49ityeCb_Il1sO2xEwKMJi7N1LOLsFlBNE5vfBschdlFtaY8uXbRrL-_dbMe8YlsJp5nmFMQxLHWaDVD3yhMlIEQebcs02uhu_kzCaIElvQvyD6Yo497-TAsMUHfWKFC_6WM_eQ7RI1x489HF78idoDpEa0ObckrsSV400sq3DUqExcWRHw-jsUHg">
+<div class="absolute -bottom-2 -right-2 bg-primary-container text-on-primary-container w-8 h-8 rounded-full flex items-center justify-center font-label-bold text-label-bold border-2 border-pure-white">
+                            #4
+                        </div>
+</div>
+<div>
+<h3 class="font-headline-md text-body-lg font-bold text-primary">You</h3>
+<p class="font-label-sm text-label-sm text-outline">Garam High School</p>
+</div>
+</div>
+<div class="text-right">
+<div class="flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-headline-md text-headline-md">1,240</span>
+</div>
+<div class="font-label-bold text-label-bold text-primary-container bg-secondary-container inline-block px-2 py-0.5 rounded-full mt-1">
+                        +14 pts today
+                    </div>
+</div>
+</div>
+</div>
+<!-- Leaderboard List -->
+<div class="bg-pure-white rounded-[24px] soft-shadow px-4 py-2">
+<!-- List Item 1 -->
+<div class="flex items-center justify-between py-4 border-b border-surface-container-low last:border-0">
+<div class="flex items-center gap-3">
+<div class="w-6 text-center font-label-bold text-label-bold text-outline">1</div>
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A portrait of a young woman with a high ponytail, glowing skin, soft studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvRz5aL4PF3nqD7E31ExQKszaeK-enWeiTiG4lBjyI2s7CivtuJLUQ3LKM7yP7ncmJmyo8NbPuRZra0QUUvFHK4lj9MvxiTaogkz1H2Y_C2C3giisMTst57an2Ta_PbLZyqcfws1p7oewmijTfnj0YhCUJhS4G89buQbc6VScB1LXpfxmhClVo-Mqksn9FVi4GpN3bya2OzNIb026cH-BAzUvzUCv0ecY8bTdEqid1lyICwUPHvwkjEQ">
+<div>
+<div class="font-body-md text-body-md font-semibold text-on-surface">Minji K.</div>
+</div>
+</div>
+<div class="text-right flex items-center gap-2">
+<span class="font-body-md text-body-md font-semibold text-primary">1,450</span>
+<span class="material-symbols-outlined text-outline-variant text-[16px]">trending_up</span>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="flex items-center justify-between py-4 border-b border-surface-container-low last:border-0">
+<div class="flex items-center gap-3">
+<div class="w-6 text-center font-label-bold text-label-bold text-outline">2</div>
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A bright portrait of a smiling young woman, short hair, natural look, soft aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAe06FWV5Vy_5DQbZqpS7rWThGDiiqT2Wva2UAvsIm7RV9qSEriuyMuvhG9J-QDooU_yx0keBNVjsXgb6a-8oU_wzBqGLfREJO_jPDULLT4BiduDvNfKpOvwZl1xQULZBSEKIqAv-YB8AOGISYb7YBpuoxA0FOeagVCIywzBEPV3Ua08NstdTMtFLUY1JEbTbdPOOkWg8DUnTBghg4GNE2VdXYeBCOzOSFjxWNIpyBQf_s9xqTVl8D8XA">
+<div>
+<div class="font-body-md text-body-md font-semibold text-on-surface">Jiyeon P.</div>
+</div>
+</div>
+<div class="text-right flex items-center gap-2">
+<span class="font-body-md text-body-md font-semibold text-primary">1,380</span>
+<span class="material-symbols-outlined text-outline-variant text-[16px]">trending_up</span>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="flex items-center justify-between py-4 border-b border-surface-container-low last:border-0">
+<div class="flex items-center gap-3">
+<div class="w-6 text-center font-label-bold text-label-bold text-outline">3</div>
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A clear portrait of a young woman looking confidently, flawless skin, gentle lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJ589D5u5gXSzqsvw5I4f1OmH8_5jk7s6GPApK3EX1zvvcxf3dwGIUmvnZGDzH6vCbp2QX0cfWpKHu2q8N_ZUFfTiOjdn63zl7xt1DQd_P_n7KWxhB3iGPx68y1DmYH5F8xTwDHWkFp7R45I8JW1Ji5vM-vatz2wLC_Tv8q-dQBN8PllzXy1z50LOMXx_ufM1eK3OcJ8wQrptp-PXlqBlpa7H2djDqRFsRPs3vonIwIyjCw8ZgSQ6MLQ">
+<div>
+<div class="font-body-md text-body-md font-semibold text-on-surface">Sohee Y.</div>
+</div>
+</div>
+<div class="text-right flex items-center gap-2">
+<span class="font-body-md text-body-md font-semibold text-primary">1,310</span>
+<span class="material-symbols-outlined text-outline-variant text-[16px]">trending_flat</span>
+</div>
+</div>
+<!-- Contextual Separator for Current User -->
+<div class="h-px bg-gradient-to-r from-transparent via-surface-variant to-transparent my-2"></div>
+<!-- List Item 4 (You - repeated in list for context) -->
+<div class="flex items-center justify-between py-4 bg-surface-container-low rounded-xl px-2 -mx-2 border border-surface-variant/50">
+<div class="flex items-center gap-3">
+<div class="w-6 text-center font-label-bold text-label-bold text-primary">4</div>
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A clear, bright portrait of a young woman smiling slightly, natural makeup, soft lighting, circular crop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfnKLiqhzVrNpdIf10d7AlDwHVtFK_6usdBBf_WzKw8ANcXBKYGGFuOnsdd7l0N6KSwSlcwwZlQ13InEP6kZiYJArYWBWXycE5Dzr31oWSr02_hkjvALa8HGncKeGB-jyWbw8cxMStEcir-XZrS8gZCpDENZOJKyicUV2Zkp1MVgll7pjresGhQpr0gI7_1aN-MeXYIoc84RkzexLHPckQ-mnqNKdYq3fmndBsmD-C1wuKgrDKSA3TUw">
+<div>
+<div class="font-body-md text-body-md font-semibold text-primary">You</div>
+</div>
+</div>
+<div class="text-right flex items-center gap-2">
+<span class="font-body-md text-body-md font-bold text-primary">1,240</span>
+<span class="material-symbols-outlined text-primary-container text-[16px]">trending_up</span>
+</div>
+</div>
+<!-- List Item 5 -->
+<div class="flex items-center justify-between py-4 border-b border-surface-container-low last:border-0 mt-2">
+<div class="flex items-center gap-3">
+<div class="w-6 text-center font-label-bold text-label-bold text-outline">5</div>
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A portrait of a young woman with glasses, smiling, bright and clear skin." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxC5blT_DFHuHIahChUq96gcrFYU_RTGbRsJ0OmY8nHtEYNW1-D37KBMy4kVnIuS9MYU8zUYoXwYzRN3x9hkjmUWgehNDuvFpuhHJx6AoVOAKW67CTVAliC0iA_bMWVAKr19pwOZxG0nIFbLLWbs9IRql-yiCAPx2bc1qCcwb1LMJZlpK9bAaWZ_KehqZ4-5_B2wFP1RSMr7XROesLhFovuzkTA6A2E_au74-hH89E1fM34I1TVuy0og">
+<div>
+<div class="font-body-md text-body-md font-semibold text-on-surface">Hyejin S.</div>
+</div>
+</div>
+<div class="text-right flex items-center gap-2">
+<span class="font-body-md text-body-md font-semibold text-outline">1,190</span>
+<span class="material-symbols-outlined text-outline-variant text-[16px]">trending_down</span>
+</div>
+</div>
+</div>
+<!-- CTA Action -->
+<div class="mt-stack-lg">
+<button class="w-full bg-primary text-pure-white font-label-bold text-body-lg py-4 rounded-full shadow-md hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">person_add</span>
+                Invite Friends
+            </button>
+</div>
+</main>
+<!-- Bottom Nav Bar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)] bg-pure-white shadow-lg fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-safe-area-bottom pt-3">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg p-2" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-sm text-label-sm mt-1">Today</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-primary rounded-full px-4 py-1 hover:bg-surface-container-low transition-colors scale-95 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">insights</span>
+<span class="font-label-sm text-label-sm mt-1">Progress</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg p-2" href="#">
+<span class="material-symbols-outlined">self_improvement</span>
+<span class="font-label-sm text-label-sm mt-1">Routine</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg p-2" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

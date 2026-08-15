@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="ko"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>DailySkin 15 - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#091f18",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#536960",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1b1c1a",
+                        "surface-tint": "#2e685d",
+                        "tertiary-fixed-dim": "#cbbeff",
+                        "on-secondary-fixed-variant": "#354b43",
+                        "surface-container-highest": "#e3e2df",
+                        "primary-fixed": "#b3eee0",
+                        "surface-container-low": "#f5f4f0",
+                        "secondary-fixed": "#cfe8dc",
+                        "on-tertiary-fixed": "#1d045c",
+                        "secondary-fixed-dim": "#b3ccc1",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#e6deff",
+                        "primary": "#004339",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#544594",
+                        "surface-variant": "#e3e2df",
+                        "on-primary-container": "#96d1c2",
+                        "on-tertiary-fixed-variant": "#493a89",
+                        "on-tertiary-container": "#c9bcff",
+                        "surface-container-high": "#e9e8e4",
+                        "pure-white": "#FFFFFF",
+                        "secondary-container": "#cfe8dc",
+                        "inverse-primary": "#97d2c4",
+                        "inverse-surface": "#30312e",
+                        "secondary": "#4d635a",
+                        "graphite": "#202026",
+                        "primary-container": "#1f5b50",
+                        "background": "#faf9f5",
+                        "outline-variant": "#bfc9c5",
+                        "surface-container": "#efeeea",
+                        "on-primary-fixed-variant": "#105045",
+                        "on-background": "#1b1c1a",
+                        "on-error-container": "#93000a",
+                        "outline": "#707976",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface": "#faf9f5",
+                        "glass-overlay": "rgba(255, 255, 255, 0.7)",
+                        "on-surface-variant": "#404946",
+                        "inverse-on-surface": "#f2f1ed",
+                        "on-primary-fixed": "#00201b",
+                        "primary-fixed-dim": "#97d2c4",
+                        "surface-bright": "#faf9f5",
+                        "surface-dim": "#dbdad6",
+                        "error": "#ba1a1a",
+                        "tertiary": "#3d2d7b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "margin-main": "24px",
+                        "stack-md": "16px",
+                        "gutter": "16px",
+                        "stack-sm": "8px",
+                        "safe-area-bottom": "34px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["\"Source Serif 4\""],
+                        "body-md": ["Hanken Grotesk"],
+                        "display-hero": ["\"Source Serif 4\""],
+                        "label-bold": ["Hanken Grotesk"],
+                        "display-hero-mobile": ["\"Source Serif 4\""],
+                        "label-sm": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-hero": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-bold": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "display-hero-mobile": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #F7F6F2; }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased pb-safe-area-bottom">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-background docked full-width top-0 flex justify-between items-center w-full px-margin-main py-4 sticky z-40">
+<div class="flex items-center gap-3">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A clean, minimalist portrait of a young woman with natural makeup, looking relaxed, set against a soft off-white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIrz9HbDUUQ_FpO4P44ZWJgjmP9xQ7so-IoXr4XsZuQI_LSY9jGaO5bhvpjQ_tch5LGUQWArQ9XyUV_mFtyRE20uV_oKIhX4efRT--LoHlg2rOqhg6iPLsPOHarePnEhnm4y2fl-TAGzDJgIKgI8MvPYWDUqBqTWj2NZaJdMs8cNPQm4X8JsluUnwBiqGO6G07U892DTW0xWtl4Ks2-EyyFYUWmkHuzi0ixZXrN4ey6eVd-tnV3FdK2g">
+</div>
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary">DailySkin 15</div>
+<button class="text-primary dark:text-inverse-primary hover:opacity-80 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</header>
+<main class="px-margin-main pb-32">
+<!-- Day Tracker -->
+<section class="mt-stack-md flex flex-col items-center">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-primary mb-2">Day 7</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">15일의 기적을 향한 여정</p>
+<div class="flex items-center justify-center gap-2 mb-stack-lg w-full max-w-sm">
+<!-- Days 1-7 (Completed) -->
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-pure-white"><span class="material-symbols-outlined text-[16px]">check</span></div>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-pure-white"><span class="material-symbols-outlined text-[16px]">check</span></div>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-pure-white"><span class="material-symbols-outlined text-[16px]">check</span></div>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-pure-white"><span class="material-symbols-outlined text-[16px]">check</span></div>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-pure-white"><span class="material-symbols-outlined text-[16px]">check</span></div>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-pure-white"><span class="material-symbols-outlined text-[16px]">check</span></div>
+<!-- Day 7 (Current) -->
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label-bold text-label-bold shadow-md border-2 border-primary ring-4 ring-primary-container/20">7</div>
+<!-- Days 8+ (Upcoming) -->
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-label-sm text-label-sm">8</div>
+<div class="flex-1 h-[2px] bg-surface-container-highest rounded-full mx-1"></div>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-label-sm text-label-sm">15</div>
+</div>
+</section>
+<!-- Hero Portrait -->
+<section class="relative w-full aspect-[4/5] rounded-[32px] overflow-hidden shadow-[0_8px_30px_rgba(0,67,57,0.1)] mb-stack-lg">
+<img class="w-full h-full object-cover" data-alt="A high-end, premium portrait of a young woman with radiant, glowing skin. Soft, natural lighting, looking directly at the camera with a serene expression. Soft pastel background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDACaT8F2Vnv-J_099A36RTelu6Q3BUOHtKGJpAA7r54kFh5c85er9E4tzavKGT-fgLhfaO4Qi4YbbgKQ14Gzj3i_8dm62BURLvWYVR0JwZDJ4qW8N73NY9LejxbLtz_J_4uRHaT84LndUNoAznhMUdEijGWgGP6DP04Hps4Y08PYX3_v5cjdFuMEvY6zxMKOeaYnny5rb2sMuzX2kLWg2TRiKZPN7b7w2agGFNyA87RJMZ2vhIWIdM0w">
+<div class="absolute inset-0 bg-gradient-to-t from-graphite/60 via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-6 right-6">
+<div class="bg-glass-overlay backdrop-blur-[20px] rounded-2xl p-4 flex items-center justify-between border border-pure-white/20">
+<div>
+<div class="font-label-bold text-label-bold text-primary mb-1">Today's Skin Score</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-hero-mobile text-display-hero-mobile text-primary">74</span>
+<span class="font-label-sm text-label-sm text-primary bg-primary-fixed px-2 py-0.5 rounded-full">+8 pts</span>
+</div>
+</div>
+<button class="w-12 h-12 rounded-full bg-primary text-pure-white flex items-center justify-center hover:bg-primary-container transition-colors shadow-lg">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">insights</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Primary Actions -->
+<section class="flex flex-col gap-4">
+<button class="w-full py-4 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-bold text-label-bold shadow-md hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">center_focus_strong</span>
+                오늘의 피부 기록하기 (Scan Today's Skin)
+            </button>
+<div class="bg-pure-white rounded-[24px] p-5 shadow-[0_4px_20px_rgba(46,104,93,0.05)] flex items-center gap-4">
+<div class="w-16 h-16 rounded-xl bg-secondary-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[32px]">self_improvement</span>
+</div>
+<div class="flex-1">
+<h3 class="font-label-bold text-label-bold text-on-surface">오늘의 3분 케어</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">턱선 리프팅 &amp; 붓기 완화</p>
+</div>
+<button class="text-primary p-2 rounded-full hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">play_circle</span>
+</button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)] bg-pure-white dark:bg-surface-container shadow-lg fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-safe-area-bottom pt-3 md:hidden">
+<button class="flex flex-col items-center justify-center bg-secondary-container dark:bg-primary-container text-primary dark:text-on-primary-container rounded-full px-4 py-1 hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors Active: scale-95 transition-all duration-200">
+<span class="material-symbols-outlined mb-1">calendar_today</span>
+<span class="font-label-sm text-label-sm">Today</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors Active: scale-95 transition-all duration-200">
+<span class="material-symbols-outlined mb-1">insights</span>
+<span class="font-label-sm text-label-sm">Progress</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors Active: scale-95 transition-all duration-200">
+<span class="material-symbols-outlined mb-1">self_improvement</span>
+<span class="font-label-sm text-label-sm">Routine</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors Active: scale-95 transition-all duration-200">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</button>
+</nav>
+</body></html>

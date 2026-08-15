@@ -1,0 +1,322 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Skincare Product Discovery - DailySkin 15</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;family=Source+Serif+4:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "background": "#faf9f5",
+                      "tertiary-fixed-dim": "#cbbeff",
+                      "on-surface-variant": "#404946",
+                      "glass-overlay": "rgba(255, 255, 255, 0.7)",
+                      "outline-variant": "#bfc9c5",
+                      "error-container": "#ffdad6",
+                      "inverse-on-surface": "#f2f1ed",
+                      "on-primary-fixed-variant": "#105045",
+                      "inverse-surface": "#30312e",
+                      "primary": "#004339",
+                      "on-secondary": "#ffffff",
+                      "primary-container": "#1f5b50",
+                      "on-surface": "#1b1c1a",
+                      "on-tertiary-fixed-variant": "#493a89",
+                      "inverse-primary": "#97d2c4",
+                      "on-primary": "#ffffff",
+                      "tertiary-fixed": "#e6deff",
+                      "surface-container-high": "#e9e8e4",
+                      "on-error": "#ffffff",
+                      "error": "#ba1a1a",
+                      "surface-container": "#efeeea",
+                      "on-secondary-container": "#536960",
+                      "outline": "#707976",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary": "#4d635a",
+                      "on-secondary-fixed-variant": "#354b43",
+                      "pure-white": "#FFFFFF",
+                      "secondary-fixed": "#cfe8dc",
+                      "graphite": "#202026",
+                      "on-tertiary-fixed": "#1d045c",
+                      "primary-fixed": "#b3eee0",
+                      "on-primary-fixed": "#00201b",
+                      "on-tertiary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "surface": "#faf9f5",
+                      "tertiary-container": "#544594",
+                      "primary-fixed-dim": "#97d2c4",
+                      "on-secondary-fixed": "#091f18",
+                      "surface-container-highest": "#e3e2df",
+                      "surface-variant": "#e3e2df",
+                      "on-tertiary-container": "#c9bcff",
+                      "surface-container-low": "#f5f4f0",
+                      "surface-tint": "#2e685d",
+                      "surface-bright": "#faf9f5",
+                      "secondary-fixed-dim": "#b3ccc1",
+                      "surface-dim": "#dbdad6",
+                      "tertiary": "#3d2d7b",
+                      "secondary-container": "#cfe8dc",
+                      "on-primary-container": "#96d1c2",
+                      "on-background": "#1b1c1a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-lg": "32px",
+                      "stack-md": "16px",
+                      "stack-sm": "8px",
+                      "margin-main": "24px",
+                      "gutter": "16px",
+                      "safe-area-bottom": "34px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-bold": [
+                              "Hanken Grotesk"
+                      ],
+                      "body-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "display-hero": [
+                              "\"Source Serif 4\""
+                      ],
+                      "headline-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-sm": [
+                              "Hanken Grotesk"
+                      ],
+                      "display-hero-mobile": [
+                              "\"Source Serif 4\""
+                      ],
+                      "headline-lg": [
+                              "\"Source Serif 4\""
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-bold": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-hero": [
+                              "40px",
+                              {
+                                      "lineHeight": "48px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-hero-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+        }
+        .material-symbols-outlined.fill-icon {
+            font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+        }
+        
+        .soft-shadow {
+            box-shadow: 0px 4px 20px rgba(0, 67, 57, 0.05); /* Tinted deep green shadow */
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col pb-safe-area-bottom md:pb-0">
+<!-- TopAppBar (Web & Mobile Hybrid) -->
+<header class="hidden md:flex justify-between items-center w-full px-margin-main py-4 bg-background dark:bg-background docked full-width top-0 sticky z-50">
+<div class="flex items-center gap-stack-md">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary">DailySkin 15</span>
+</div>
+<nav class="hidden md:flex items-center gap-margin-main">
+<a class="text-on-surface-variant dark:text-on-surface-variant font-label-bold text-label-bold hover:opacity-80 transition-colors" href="#">Today</a>
+<a class="text-primary dark:text-inverse-primary font-bold font-label-bold text-label-bold hover:opacity-80 transition-transform scale-95" href="#">Explore</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-label-bold text-label-bold hover:opacity-80 transition-colors" href="#">Routine</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-label-bold text-label-bold hover:opacity-80 transition-colors" href="#">Profile</a>
+</nav>
+<div class="flex items-center gap-stack-md">
+<button class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high flex items-center justify-center hover:opacity-80">
+<img alt="User Profile" class="object-cover w-full h-full" data-alt="A macro studio lighting shot of clear, hydrated skin texture on a young female face, emphasizing natural glow and subtle pores. Light-mode aesthetic, neutral tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU8zzXHVPrHffhtc0B1O5y9uIjH_ug9O1LCYaEfBNlNyXggi3SG9w91LG7gHOs7ciZ_2HHdb6F_tflBG0UPuncOdUDu4N-_5kbqRs72S10eL_MaCppeGPv_uLANzS6QDVogksK7KsW9ni19eakIlHH6LG3q77xmakqzpVKVcOrqyP7FhUg7UfKJ8dP6Qj_-8BQQFqI9YDNvFMNG9ezcBOEDSkvngE509ySrNOPyzkYuBW3JJfLwurIzQ">
+</button>
+<button class="text-primary hover:opacity-80">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<!-- Mobile Top Header Placeholder (Since TopAppBar is hybrid, we show a simplified version on mobile for context) -->
+<header class="md:hidden flex justify-between items-center w-full px-margin-main py-4 bg-background z-50 sticky top-0">
+<span class="font-headline-md text-headline-md font-bold text-primary">DailySkin 15</span>
+<button class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high flex items-center justify-center hover:opacity-80">
+<img alt="User Profile" class="object-cover w-full h-full" data-alt="A clean, minimalist abstract composition representing skin layers, using soft curved lines in pale mint and warm ivory. Light-mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByIqoNq3X3pFlHfstI4oQbRFTq3WegxjzoA2hxjEtkE9an1tjRGRmpt1vuafeY33ugces6J5Gk-wEz3hfRMmCpF66UloFvaOUEpjLJvbtanOLf-d4N9ci8YjsF84njhsFK8OD3BSArFH2cVIPcVN3XB7DYKUhEh897LIJJTSrDgN5q4zB4Nfk406oJl9XkxjVa9EQUjq0KAeCH1ZTeDBsHso8ScBY9B483VX-FowF4XusE3TaIxl558Q">
+</button>
+</header>
+<main class="flex-grow px-margin-main py-stack-md flex flex-col gap-stack-lg max-w-3xl mx-auto w-full">
+<!-- Hero Section -->
+<section class="flex flex-col items-center text-center pt-stack-sm pb-stack-md">
+<div class="inline-flex items-center gap-2 bg-secondary-fixed text-on-secondary-fixed px-4 py-1.5 rounded-full mb-stack-md">
+<span class="material-symbols-outlined fill-icon text-sm" data-icon="shield">shield</span>
+<span class="font-label-bold text-label-bold uppercase tracking-wider text-xs">Today's Focus</span>
+</div>
+<h1 class="font-display-hero-mobile md:font-display-hero text-display-hero-mobile md:text-display-hero text-primary mb-stack-sm">Calm &amp; Protect</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">
+                Your skin sensitivity score is slightly elevated today. We've curated gentle formulations to restore your barrier.
+            </p>
+</section>
+<!-- Product Recommendations Grid -->
+<section class="flex flex-col gap-stack-md">
+<!-- Category 1: Mild Cleanser -->
+<div class="bg-pure-white rounded-[24px] p-gutter soft-shadow flex flex-col sm:flex-row gap-gutter">
+<div class="w-full sm:w-1/3 aspect-square sm:aspect-auto rounded-xl overflow-hidden bg-surface-container-low flex-shrink-0 relative">
+<img class="w-full h-full object-cover" data-alt="A high-end product photography shot of a sleek, minimalist frosted glass pump bottle containing a clear, gel-like mild cleanser. Resting on a warm ivory stone surface with soft, diffused natural window lighting. Clinical yet elegant skincare aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4-F8iMCd16w35HrO8O8P3rSM8jO85mSbkpIXA84nIXL_MNbNaDPTkzgluUT7EAhRfv4XIePYOjAV5lN-oBSBcyZu3aYU3XzjVV4otG_ajeb-miazvXCZMH-LnRjONhpZx388YMO8rHry8nrXj30wjfHSZNZ8KL4-NL-g9dI3jcmTGrLqQXjKkexhgaCVnTDAC5ir2FkulahiRlWpbOvocmA-p4jgZMDIaB4wiGC2Hdc4nghyuwOm0yg">
+<div class="absolute top-2 left-2 bg-glass-overlay backdrop-blur-md px-2 py-1 rounded text-[10px] font-label-bold text-primary">Mild Cleanser</div>
+</div>
+<div class="flex flex-col justify-between py-2 flex-grow">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary leading-tight mb-1">Gentle Hydrating Cleanser</h3>
+<p class="font-body-md text-body-md text-outline mb-stack-sm">Cerave</p>
+</div>
+<div class="bg-surface rounded-lg p-3 border border-surface-variant border-opacity-50 mt-auto">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-sm mt-0.5" data-icon="check_circle">check_circle</span>
+<div>
+<span class="font-label-bold text-label-bold text-secondary block">Why it fits</span>
+<span class="font-body-md text-body-md text-on-surface-variant text-sm">Low-foaming formula with ceramides cleanses without stripping, ideal for your current high sensitivity score.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Category 2: Soothing Moisturizer -->
+<div class="bg-pure-white rounded-[24px] p-gutter soft-shadow flex flex-col sm:flex-row gap-gutter">
+<div class="w-full sm:w-1/3 aspect-square sm:aspect-auto rounded-xl overflow-hidden bg-surface-container-low flex-shrink-0 relative">
+<img class="w-full h-full object-cover" data-alt="A luxurious product photo of an open jar of thick, creamy white soothing moisturizer. Placed on a pristine white marble slab next to a single fresh green leaf. High key lighting, soft shadows, evoking clinical purity and organic wellness." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpsZJsqgW7AINRlZgGl982JocE1lbANgg509P4NrQ3jznibGc2wdP7s6BUWLG0Oe7FIkuBgyPxXQIRhxEe8XZfAqZr1d67odgdLTxIlmqNc5Z3pEeeMKH3pVM6jC_O6x8aeXZP0sGOkOOVePnkpEj-k4igJytdblbYaHwI8m15OmkSdY1jSlrRqUtejgnA6XqPQQUlkd6CwHNdAimwAL2y1XAM_BqB0YCpHQkzCfAzDuaJ55u9H6AqDA">
+<div class="absolute top-2 left-2 bg-glass-overlay backdrop-blur-md px-2 py-1 rounded text-[10px] font-label-bold text-primary">Soothing Moisturizer</div>
+</div>
+<div class="flex flex-col justify-between py-2 flex-grow">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary leading-tight mb-1">Centella Calming Cream</h3>
+<p class="font-body-md text-body-md text-outline mb-stack-sm">Skin1004</p>
+</div>
+<div class="bg-surface rounded-lg p-3 border border-surface-variant border-opacity-50 mt-auto">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-sm mt-0.5" data-icon="energy_savings_leaf">energy_savings_leaf</span>
+<div>
+<span class="font-label-bold text-label-bold text-secondary block">Why it fits</span>
+<span class="font-body-md text-body-md text-on-surface-variant text-sm">Contains high concentrations of Centella Asiatica to actively target and reduce your current redness trouble areas.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Category 3: UV Protection -->
+<div class="bg-pure-white rounded-[24px] p-gutter soft-shadow flex flex-col sm:flex-row gap-gutter">
+<div class="w-full sm:w-1/3 aspect-square sm:aspect-auto rounded-xl overflow-hidden bg-surface-container-low flex-shrink-0 relative">
+<img class="w-full h-full object-cover" data-alt="A sleek white tube of sunscreen lying diagonally on a pale mint background. A smear of the lightweight white cream texture is visible beside it. Soft, studio-quality lighting emphasizing the modern, corporate minimalist skincare aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBu52ZGuvFdze-66MsXe4WLa8jCYck5G53ekPAj6B0U1-x8PqIv_I6ObB8f8m953enOJNHGRTkEhwwsEcRud3-u5L5kiytXGeWxxVcoBLehOmsuxyB45fW0p5kBki6s2CGulLkk2EpG6ihZJoaAG5DWK28Ed4KFzj0i1QhWuJVNqqHH0sKssiF2iXmA4KY244LsoakH6qdIAHe7Jrfhwy7-sDew2BWChIBU6RcqCttCDoeOpw87OWcTUQ">
+<div class="absolute top-2 left-2 bg-glass-overlay backdrop-blur-md px-2 py-1 rounded text-[10px] font-label-bold text-primary">UV Protection</div>
+</div>
+<div class="flex flex-col justify-between py-2 flex-grow">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary leading-tight mb-1">Mineral Shield SPF 50</h3>
+<p class="font-body-md text-body-md text-outline mb-stack-sm">Soft Lab</p>
+</div>
+<div class="bg-surface rounded-lg p-3 border border-surface-variant border-opacity-50 mt-auto">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-sm mt-0.5" data-icon="light_mode">light_mode</span>
+<div>
+<span class="font-label-bold text-label-bold text-secondary block">Why it fits</span>
+<span class="font-body-md text-body-md text-on-surface-variant text-sm">Physical barrier protection that won't absorb into compromised skin, preventing further irritation while shielding from UV stress.</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom padding for scroll clearance -->
+<div class="h-8"></div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 pb-safe-area-bottom pt-3 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] bg-pure-white dark:bg-surface-container rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-sm text-label-sm">Today</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-primary-container text-primary dark:text-on-primary-container rounded-full px-4 py-1 scale-95 transition-all duration-200" href="#">
+<span class="material-symbols-outlined mb-1 fill-icon" data-icon="insights">insights</span>
+<span class="font-label-sm text-label-sm font-bold">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="self_improvement">self_improvement</span>
+<span class="font-label-sm text-label-sm">Routine</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+</body></html>
