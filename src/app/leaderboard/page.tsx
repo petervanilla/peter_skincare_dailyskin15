@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
+import { LogoMark } from "@/components/Logo";
 import { TopAppBar } from "@/components/TopAppBar";
 import { IMG } from "@/lib/assets";
 import { firstRecord, latestRecord } from "@/lib/scoring";
@@ -22,6 +23,53 @@ const GROUPS = [
   { id: "d", name: "2학년 2반", members: 21, avgImprovement: 4.5 },
 ];
 
+const SCHOOLS = [
+  { id: "a", name: "청담고등학교", members: 412, avgImprovement: 7.6 },
+  { id: "b", name: "대치고등학교", members: 388, avgImprovement: 6.9 },
+  { id: "c", name: "역삼고등학교", members: 355, avgImprovement: 5.8 },
+  { id: "d", name: "삼성고등학교", members: 301, avgImprovement: 4.2 },
+];
+
+const GLOW_UPDATES = [
+  { name: "지민", score: 14 },
+  { name: "서연", score: 12 },
+  { name: "하은", score: 10 },
+  { name: "도윤", score: 8 },
+  { name: "아윤", score: 6 },
+];
+
+/**
+ * Recent-activity marquee for the Glow Board card. Same duplicated-content
+ * technique as Today's NewsTicker (see `.marquee-track` in globals.css), one
+ * loop always fills the strip so the seam never shows.
+ */
+function GlowBoardTicker() {
+  const content = (
+    <span className="flex shrink-0 items-center gap-4 pr-4">
+      {GLOW_UPDATES.map((u, i) => (
+        <span
+          key={i}
+          className="flex shrink-0 items-center gap-1.5 whitespace-nowrap font-label-sm text-label-sm text-primary"
+        >
+          <span className="animate-pulse rounded-full bg-primary px-1.5 py-0.5 font-label-bold text-[9px] text-pure-white">
+            NEW
+          </span>
+          {u.name}님 +{u.score}점 달성
+        </span>
+      ))}
+    </span>
+  );
+
+  return (
+    <div className="mb-4 -mx-5 overflow-hidden border-y border-outline-variant/40 bg-surface-container-low py-1.5">
+      <span className="marquee-track">
+        {content}
+        {content}
+      </span>
+    </div>
+  );
+}
+
 export default function LeaderboardPage() {
   const { state, hydrated } = useStore();
   const [scope, setScope] = useState<"class" | "school">("class");
@@ -31,13 +79,27 @@ export default function LeaderboardPage() {
   const myImprovement =
     hydrated && first && latest ? latest.dailySkinScore - first.dailySkinScore : 0;
 
+  const groups = scope === "class" ? GROUPS : SCHOOLS;
+
   return (
     <div className="min-h-dvh pb-24">
-      {/* text-[16.8px] overrides TopAppBar's default 24px (headline-md) by
-          30%, scoped to this page only. */}
-      <TopAppBar title={<span className="text-[16.8px]">챌린지 랭킹</span>} avatar />
+      <TopAppBar title={<LogoMark height={28} />} />
 
       <main className="flex flex-col gap-4 px-margin-main pt-2">
+        {/* Lavender fill (tertiary-fixed / on-tertiary-fixed) — DESIGN.md's
+            "AI Action" pairing, matching how lavender is used everywhere
+            else in the app. */}
+        <section className="rounded-[24px] bg-tertiary-fixed p-6 text-on-tertiary-fixed">
+          <p className="font-label-sm text-label-sm text-on-tertiary-fixed/70">내 기여도</p>
+          <p className="font-display-hero-mobile text-display-hero-mobile">
+            {myImprovement > 0 ? "+" : ""}
+            {myImprovement}
+          </p>
+          <p className="mt-1 font-label-sm text-label-sm text-on-tertiary-fixed/70">
+            {scope === "class" ? "우리 반 평균 개선량에 반영돼요" : "우리 학교 평균 개선량에 반영돼요"}
+          </p>
+        </section>
+
         <div className="flex gap-2 rounded-full bg-surface-container p-1">
           {(["class", "school"] as const).map((s) => (
             <button
@@ -55,20 +117,10 @@ export default function LeaderboardPage() {
           ))}
         </div>
 
-        <section className="rounded-[24px] bg-primary-container p-6 text-pure-white">
-          <p className="font-label-sm text-label-sm text-on-primary-container">내 기여도</p>
-          <p className="font-display-hero-mobile text-display-hero-mobile">
-            {myImprovement > 0 ? "+" : ""}
-            {myImprovement}
-          </p>
-          <p className="mt-1 font-label-sm text-label-sm text-pure-white/70">
-            우리 반 평균 개선량에 반영돼요
-          </p>
-        </section>
-
         {/* Glow Board — top improvers this week */}
         <section className="rounded-[24px] bg-pure-white p-5 shadow-[0_4px_20px_rgba(46,104,93,0.05)]">
           <h3 className="mb-4 font-label-bold text-label-bold text-on-surface">Glow Board</h3>
+          <GlowBoardTicker />
           <div className="no-scrollbar flex gap-4 overflow-x-auto">
             {IMG.boardAvatars.map((src, i) => (
               <div key={src} className="flex w-16 shrink-0 flex-col items-center gap-1">
@@ -89,14 +141,14 @@ export default function LeaderboardPage() {
 
         <Link
           href="/challenge"
-          className="flex items-center justify-center gap-2 rounded-full bg-primary py-4 font-label-bold text-label-bold text-pure-white shadow-md transition-opacity hover:opacity-90 active:scale-95"
+          className="shiny-button flex items-center justify-center gap-2 rounded-full bg-primary py-4 font-label-bold text-label-bold text-pure-white shadow-md transition-opacity hover:opacity-90 active:scale-95"
         >
           <Icon name="military_tech" size={18} />
           내 7-Day 챌린지 순위 · 공유하기
         </Link>
 
         <section className="flex flex-col gap-2">
-          {GROUPS.map((g, i) => (
+          {groups.map((g, i) => (
             <div
               key={g.id}
               className="flex items-center gap-4 rounded-2xl bg-pure-white p-4 shadow-[0_4px_20px_rgba(46,104,93,0.05)]"

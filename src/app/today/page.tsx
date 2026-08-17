@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { AnimatedNumber } from "@/components/AnimatedNumber";
 import { BottomNav } from "@/components/BottomNav";
 import { HeroCover } from "@/components/HeroCover";
 import { Icon } from "@/components/Icon";
@@ -32,6 +33,8 @@ export default function TodayPage() {
   const plan = buildCarePlan(state.records, today);
   const currentDay = today?.day ?? nextDay;
   const capturedToday = today?.date === new Date().toISOString().slice(0, 10);
+  /** No record at all yet — the very first visit after onboarding. */
+  const isFirstEver = !today;
 
   return (
     <div className="min-h-dvh pb-32">
@@ -82,10 +85,10 @@ export default function TodayPage() {
               tone while the white type on clear glass stays readable. */}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-graphite/65 via-graphite/25 to-transparent" />
 
-          {!today ? (
+          {isFirstEver ? (
             <div className="absolute top-6 left-6 rounded-full bg-glass-overlay px-3 py-1.5 backdrop-blur-md">
               <span className="font-label-sm text-label-sm text-graphite">
-                첫 기록을 남겨보세요
+                🎉 Day 1 · 새로운 도전을 응원해요!
               </span>
             </div>
           ) : null}
@@ -99,7 +102,7 @@ export default function TodayPage() {
                 </div>
                 <div className="flex items-baseline gap-2">
                   <span className="font-display-hero-mobile text-display-hero-mobile text-pure-white">
-                    {today ? <AnimatedScore value={today.dailySkinScore} /> : "--"}
+                    {today ? <AnimatedNumber value={today.dailySkinScore} /> : "--"}
                   </span>
                   {delta && delta.value !== 0 ? (
                     <span className="rounded-full bg-pure-white/20 px-2 py-0.5 font-label-sm text-label-sm text-pure-white">
@@ -124,10 +127,12 @@ export default function TodayPage() {
         <section className="flex flex-col gap-4">
           <Link
             href="/scan"
-            className="shiny-button flex w-full items-center justify-center gap-2 rounded-full bg-tertiary-fixed py-4 font-label-bold text-label-bold text-on-tertiary-fixed shadow-md transition-all hover:opacity-90 active:scale-95"
+            className={`shiny-button flex w-full items-center justify-center gap-2 rounded-full bg-tertiary-fixed py-4 font-label-bold text-label-bold text-on-tertiary-fixed shadow-md transition-all hover:opacity-90 active:scale-95 ${
+              isFirstEver ? "pulse-cta" : ""
+            }`}
           >
             <Icon name="center_focus_strong" />
-            {capturedToday ? "촬영하기" : "오늘의 피부 기록하기"}
+            {capturedToday ? "촬영하기" : isFirstEver ? "첫 기록 남기고 시작하기" : "오늘의 피부 기록하기"}
           </Link>
 
           <Link
@@ -202,31 +207,6 @@ function NewsTicker() {
 }
 
 /** Counts up to the score, opening six points below it (74 starts at 68). */
-function AnimatedScore({ value }: { value: number }) {
-  const from = Math.max(0, value - 6);
-  const [display, setDisplay] = useState(from);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setDisplay(value);
-      return;
-    }
-
-    const duration = 900;
-    const start = performance.now();
-    let frame = requestAnimationFrame(function tick(now) {
-      const t = Math.min(1, (now - start) / duration);
-      const eased = 1 - (1 - t) ** 3;
-      setDisplay(Math.round(from + (value - from) * eased));
-      if (t < 1) frame = requestAnimationFrame(tick);
-    });
-
-    return () => cancelAnimationFrame(frame);
-  }, [value, from]);
-
-  return <>{display}</>;
-}
-
 function QuickLink({ href, icon, label }: { href: string; icon: string; label: string }) {
   return (
     <Link

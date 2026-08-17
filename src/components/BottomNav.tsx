@@ -10,7 +10,7 @@ const TABS = [
   { href: "/routine", icon: "favorite", label: "Routine" },
   // Lands on the school/class board first; the personal 7-Day Glow
   // Challenge (rivals + the shareable card) is one tap further in.
-  { href: "/leaderboard", icon: "military_tech", label: "랭킹" },
+  { href: "/leaderboard", icon: "military_tech", label: "Rank" },
   { href: "/profile", icon: "person", label: "Profile" },
 ] as const;
 

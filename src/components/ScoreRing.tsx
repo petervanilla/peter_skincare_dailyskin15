@@ -1,9 +1,13 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 interface ScoreRingProps {
   /** 0–100 */
   value: number;
   size?: number;
   strokeWidth?: number;
-  label?: string;
+  label?: React.ReactNode;
   caption?: string;
   /** Soft Lab uses mint for progress on a light green track. */
   color?: string;
@@ -22,7 +26,20 @@ export function ScoreRing({
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const clamped = Math.min(100, Math.max(0, value));
-  const offset = circumference * (1 - clamped / 100);
+
+  // Starts empty and fills to the target on mount, so the ring visibly
+  // draws itself in rather than appearing already full.
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    // No reduced-motion branch needed here: the global stylesheet collapses
+    // all transition/animation durations for prefers-reduced-motion, so this
+    // stroke-dashoffset transition already resolves instantly for those users.
+    const frame = requestAnimationFrame(() => setProgress(clamped));
+    return () => cancelAnimationFrame(frame);
+  }, [clamped]);
+
+  const offset = circumference * (1 - progress / 100);
 
   return (
     <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>

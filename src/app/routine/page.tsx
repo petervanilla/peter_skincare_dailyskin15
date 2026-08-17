@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
+import { LogoMark } from "@/components/Logo";
 import { TopAppBar } from "@/components/TopAppBar";
 import { IMG } from "@/lib/assets";
 import { buildCarePlan } from "@/lib/recommendations";
@@ -23,29 +24,32 @@ export default function RoutinePage() {
 
   return (
     <div className="min-h-dvh pb-32">
-      <TopAppBar title="" avatar />
+      <TopAppBar title={<LogoMark height={28} />} />
 
       <main className="flex flex-col gap-4 px-margin-main pt-2">
-        {/* "Day N Focus" hero from the approved comp */}
-        <section className="relative overflow-hidden rounded-[24px] bg-primary-container p-6 text-pure-white">
+        {/* "Day N Focus" hero — DESIGN.md's "AI Action" lavender fill
+            (tertiary-fixed bg + on-tertiary-fixed text), the same pairing
+            used everywhere else lavender appears in this app, for an
+            AI-generated recommendation. */}
+        <section className="lavender-glow relative overflow-hidden rounded-[24px] bg-tertiary-fixed p-6 text-on-tertiary-fixed">
           {/* break-keep stops Korean from wrapping mid-word; whitespace-pre-line
               honours the authored break in the rationale. */}
           <div className="relative z-10 break-keep">
-            <p className="mb-1 font-label-sm text-label-sm tracking-wider text-on-primary-container uppercase">
+            <p className="mb-1 font-label-sm text-label-sm tracking-wider text-on-tertiary-fixed/70 uppercase">
               {today ? `Day ${today.day} Focus` : "Getting started"}
             </p>
             <h2 className="mb-2 font-headline-md text-headline-md">{plan.headline}</h2>
-            <p className="font-body-md text-body-md whitespace-pre-line text-pure-white/80">
+            <p className="font-body-md text-body-md whitespace-pre-line text-on-tertiary-fixed/80">
               {plan.rationale}
             </p>
           </div>
           {/* Decorative blur, matching the comp's soft corner glow. */}
-          <div className="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-primary-fixed/30 blur-3xl" />
+          <div className="absolute -top-10 -right-10 h-40 w-40 rounded-full bg-tertiary-fixed-dim/50 blur-3xl" />
         </section>
 
         <Link
           href="/face-yoga"
-          className="relative block aspect-[16/9] overflow-hidden rounded-[24px]"
+          className="group relative block aspect-[16/9] overflow-hidden rounded-[24px]"
         >
           <Image
             src={IMG.faceYogaHero}
@@ -60,7 +64,9 @@ export default function RoutinePage() {
               <p className="font-label-sm text-label-sm text-pure-white/80">Today&apos;s Care</p>
               <p className="font-headline-md text-headline-md text-pure-white">3분 페이스 요가</p>
             </div>
-            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-pure-white/90 text-primary">
+            {/* Glows with the same pulse ring as the first-capture CTA, but
+                only while hovered — a "click me" nudge, not a constant one. */}
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-pure-white/90 text-primary transition-transform group-hover:scale-110 group-hover:[animation:pulse-ring_1.2s_ease-out_infinite]">
               <Icon name="play_arrow" filled size={28} />
             </span>
           </div>

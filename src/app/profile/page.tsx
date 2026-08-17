@@ -4,8 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { AnimatedNumber } from "@/components/AnimatedNumber";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
+import { LogoMark } from "@/components/Logo";
 import { ScoreChart } from "@/components/ScoreChart";
 import { StoredPhoto } from "@/components/StoredPhoto";
 import { TopAppBar } from "@/components/TopAppBar";
@@ -59,12 +61,14 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-dvh pb-32">
-      <TopAppBar title="" avatar />
+      <TopAppBar title={<LogoMark height={28} />} />
 
       <main className="flex flex-col gap-4 px-margin-main pt-2">
         {/* Personal info — the one place nickname and age are entered and
-            saved; the age doubles as the Skin Age Index baseline (spec §7). */}
-        <section className="rounded-[24px] bg-pure-white p-5 shadow-[0_4px_20px_rgba(46,104,93,0.05)]">
+            saved; the age doubles as the Skin Age Index baseline (spec §7).
+            Lavender fill (tertiary-fixed / on-tertiary-fixed), same as the
+            "Day N of 15" and "내 기여도" boxes on Progress/Leaderboard. */}
+        <section className="rounded-[24px] bg-tertiary-fixed p-6 text-on-tertiary-fixed">
           {editingProfile ? (
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-4">
@@ -125,24 +129,23 @@ export default function ProfilePage() {
                 />
               </div>
               <div className="flex-1">
-                <p className="font-headline-md text-headline-md text-tertiary-container">
+                <p className="font-headline-md text-headline-md text-on-tertiary-fixed">
                   {state.nickname}
                   {survey?.age ? ` | ${survey.age}` : ""}
                 </p>
-                <p className="font-label-sm text-label-sm text-on-surface-variant">
+                <p className="font-label-sm text-label-sm text-on-tertiary-fixed/70">
                   {state.records.length}일 기록 · {currentStreak(state.records)}일 연속
                 </p>
               </div>
-              {state.records.length ? (
+              {latest ? (
                 <div className="flex flex-col items-end px-1">
-                  <span className="font-headline-md text-headline-md text-primary">
-                    {Math.round(
-                      state.records.reduce((sum, r) => sum + r.dailySkinScore, 0) /
-                        state.records.length,
-                    )}
+                  {/* Same source as the OVERALL SCORE panel below (latest
+                      record), so the two numbers on this page always agree. */}
+                  <span className="font-headline-md text-headline-md text-on-tertiary-fixed">
+                    <AnimatedNumber value={latest.dailySkinScore} />
                   </span>
-                  <span className="font-label-sm text-[10px] whitespace-nowrap text-on-surface-variant">
-                    평균 점수
+                  <span className="font-label-sm text-[10px] whitespace-nowrap text-on-tertiary-fixed/70">
+                    최근 점수
                   </span>
                 </div>
               ) : null}
@@ -151,7 +154,7 @@ export default function ProfilePage() {
                 aria-label="프로필 수정"
                 title="프로필 수정"
                 onClick={startEditingProfile}
-                className="text-on-surface-variant transition-opacity hover:opacity-70 active:scale-95"
+                className="text-on-tertiary-fixed/70 transition-opacity hover:opacity-70 active:scale-95"
               >
                 <Icon name="edit" size={20} />
               </button>
@@ -185,7 +188,7 @@ export default function ProfilePage() {
                 </p>
                 <div className="flex items-baseline gap-1">
                   <span className="font-display-hero-mobile text-display-hero-mobile leading-none text-pure-white">
-                    {latest.dailySkinScore}
+                    <AnimatedNumber value={latest.dailySkinScore} />
                   </span>
                   <span className="font-label-sm text-label-sm text-pure-white/70">/100</span>
                 </div>
@@ -370,7 +373,7 @@ function MiniMetric({
         <span
           className={`font-headline-md text-headline-md ${needsAction ? "text-error" : "text-on-surface"}`}
         >
-          {score}
+          <AnimatedNumber value={score} />
         </span>
         {change !== null && change !== 0 ? (
           <span className={`font-label-sm text-[11px] ${change > 0 ? "text-primary" : "text-error"}`}>

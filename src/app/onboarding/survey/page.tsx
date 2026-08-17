@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Icon } from "@/components/Icon";
+import { LogoMark } from "@/components/Logo";
 import { TopAppBar } from "@/components/TopAppBar";
 import { useStore } from "@/lib/store";
 import {
@@ -84,17 +85,12 @@ export default function SurveyPage() {
       sleep: sleep ?? undefined,
       age: Number.isFinite(parsedAge) && parsedAge >= 10 && parsedAge <= 90 ? parsedAge : undefined,
     });
-    router.push("/scan");
-  };
-
-  const handleBack = () => {
-    if (step === 0) router.push("/");
-    else setStep(step - 1);
+    router.push("/today");
   };
 
   return (
     <div className="flex min-h-dvh flex-col pb-safe-area-bottom">
-      <TopAppBar title="DAILY SKIN 15" back onBack={handleBack} />
+      <TopAppBar title={<LogoMark height={28} />} />
 
       <main className="flex flex-1 flex-col px-margin-main pt-stack-md pb-stack-lg">
         <div className="mb-stack-lg h-1 w-full overflow-hidden rounded-full bg-surface-variant/50">
@@ -106,7 +102,7 @@ export default function SurveyPage() {
 
         {step === 0 ? (
           <StepShell
-            title="당신에 대해 알려주세요"
+            title="피부 상태를 알려주세요"
             subtitle="가장 신경 쓰이는 피부 고민은 무엇인가요?"
             hint="(복수 선택 가능)"
           >
@@ -118,16 +114,19 @@ export default function SurveyPage() {
                     key={key}
                     type="button"
                     onClick={() => toggle(concerns, key, setConcerns)}
+                    // DESIGN.md's lavender is normally reserved for AI-insight
+                    // surfaces, but this selection state deliberately borrows
+                    // it too, per direct request.
                     className={`flex h-28 flex-col items-center justify-center rounded-xl border px-4 py-4 text-center shadow-[0_8px_32px_rgba(0,0,0,0.05)] transition-colors duration-200 ${
                       active
-                        ? "border-primary bg-secondary-container text-primary"
+                        ? "border-tertiary-container bg-tertiary-fixed text-on-tertiary-fixed"
                         : "border-outline-variant bg-pure-white/70 text-on-surface hover:bg-white active:bg-white"
                     }`}
                   >
                     <Icon
                       name={CONCERN_ICONS[key]}
                       size={40}
-                      className={`mb-2 ${active ? "text-primary" : "text-primary-container opacity-90"}`}
+                      className={`mb-2 ${active ? "text-tertiary-container" : "text-primary-container opacity-90"}`}
                     />
                     <span className="font-label-bold text-label-bold">{CONCERN_LABELS[key]}</span>
                   </button>
@@ -227,7 +226,7 @@ export default function SurveyPage() {
             onClick={handleNext}
             className="flex w-full items-center justify-center gap-2 rounded-full bg-primary-container py-4 font-label-bold text-label-bold text-pure-white shadow-lg shadow-primary-container/30 transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
           >
-            {step === STEPS - 1 ? "촬영 시작하기" : "다음"}
+            {step === STEPS - 1 ? "완료하고 시작하기" : "다음"}
             <Icon name="arrow_forward" size={20} />
           </button>
         </div>
@@ -250,13 +249,17 @@ function StepShell({
   return (
     <div className="flex-grow">
       <div className="mb-stack-lg">
-        <h1 className="font-display-hero-mobile text-display-hero-mobile mb-stack-sm leading-tight tracking-tight text-primary">
+        {/* DESIGN.md reserves Source Serif for editorial headlines; "survey
+            questions" are named explicitly as Hanken Grotesk territory. */}
+        <h1 className="font-headline-md text-headline-md mb-stack-sm leading-tight tracking-tight text-primary">
           {title}
         </h1>
-        <p className="font-body-lg text-body-lg leading-relaxed text-on-surface-variant">
+        {/* 12.6px = 18px (body-lg) cut 30%; hint now matches the subtitle
+            instead of running smaller as its own label size. */}
+        <p className="font-body-lg text-[12.6px] leading-[20px] text-on-surface-variant">
           {subtitle}
           {hint ? (
-            <span className="mt-1 inline-block font-label-sm text-label-sm text-on-surface-variant">
+            <span className="mt-1 inline-block text-[12.6px] leading-[20px] text-on-surface-variant">
               {" "}
               {hint}
             </span>
