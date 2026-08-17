@@ -226,31 +226,30 @@ function DayStrip({
   const router = useRouter();
   const scrollerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef(new Map<number, HTMLButtonElement>());
-  const [centerDay, setCenterDay] = useState(current);
+  const [centerDay, setCenterDay] = useState<number | null>(null);
   const days = Array.from({ length: total }, (_, i) => i + 1);
 
-  // Centers on the current day once, on mount — not tied to `current` so a
-  // later re-render (e.g. a fresh capture) doesn't yank the strip back while
-  // the user is browsing elsewhere in it. The centering and the observer
-  // setup are chained inside one rAF, with proper cleanup: React 18 Strict
-  // Mode's dev-only double-invoke of effects otherwise races an
-  // unguarded scrollLeft assignment against the observer's async callback,
-  // and the strip can settle one day off from where it should.
+  // No chip is enlarged until the user actually swipes: with no side
+  // padding, Day 1 already rests flush at the left edge on its own — forcing
+  // it to "center" is impossible (it's at the boundary) and previously just
+  // left some unrelated day looking falsely enlarged instead. The observer
+  // only starts reporting once a real scroll happens.
   useEffect(() => {
     const root = scrollerRef.current;
     if (!root) return;
 
     let observer: IntersectionObserver | undefined;
-    const frame = requestAnimationFrame(() => {
-      // Delegates the centering math to the browser rather than replicating
-      // it by hand — scroll-behavior is "auto" here (no .scroll-smooth on
-      // this container), so "instant" is a real synchronous jump.
-      itemRefs.current
-        .get(current)
-        ?.scrollIntoView({ inline: "center", block: "nearest", behavior: "instant" });
+    let interacted = false;
 
+    const onScroll = () => {
+      interacted = true;
+    };
+    root.addEventListener("scroll", onScroll, { passive: true, once: true });
+
+    const frame = requestAnimationFrame(() => {
       observer = new IntersectionObserver(
         (entries) => {
+          if (!interacted) return;
           let best: { day: number; dist: number } | null = null;
           const rootMid = root.getBoundingClientRect().left + root.clientWidth / 2;
           for (const entry of entries) {
@@ -268,20 +267,21 @@ function DayStrip({
     });
 
     return () => {
+      root.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(frame);
       observer?.disconnect();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [total]);
 
   return (
     <div
       ref={scrollerRef}
-      // Fixed height (the enlarged chip's own size) so the centered chip
-      // growing/shrinking never reflows the row — nothing below it jitters.
+      // Height leaves a few px above/below the enlarged (h-9) chip for its
+      // shadow — a height tight to exactly 36px clips the shadow's bottom
+      // edge, since overflow-x: auto makes the y-axis clip too.
       // No side padding: the scrollable range is exactly Day 1's chip to Day
       // 15's, so at full swing they sit flush against each edge.
-      className="no-scrollbar mb-4 flex h-9 w-full items-center gap-3 overflow-x-auto"
+      className="no-scrollbar mb-4 flex h-11 w-full items-center gap-3 overflow-x-auto"
       // overflow-anchor: none — otherwise the browser "helpfully" shifts
       // scrollLeft to compensate whenever the centered chip resizes
       // (28px <-> 36px), drifting the strip away from the day it settled on.
@@ -303,12 +303,14 @@ function DayStrip({
             aria-label={`Day ${day}${isDone ? " (완료)" : ""}${day === current ? " · 오늘" : ""}`}
             onClick={() => router.push(`/progress?day=${day}`)}
             style={{ scrollSnapAlign: "center" }}
+            // Centering only changes size — it's a scroll position, not a
+            // status, so it must never imply "done" or "today" with color.
             className={`flex shrink-0 items-center justify-center rounded-full font-label-bold text-label-bold transition-all duration-200 ${
-              isCenter
-                ? "h-9 w-9 border-2 border-primary bg-primary-container text-on-primary-container shadow-md ring-4 ring-primary-container/20"
-                : isDone
-                  ? "h-7 w-7 bg-primary text-pure-white"
-                  : "h-7 w-7 bg-surface-container-highest text-label-sm text-on-surface-variant"
+              isCenter ? "h-9 w-9 shadow-md" : "h-7 w-7"
+            } ${
+              isDone
+                ? "bg-primary text-pure-white"
+                : "bg-surface-container-highest text-label-sm text-on-surface-variant"
             }`}
           >
             {day}
