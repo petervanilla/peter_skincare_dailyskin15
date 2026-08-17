@@ -19,6 +19,8 @@ export const IMG = {
   avatar: "/design/10-progress-day7-1.jpg",
   /** Full-bleed front-facing portrait for the dashboard card (no vignette). */
   heroPortrait: "/design/01_main_woman.png",
+  /** Alternate dashboard portrait — used for the "keep current routine" pick. */
+  heroDashboardAlt: "/design/05-hero-dashboard-2.jpg",
 
   /** Scan + analysis */
   scanFace: "/design/02-ai-face-scan-1.jpg",
@@ -37,6 +39,12 @@ export const IMG = {
   productCleanser: "/design/08-product-discovery-3.jpg",
   productCream: "/design/08-product-discovery-4.jpg",
   productSunscreen: "/design/08-product-discovery-5.jpg",
+
+  /** Shop catalog — additional product shots, one photo per product. */
+  shopProduct1: "/design/13-shop-1.jpg",
+  shopProduct2: "/design/13-shop-2.jpg",
+  shopProduct3: "/design/13-shop-3.jpg",
+  shopProduct4: "/design/13-shop-4.jpg",
 
   /**
    * Before / After demo pair, used only until the user has their own captures.

@@ -2,10 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
-import { LogoMark } from "@/components/Logo";
-import { TopAppBar } from "@/components/TopAppBar";
 import { IMG } from "@/lib/assets";
 import { buildCarePlan } from "@/lib/recommendations";
 import { latestRecord } from "@/lib/scoring";
@@ -24,7 +23,7 @@ export default function RoutinePage() {
 
   return (
     <div className="min-h-dvh pb-32">
-      <TopAppBar title={<LogoMark height={28} />} />
+      <AppHeader />
 
       <main className="flex flex-col gap-4 px-margin-main pt-2">
         {/* "Day N Focus" hero — DESIGN.md's "AI Action" lavender fill
@@ -157,7 +156,7 @@ export default function RoutinePage() {
         ) : null}
 
         <Link
-          href="/products"
+          href="/shop"
           className="flex items-center gap-3 rounded-2xl bg-pure-white p-4 shadow-[0_4px_20px_rgba(46,104,93,0.05)] transition-colors hover:bg-secondary-container"
         >
           <Icon name="shopping_bag" className="text-primary" />

@@ -3,37 +3,16 @@
 import Image from "next/image";
 import { Icon } from "@/components/Icon";
 import { IMG } from "@/lib/assets";
+import { CATEGORY_ICON, CATEGORY_IMAGE } from "@/lib/products";
 import { recommendProductCategories } from "@/lib/recommendations";
 import { latestRecord } from "@/lib/scoring";
 import { useStore } from "@/lib/store";
 
-/** Product shots from the Stitch comp, keyed by the rule engine's category id. */
-const CATEGORY_IMAGE: Record<string, string> = {
-  "mild-cleanser": IMG.productCleanser,
-  "soothing-moisturizer": IMG.productCream,
-  sunscreen: IMG.productSunscreen,
-  "hydrating-serum": IMG.productCleanser,
-  "barrier-cream": IMG.productCream,
-  "light-gel": IMG.productLayers,
-  "keep-current": IMG.productSkinTexture,
-};
-
-/** A small "why it fits" glyph per category — cosmetic only, no data behind it. */
-const CATEGORY_ICON: Record<string, string> = {
-  "mild-cleanser": "water_drop",
-  "soothing-moisturizer": "spa",
-  sunscreen: "light_mode",
-  "hydrating-serum": "opacity",
-  "barrier-cream": "shield",
-  "light-gel": "air",
-  "keep-current": "check_circle",
-};
-
 /**
  * 제품 추천 (spec §12) content — rule-based candidate filter, then a plain
- * language reason. Shared between the standalone /products page and the
- * Progress page's 제품 추천 tab, so it renders in place there instead of
- * navigating away from the "Day N of 15" context.
+ * language reason. Shared between the Shop tab and the Progress page's
+ * 제품 추천 tab, so it renders in place there instead of navigating away
+ * from the "Day N of 15" context.
  */
 export function ProductRecommendations() {
   const { state, hydrated } = useStore();
@@ -80,6 +59,15 @@ export function ProductRecommendations() {
               <div className="absolute top-2 left-2 rounded bg-glass-overlay px-2 py-1 font-label-bold text-[10px] text-primary backdrop-blur-md">
                 {c.category}
               </div>
+              {/* Lavender = DESIGN.md's AI-insight color — this pick came
+                  straight out of the rule engine reading today's sub-scores,
+                  not a generic catalog listing. */}
+              <div className="absolute top-2 right-2 flex items-center gap-1 rounded-full bg-tertiary-fixed px-2.5 py-1 text-on-tertiary-fixed shadow-sm">
+                <Icon name="auto_awesome" size={12} filled />
+                <span className="font-label-bold text-[10px]">
+                  {today ? `Day ${today.day} 지표 맞춤` : "맞춤 추천"}
+                </span>
+              </div>
             </div>
 
             <div className="flex flex-1 flex-col justify-between py-3">
@@ -99,16 +87,16 @@ export function ProductRecommendations() {
                 </div>
               </div>
 
-              <div className="mt-auto rounded-lg border border-surface-variant/50 bg-surface p-3">
+              <div className="mt-auto rounded-lg border border-tertiary-fixed-dim/40 bg-tertiary-fixed/20 p-3">
                 <div className="flex items-start gap-2">
                   <Icon
                     name={CATEGORY_ICON[c.id] ?? "check_circle"}
                     size={18}
-                    className="mt-0.5 text-secondary"
+                    className="mt-0.5 text-tertiary-container"
                   />
                   <div>
-                    <span className="block font-label-bold text-label-bold text-secondary">
-                      Why it fits
+                    <span className="block font-label-bold text-label-bold text-tertiary-container">
+                      Why it fits your skin
                     </span>
                     <span className="font-body-md text-sm text-on-surface-variant">{c.why}</span>
                   </div>

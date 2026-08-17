@@ -136,6 +136,8 @@ export interface AppState {
   challengeJoined: boolean;
   nickname: string;
   heroPhoto: HeroPhoto | null;
+  /** IndexedDB key for a user-uploaded profile photo; null uses the stock avatar. */
+  avatarPhotoKey: string | null;
 }
 
 export const DEFAULT_BASELINE_AGE = 28;

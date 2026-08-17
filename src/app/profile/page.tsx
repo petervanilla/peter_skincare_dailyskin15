@@ -3,8 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatedNumber } from "@/components/AnimatedNumber";
+import { Avatar } from "@/components/Avatar";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
 import { LogoMark } from "@/components/Logo";
@@ -12,6 +13,7 @@ import { ScoreChart } from "@/components/ScoreChart";
 import { StoredPhoto } from "@/components/StoredPhoto";
 import { TopAppBar } from "@/components/TopAppBar";
 import { IMG } from "@/lib/assets";
+import { fileToDataUrl } from "@/lib/image";
 import { buildCarePlan } from "@/lib/recommendations";
 import { currentStreak, latestRecord, previousRecord } from "@/lib/scoring";
 import { useStore } from "@/lib/store";
@@ -38,12 +40,14 @@ function weakestSubScore(s: SubScores): keyof SubScores {
 }
 
 export default function ProfilePage() {
-  const { state, hydrated, reset, updateProfile } = useStore();
+  const { state, hydrated, reset, updateProfile, saveAvatarPhoto } = useStore();
   const router = useRouter();
   const [confirming, setConfirming] = useState(false);
   const [editingProfile, setEditingProfile] = useState(false);
   const [nameDraft, setNameDraft] = useState("");
   const [ageDraft, setAgeDraft] = useState("");
+  const [avatarBusy, setAvatarBusy] = useState(false);
+  const avatarFileRef = useRef<HTMLInputElement>(null);
 
   if (!hydrated) return <div className="p-margin-main">불러오는 중…</div>;
 
@@ -59,6 +63,16 @@ export default function ProfilePage() {
     setEditingProfile(true);
   };
 
+  const pickAvatar = async (file: File | undefined) => {
+    if (!file) return;
+    setAvatarBusy(true);
+    try {
+      await saveAvatarPhoto(await fileToDataUrl(file));
+    } finally {
+      setAvatarBusy(false);
+    }
+  };
+
   return (
     <div className="min-h-dvh pb-32">
       <TopAppBar title={<LogoMark height={28} />} />
@@ -72,15 +86,10 @@ export default function ProfilePage() {
           {editingProfile ? (
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-4">
-                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full">
-                  <Image
-                    src={IMG.avatar}
-                    alt="프로필 사진"
-                    fill
-                    sizes="64px"
-                    className="object-cover"
-                  />
-                </div>
+                <AvatarPicker
+                  busy={avatarBusy}
+                  onClick={() => avatarFileRef.current?.click()}
+                />
                 <div className="flex flex-1 flex-col gap-2">
                   <input
                     value={nameDraft}
@@ -119,15 +128,7 @@ export default function ProfilePage() {
             </div>
           ) : (
             <div className="flex items-center gap-4">
-              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full">
-                <Image
-                  src={IMG.avatar}
-                  alt="프로필 사진"
-                  fill
-                  sizes="64px"
-                  className="object-cover"
-                />
-              </div>
+              <AvatarPicker busy={avatarBusy} onClick={() => avatarFileRef.current?.click()} />
               <div className="flex-1">
                 <p className="font-headline-md text-headline-md text-on-tertiary-fixed">
                   {state.nickname}
@@ -160,6 +161,16 @@ export default function ProfilePage() {
               </button>
             </div>
           )}
+          <input
+            ref={avatarFileRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={(e) => {
+              void pickAvatar(e.target.files?.[0]);
+              e.target.value = "";
+            }}
+          />
         </section>
 
         {/* Analysis summary — moved above the survey card so the freshest,
@@ -399,5 +410,24 @@ function Row({ label, value }: { label: string; value: string }) {
       <dt className="font-label-sm text-label-sm text-on-surface-variant">{label}</dt>
       <dd className="text-right font-body-md text-body-md text-on-surface">{value}</dd>
     </div>
+  );
+}
+
+/** Tapping the photo swaps in a picked image everywhere the avatar shows. */
+function AvatarPicker({ busy, onClick }: { busy: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={busy}
+      aria-label="프로필 사진 변경"
+      title="프로필 사진 변경"
+      className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full transition-opacity hover:opacity-90 active:scale-95 disabled:opacity-60"
+    >
+      <Avatar sizePx={64} />
+      <span className="absolute right-0 bottom-0 flex h-5 w-5 items-center justify-center rounded-full bg-pure-white text-on-tertiary-fixed shadow-sm">
+        <Icon name={busy ? "hourglass_top" : "photo_camera"} size={12} />
+      </span>
+    </button>
   );
 }

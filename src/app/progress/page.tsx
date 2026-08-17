@@ -2,14 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useRef, useState, type ReactNode } from "react";
+import { AppHeader } from "@/components/AppHeader";
 import { BeforeAfterCompare } from "@/components/BeforeAfterCompare";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
-import { LogoMark } from "@/components/Logo";
 import { ProductRecommendations } from "@/components/ProductRecommendations";
 import { StoredPhoto } from "@/components/StoredPhoto";
-import { TopAppBar } from "@/components/TopAppBar";
 import { TrendChart } from "@/components/TrendChart";
 import { IMG } from "@/lib/assets";
 import {
@@ -25,8 +25,19 @@ import { CHALLENGE_LENGTH, type SubScores } from "@/lib/types";
 
 /** 15일 Tracking (spec §8) — ported from design/screens/10-progress-day7. */
 export default function ProgressPage() {
+  return (
+    <Suspense fallback={<div className="p-margin-main">불러오는 중…</div>}>
+      <ProgressContent />
+    </Suspense>
+  );
+}
+
+function ProgressContent() {
   const { state, hydrated, nextDay } = useStore();
   const [tab, setTab] = useState<TabId>("journey");
+  const params = useSearchParams();
+  const dayParam = Number.parseInt(params.get("day") ?? "", 10);
+  const highlightDay = Number.isFinite(dayParam) ? dayParam : null;
 
   if (!hydrated) return <div className="p-margin-main">불러오는 중…</div>;
 
@@ -39,7 +50,7 @@ export default function ProgressPage() {
   if (!latest || !first) {
     return (
       <div className="min-h-dvh pb-32">
-        <TopAppBar title={<LogoMark height={28} />} />
+        <AppHeader />
         <div className="flex flex-col items-center justify-center gap-4 px-margin-main pt-20 text-center">
           <Icon name="insights" size={48} className="text-outline" />
           <p className="font-body-md text-body-md text-on-surface-variant">
@@ -59,7 +70,7 @@ export default function ProgressPage() {
 
   return (
     <div className="min-h-dvh pb-32">
-      <TopAppBar title={<LogoMark height={28} />} />
+      <AppHeader />
 
       <main className="px-margin-main pt-2">
         {/* "15일의 여정" header — same lavender fill (tertiary-fixed /
@@ -98,7 +109,11 @@ export default function ProgressPage() {
               {Math.round((records.length / CHALLENGE_LENGTH) * 100)}% Complete
             </span>
           </div>
-          <DayGrid completed={records.map((r) => r.day)} next={nextDay} />
+          <DayGrid
+            completed={records.map((r) => r.day)}
+            next={nextDay}
+            highlight={highlightDay}
+          />
         </section>
 
         {/* Streak + score tiles */}
@@ -311,31 +326,57 @@ function SectionLabel({ children, className = "" }: { children: ReactNode; class
 
 /**
  * All fifteen days as chips: mint with a check for days already recorded, solid
- * green for the day due next, lavender for the ones still ahead.
+ * green for the day due next, lavender for the ones still ahead. A `highlight`
+ * day (arrived via `?day=` from Today's DayStrip) gets a ring on top of
+ * whichever of those colors it already has, and scrolls into view.
  */
-function DayGrid({ completed, next }: { completed: number[]; next: number }) {
+function DayGrid({
+  completed,
+  next,
+  highlight,
+}: {
+  completed: number[];
+  next: number;
+  highlight?: number | null;
+}) {
   const days = Array.from({ length: CHALLENGE_LENGTH }, (_, i) => i + 1);
+  const highlightRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (highlight) highlightRef.current?.scrollIntoView({ block: "nearest" });
+  }, [highlight]);
 
   return (
     <div className="grid grid-cols-8 gap-x-1 gap-y-3">
       {days.map((day) => {
         const done = completed.includes(day);
         const isNext = !done && day === next;
+        const isHighlighted = day === highlight;
 
         return (
-          <div key={day} className="flex flex-col items-center gap-1">
+          <div
+            key={day}
+            ref={isHighlighted ? highlightRef : undefined}
+            className="flex flex-col items-center gap-1"
+          >
             <div
-              className={`flex aspect-square w-full max-w-9 items-center justify-center rounded-full font-label-bold text-label-bold ${
+              className={`flex aspect-square w-full max-w-9 items-center justify-center rounded-full font-label-bold text-label-bold transition-all ${
                 done
                   ? "bg-secondary-container text-primary"
                   : isNext
                     ? "bg-primary text-pure-white shadow-md"
                     : "bg-tertiary-fixed text-on-tertiary-fixed-variant"
-              }`}
+              } ${isHighlighted ? "ring-2 ring-tertiary-container ring-offset-2 ring-offset-pure-white" : ""}`}
             >
               {done ? <Icon name="check" size={16} /> : day}
             </div>
-            <span className="font-label-sm text-[10px] text-on-surface-variant">D{day}</span>
+            <span
+              className={`font-label-sm text-[10px] ${
+                isHighlighted ? "font-bold text-tertiary-container" : "text-on-surface-variant"
+              }`}
+            >
+              D{day}
+            </span>
           </div>
         );
       })}

@@ -3,10 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
-import { LogoMark } from "@/components/Logo";
-import { TopAppBar } from "@/components/TopAppBar";
 import { IMG } from "@/lib/assets";
 import { firstRecord, latestRecord } from "@/lib/scoring";
 import { useStore } from "@/lib/store";
@@ -83,7 +82,7 @@ export default function LeaderboardPage() {
 
   return (
     <div className="min-h-dvh pb-24">
-      <TopAppBar title={<LogoMark height={28} />} />
+      <AppHeader />
 
       <main className="flex flex-col gap-4 px-margin-main pt-2">
         {/* Lavender fill (tertiary-fixed / on-tertiary-fixed) — DESIGN.md's
