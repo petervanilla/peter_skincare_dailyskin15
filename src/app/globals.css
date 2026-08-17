@@ -257,3 +257,55 @@ body {
   width: max-content;
   animation: marquee-left 22.9s linear infinite;
 }
+
+/*
+ * Slow lavender "breathing" glow for AI-insight surfaces — a soft outer
+ * shadow that brightens and dims over several seconds, not a hard blink.
+ */
+@keyframes lavender-breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 20px 2px rgba(203, 190, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 44px 12px rgba(203, 190, 255, 0.65);
+  }
+}
+
+.lavender-glow {
+  animation: lavender-breathe 4.5s ease-in-out infinite;
+}
+
+/*
+ * Attention-drawing ring pulse for the very first capture CTA — a soft ring
+ * expands and fades outward on a loop, on top of .shiny-button's sweep.
+ */
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 67, 57, 0.35);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(0, 67, 57, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 67, 57, 0);
+  }
+}
+
+.pulse-cta {
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+/* Collapses every transition/animation to effectively-instant for users who
+   ask for reduced motion, so individual components don't need their own JS
+   matchMedia branch just to respect it. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

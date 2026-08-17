@@ -23,6 +23,7 @@ const EMPTY_STATE: AppState = {
   challengeJoined: false,
   nickname: "Amy",
   heroPhoto: null,
+  avatarPhotoKey: null,
 };
 
 interface StoreValue {
@@ -41,6 +42,9 @@ interface StoreValue {
   /** Persists the hand-adjusted `object-position`, in percent. */
   moveHeroPhoto: (x: number, y: number) => void;
   removeHeroPhoto: () => void;
+  /** Stores a picked profile photo, replacing the stock avatar everywhere it's shown. */
+  saveAvatarPhoto: (dataUrl: string) => Promise<void>;
+  removeAvatarPhoto: () => void;
   reset: () => void;
   /** The day number a new capture should be filed under (1–15). */
   nextDay: number;
@@ -180,6 +184,19 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setState((s) => ({ ...s, heroPhoto: null }));
   }, [setState]);
 
+  const saveAvatarPhoto = useCallback(
+    async (dataUrl: string) => {
+      const key = `avatar-${Date.now()}`;
+      await putPhoto(key, dataUrl);
+      setState((s) => ({ ...s, avatarPhotoKey: key }));
+    },
+    [setState],
+  );
+
+  const removeAvatarPhoto = useCallback(() => {
+    setState((s) => ({ ...s, avatarPhotoKey: null }));
+  }, [setState]);
+
   const reset = useCallback(() => {
     void clearPhotos();
     setOverride(EMPTY_STATE);
@@ -214,6 +231,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       saveHeroPhoto,
       moveHeroPhoto,
       removeHeroPhoto,
+      saveAvatarPhoto,
+      removeAvatarPhoto,
       reset,
       nextDay,
     }),
@@ -229,6 +248,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       saveHeroPhoto,
       moveHeroPhoto,
       removeHeroPhoto,
+      saveAvatarPhoto,
+      removeAvatarPhoto,
       reset,
       nextDay,
     ],

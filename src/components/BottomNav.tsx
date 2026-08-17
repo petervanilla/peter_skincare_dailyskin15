@@ -10,8 +10,10 @@ const TABS = [
   { href: "/routine", icon: "favorite", label: "Routine" },
   // Lands on the school/class board first; the personal 7-Day Glow
   // Challenge (rivals + the shareable card) is one tap further in.
-  { href: "/leaderboard", icon: "military_tech", label: "랭킹" },
-  { href: "/profile", icon: "person", label: "Profile" },
+  { href: "/leaderboard", icon: "military_tech", label: "Rank" },
+  // Profile isn't a primary tab — it's one tap away via the avatar icon in
+  // Today's header instead, freeing this slot for the product catalog.
+  { href: "/shop", icon: "storefront", label: "Shop" },
 ] as const;
 
 export function BottomNav() {

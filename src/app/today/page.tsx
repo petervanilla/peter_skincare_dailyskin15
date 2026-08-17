@@ -1,14 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { AnimatedNumber } from "@/components/AnimatedNumber";
+import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { HeroCover } from "@/components/HeroCover";
 import { Icon } from "@/components/Icon";
-import { LogoMark } from "@/components/Logo";
-import { IMG } from "@/lib/assets";
 import { buildCarePlan } from "@/lib/recommendations";
 import { currentStreak, latestRecord, previousRecord, scoreDelta } from "@/lib/scoring";
 import { useStore } from "@/lib/store";
@@ -32,19 +31,12 @@ export default function TodayPage() {
   const plan = buildCarePlan(state.records, today);
   const currentDay = today?.day ?? nextDay;
   const capturedToday = today?.date === new Date().toISOString().slice(0, 10);
+  /** No record at all yet — the very first visit after onboarding. */
+  const isFirstEver = !today;
 
   return (
     <div className="min-h-dvh pb-32">
-      <header className="sticky top-0 z-40 flex w-full items-center justify-between border-b border-outline-variant/60 bg-pure-white px-margin-main py-3.5">
-        <LogoMark height={36} />
-        <Link
-          href="/profile"
-          aria-label="프로필"
-          className="relative h-10 w-10 overflow-hidden rounded-full transition-transform hover:opacity-80 active:scale-95"
-        >
-          <Image src={IMG.avatar} alt="프로필" fill sizes="40px" className="object-cover" />
-        </Link>
-      </header>
+      <AppHeader />
 
       <NewsTicker />
 
@@ -82,10 +74,10 @@ export default function TodayPage() {
               tone while the white type on clear glass stays readable. */}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-graphite/65 via-graphite/25 to-transparent" />
 
-          {!today ? (
+          {isFirstEver ? (
             <div className="absolute top-6 left-6 rounded-full bg-glass-overlay px-3 py-1.5 backdrop-blur-md">
               <span className="font-label-sm text-label-sm text-graphite">
-                첫 기록을 남겨보세요
+                🎉 Day 1 · 새로운 도전을 응원해요!
               </span>
             </div>
           ) : null}
@@ -99,7 +91,7 @@ export default function TodayPage() {
                 </div>
                 <div className="flex items-baseline gap-2">
                   <span className="font-display-hero-mobile text-display-hero-mobile text-pure-white">
-                    {today ? <AnimatedScore value={today.dailySkinScore} /> : "--"}
+                    {today ? <AnimatedNumber value={today.dailySkinScore} /> : "--"}
                   </span>
                   {delta && delta.value !== 0 ? (
                     <span className="rounded-full bg-pure-white/20 px-2 py-0.5 font-label-sm text-label-sm text-pure-white">
@@ -124,10 +116,12 @@ export default function TodayPage() {
         <section className="flex flex-col gap-4">
           <Link
             href="/scan"
-            className="shiny-button flex w-full items-center justify-center gap-2 rounded-full bg-tertiary-fixed py-4 font-label-bold text-label-bold text-on-tertiary-fixed shadow-md transition-all hover:opacity-90 active:scale-95"
+            className={`shiny-button lavender-glow flex w-full items-center justify-center gap-2 rounded-full bg-tertiary-fixed py-4 font-label-bold text-label-bold text-on-tertiary-fixed shadow-md transition-all hover:opacity-90 active:scale-95 ${
+              isFirstEver ? "pulse-cta" : ""
+            }`}
           >
             <Icon name="center_focus_strong" />
-            {capturedToday ? "촬영하기" : "오늘의 피부 기록하기"}
+            {capturedToday ? "촬영하기" : isFirstEver ? "첫 기록 남기고 시작하기" : "오늘의 피부 기록하기"}
           </Link>
 
           <Link
@@ -149,7 +143,7 @@ export default function TodayPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <QuickLink href="/compare" icon="compare" label="Before / After" />
-            <QuickLink href="/products" icon="shopping_bag" label="제품 추천" />
+            <QuickLink href="/shop" icon="shopping_bag" label="제품 추천" />
             <QuickLink href="/face-yoga" icon="spa" label="페이스 요가" />
             <QuickLink href="/challenge" icon="groups" label="친구 챌린지" />
           </div>
@@ -202,31 +196,6 @@ function NewsTicker() {
 }
 
 /** Counts up to the score, opening six points below it (74 starts at 68). */
-function AnimatedScore({ value }: { value: number }) {
-  const from = Math.max(0, value - 6);
-  const [display, setDisplay] = useState(from);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setDisplay(value);
-      return;
-    }
-
-    const duration = 900;
-    const start = performance.now();
-    let frame = requestAnimationFrame(function tick(now) {
-      const t = Math.min(1, (now - start) / duration);
-      const eased = 1 - (1 - t) ** 3;
-      setDisplay(Math.round(from + (value - from) * eased));
-      if (t < 1) frame = requestAnimationFrame(tick);
-    });
-
-    return () => cancelAnimationFrame(frame);
-  }, [value, from]);
-
-  return <>{display}</>;
-}
-
 function QuickLink({ href, icon, label }: { href: string; icon: string; label: string }) {
   return (
     <Link
@@ -240,10 +209,10 @@ function QuickLink({ href, icon, label }: { href: string; icon: string; label: s
 }
 
 /**
- * Dragging a finger (or mouse) across the strip raises a "Day N" label above
- * whichever dot is currently under the pointer — a scrub gesture, not hover,
- * since hover doesn't exist on touch. A tap (no meaningful drag distance)
- * jumps straight to Progress instead.
+ * A swipeable carousel across all 15 days: whichever chip is scrolled to the
+ * center enlarges, matching the old "today" treatment — but now any day can
+ * sit there. Tapping a chip (centered or not) jumps straight to that day's
+ * Progress view.
  */
 function DayStrip({
   total,
@@ -255,94 +224,95 @@ function DayStrip({
   completed: number[];
 }) {
   const router = useRouter();
-  const [revealedDay, setRevealedDay] = useState<number | null>(null);
-  const dragStartX = useRef(0);
-  const dragMoved = useRef(false);
-  // Explicit flag rather than checking e.buttons/pointerType: some pointer
-  // implementations fire "move" on plain hover, which must never reveal —
-  // only an active press-drag started in onPointerDown should.
-  const isDragging = useRef(false);
-
-  // A window around today plus the two end markers, so all 15 days stay
-  // representable inside a 375px frame without wrapping or clipping.
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef(new Map<number, HTMLButtonElement>());
+  const [centerDay, setCenterDay] = useState(current);
   const days = Array.from({ length: total }, (_, i) => i + 1);
-  const windowed = days.filter((d) => d === 1 || d === total || Math.abs(d - current) <= 2);
 
-  const revealAt = (clientX: number, clientY: number) => {
-    const el = document.elementFromPoint(clientX, clientY)?.closest<HTMLElement>("[data-day]");
-    setRevealedDay(el ? Number(el.dataset.day) : null);
-  };
+  // Centers on the current day once, on mount — not tied to `current` so a
+  // later re-render (e.g. a fresh capture) doesn't yank the strip back while
+  // the user is browsing elsewhere in it. The centering and the observer
+  // setup are chained inside one rAF, with proper cleanup: React 18 Strict
+  // Mode's dev-only double-invoke of effects otherwise races an
+  // unguarded scrollLeft assignment against the observer's async callback,
+  // and the strip can settle one day off from where it should.
+  useEffect(() => {
+    const root = scrollerRef.current;
+    if (!root) return;
 
-  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    e.currentTarget.setPointerCapture(e.pointerId);
-    isDragging.current = true;
-    dragStartX.current = e.clientX;
-    dragMoved.current = false;
-    revealAt(e.clientX, e.clientY);
-  };
+    let observer: IntersectionObserver | undefined;
+    const frame = requestAnimationFrame(() => {
+      // Delegates the centering math to the browser rather than replicating
+      // it by hand — scroll-behavior is "auto" here (no .scroll-smooth on
+      // this container), so "instant" is a real synchronous jump.
+      itemRefs.current
+        .get(current)
+        ?.scrollIntoView({ inline: "center", block: "nearest", behavior: "instant" });
 
-  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!isDragging.current) return;
-    if (Math.abs(e.clientX - dragStartX.current) > 4) dragMoved.current = true;
-    revealAt(e.clientX, e.clientY);
-  };
+      observer = new IntersectionObserver(
+        (entries) => {
+          let best: { day: number; dist: number } | null = null;
+          const rootMid = root.getBoundingClientRect().left + root.clientWidth / 2;
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            const day = Number((entry.target as HTMLElement).dataset.day);
+            const targetMid = entry.boundingClientRect.left + entry.boundingClientRect.width / 2;
+            const dist = Math.abs(targetMid - rootMid);
+            if (!best || dist < best.dist) best = { day, dist };
+          }
+          if (best) setCenterDay(best.day);
+        },
+        { root, threshold: [0, 0.5, 1] },
+      );
+      itemRefs.current.forEach((el) => observer?.observe(el));
+    });
 
-  const endDrag = () => {
-    isDragging.current = false;
-    setRevealedDay(null);
-  };
+    return () => {
+      cancelAnimationFrame(frame);
+      observer?.disconnect();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [total]);
 
   return (
     <div
-      className="mb-4 flex w-full touch-none items-center justify-center gap-1"
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={endDrag}
-      onPointerCancel={endDrag}
+      ref={scrollerRef}
+      // Fixed height (the enlarged chip's own size) so the centered chip
+      // growing/shrinking never reflows the row — nothing below it jitters.
+      // No side padding: the scrollable range is exactly Day 1's chip to Day
+      // 15's, so at full swing they sit flush against each edge.
+      className="no-scrollbar mb-4 flex h-9 w-full items-center gap-3 overflow-x-auto"
+      // overflow-anchor: none — otherwise the browser "helpfully" shifts
+      // scrollLeft to compensate whenever the centered chip resizes
+      // (28px <-> 36px), drifting the strip away from the day it settled on.
+      style={{ scrollSnapType: "x mandatory", overflowAnchor: "none" }}
     >
-      {windowed.map((day, i) => {
-        const isCurrent = day === current;
+      {days.map((day) => {
+        const isCenter = day === centerDay;
         const isDone = completed.includes(day);
-        const prevDay = windowed[i - 1];
-        const gap = prevDay !== undefined && day - prevDay > 1;
 
         return (
-          <div key={day} className="flex shrink-0 items-center gap-1">
-            {gap ? <div className="h-[2px] w-3 rounded-full bg-surface-container-highest" /> : null}
-            <div
-              data-day={day}
-              role="button"
-              tabIndex={0}
-              aria-label={`Day ${day}${isDone ? " (완료)" : ""}${isCurrent ? " · 오늘" : ""}`}
-              onClick={() => {
-                if (!dragMoved.current) router.push("/progress");
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") router.push("/progress");
-              }}
-              className="relative flex shrink-0 cursor-pointer items-center justify-center transition-opacity hover:opacity-70 active:opacity-50"
-            >
-              <div
-                className={
-                  isCurrent
-                    ? "flex h-9 w-9 items-center justify-center rounded-full border-2 border-primary bg-primary-container font-label-bold text-label-bold text-on-primary-container shadow-md ring-4 ring-primary-container/20"
-                    : isDone
-                      ? "flex h-7 w-7 items-center justify-center rounded-full bg-primary text-pure-white"
-                      : "flex h-7 w-7 items-center justify-center rounded-full bg-surface-container-highest font-label-sm text-label-sm text-on-surface-variant"
-                }
-              >
-                {isDone && !isCurrent ? <Icon name="check" size={14} /> : day}
-              </div>
-              {/* Rises up and fades in while the pointer is dragged over this dot. */}
-              <span
-                className={`pointer-events-none absolute bottom-full z-10 rounded-full bg-graphite px-2 py-0.5 font-label-sm text-[10px] whitespace-nowrap text-pure-white shadow-md transition-all duration-150 ${
-                  revealedDay === day ? "mb-2.5 opacity-100" : "mb-0.5 opacity-0"
-                }`}
-              >
-                Day {day}
-              </span>
-            </div>
-          </div>
+          <button
+            key={day}
+            ref={(el) => {
+              if (el) itemRefs.current.set(day, el);
+              else itemRefs.current.delete(day);
+            }}
+            type="button"
+            data-day={day}
+            aria-label={`Day ${day}${isDone ? " (완료)" : ""}${day === current ? " · 오늘" : ""}`}
+            onClick={() => router.push(`/progress?day=${day}`)}
+            style={{ scrollSnapAlign: "center" }}
+            className={`flex shrink-0 items-center justify-center rounded-full font-label-bold text-label-bold transition-all duration-200 ${
+              isCenter
+                ? "h-9 w-9 border-2 border-primary bg-primary-container text-on-primary-container shadow-md ring-4 ring-primary-container/20"
+                : isDone
+                  ? "h-7 w-7 bg-primary text-pure-white"
+                  : "h-7 w-7 bg-surface-container-highest text-label-sm text-on-surface-variant"
+            }`}
+          >
+            {day}
+          </button>
         );
       })}
     </div>

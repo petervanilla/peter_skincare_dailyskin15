@@ -2,13 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useRef, useState, type ReactNode } from "react";
+import { AppHeader } from "@/components/AppHeader";
 import { BeforeAfterCompare } from "@/components/BeforeAfterCompare";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
-import { ScoreChart } from "@/components/ScoreChart";
+import { ProductRecommendations } from "@/components/ProductRecommendations";
 import { StoredPhoto } from "@/components/StoredPhoto";
-import { TopAppBar } from "@/components/TopAppBar";
+import { TrendChart } from "@/components/TrendChart";
 import { IMG } from "@/lib/assets";
 import {
   countDelta,
@@ -23,8 +25,19 @@ import { CHALLENGE_LENGTH, type SubScores } from "@/lib/types";
 
 /** 15일 Tracking (spec §8) — ported from design/screens/10-progress-day7. */
 export default function ProgressPage() {
+  return (
+    <Suspense fallback={<div className="p-margin-main">불러오는 중…</div>}>
+      <ProgressContent />
+    </Suspense>
+  );
+}
+
+function ProgressContent() {
   const { state, hydrated, nextDay } = useStore();
   const [tab, setTab] = useState<TabId>("journey");
+  const params = useSearchParams();
+  const dayParam = Number.parseInt(params.get("day") ?? "", 10);
+  const highlightDay = Number.isFinite(dayParam) ? dayParam : null;
 
   if (!hydrated) return <div className="p-margin-main">불러오는 중…</div>;
 
@@ -37,7 +50,7 @@ export default function ProgressPage() {
   if (!latest || !first) {
     return (
       <div className="min-h-dvh pb-32">
-        <TopAppBar title="" avatar />
+        <AppHeader />
         <div className="flex flex-col items-center justify-center gap-4 px-margin-main pt-20 text-center">
           <Icon name="insights" size={48} className="text-outline" />
           <p className="font-body-md text-body-md text-on-surface-variant">
@@ -57,18 +70,23 @@ export default function ProgressPage() {
 
   return (
     <div className="min-h-dvh pb-32">
-      <TopAppBar title="" avatar />
+      <AppHeader />
 
       <main className="px-margin-main pt-2">
-        {/* "15일의 여정" header from the approved comp */}
-        <section className="mb-6">
-          <h2 className="font-headline-lg-mobile text-headline-lg-mobile text-primary">
-            Day {latest.day} of {CHALLENGE_LENGTH}
+        {/* "15일의 여정" header — same lavender fill (tertiary-fixed /
+            on-tertiary-fixed) as the Leaderboard's "내 기여도" card, for a
+            consistent boxed-hero treatment across pages. */}
+        <section className="mb-6 rounded-[24px] bg-tertiary-fixed p-6 text-on-tertiary-fixed">
+          {/* Sourced from records.length — the same count THE JOURNEY's
+              checkmarks and the streak tile below use — so this number can
+              never drift from either of them. */}
+          <h2 className="font-headline-lg-mobile text-headline-lg-mobile">
+            Day {records.length} of {CHALLENGE_LENGTH}
           </h2>
-          <p className="mt-1 font-body-md text-body-md text-on-surface-variant">
-            {latest.day >= CHALLENGE_LENGTH
+          <p className="mt-1 font-body-md text-body-md text-on-tertiary-fixed/70">
+            {records.length >= CHALLENGE_LENGTH
               ? "15일을 완주했어요!"
-              : latest.day >= CHALLENGE_LENGTH / 2
+              : records.length >= CHALLENGE_LENGTH / 2
                 ? "와~ 이제 반환점을 돌았어요!"
                 : "기록이 쌓일수록 변화가 또렷해져요."}
           </p>
@@ -79,6 +97,8 @@ export default function ProgressPage() {
         <div className="rounded-[24px] bg-pure-white/45 p-4 backdrop-blur-xl">
           {tab === "compare" ? (
             <BeforeAfterCompare records={records} />
+          ) : tab === "products" ? (
+            <ProductRecommendations />
           ) : (
             <div className="flex flex-col gap-4">
         {/* THE JOURNEY — day chips, per the approved comp */}
@@ -89,7 +109,11 @@ export default function ProgressPage() {
               {Math.round((records.length / CHALLENGE_LENGTH) * 100)}% Complete
             </span>
           </div>
-          <DayGrid completed={records.map((r) => r.day)} next={nextDay} />
+          <DayGrid
+            completed={records.map((r) => r.day)}
+            next={nextDay}
+            highlight={highlightDay}
+          />
         </section>
 
         {/* Streak + score tiles */}
@@ -194,10 +218,14 @@ export default function ProgressPage() {
 
         <section className="rounded-[24px] bg-pure-white p-5 shadow-[0_4px_20px_rgba(46,104,93,0.05)]">
           <h3 className="mb-4 font-label-bold text-label-bold text-on-surface">
-            Daily Skin Score 추이
+            점수 & 지표별 15일 변화 추이
           </h3>
-          <ScoreChart
-            points={records.map((r) => ({ day: r.day, score: r.dailySkinScore }))}
+          <TrendChart
+            records={records.map((r) => ({
+              day: r.day,
+              dailySkinScore: r.dailySkinScore,
+              subScores: r.subScores,
+            }))}
           />
         </section>
 
@@ -298,31 +326,57 @@ function SectionLabel({ children, className = "" }: { children: ReactNode; class
 
 /**
  * All fifteen days as chips: mint with a check for days already recorded, solid
- * green for the day due next, lavender for the ones still ahead.
+ * green for the day due next, lavender for the ones still ahead. A `highlight`
+ * day (arrived via `?day=` from Today's DayStrip) gets a ring on top of
+ * whichever of those colors it already has, and scrolls into view.
  */
-function DayGrid({ completed, next }: { completed: number[]; next: number }) {
+function DayGrid({
+  completed,
+  next,
+  highlight,
+}: {
+  completed: number[];
+  next: number;
+  highlight?: number | null;
+}) {
   const days = Array.from({ length: CHALLENGE_LENGTH }, (_, i) => i + 1);
+  const highlightRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (highlight) highlightRef.current?.scrollIntoView({ block: "nearest" });
+  }, [highlight]);
 
   return (
     <div className="grid grid-cols-8 gap-x-1 gap-y-3">
       {days.map((day) => {
         const done = completed.includes(day);
         const isNext = !done && day === next;
+        const isHighlighted = day === highlight;
 
         return (
-          <div key={day} className="flex flex-col items-center gap-1">
+          <div
+            key={day}
+            ref={isHighlighted ? highlightRef : undefined}
+            className="flex flex-col items-center gap-1"
+          >
             <div
-              className={`flex aspect-square w-full max-w-9 items-center justify-center rounded-full font-label-bold text-label-bold ${
+              className={`flex aspect-square w-full max-w-9 items-center justify-center rounded-full font-label-bold text-label-bold transition-all ${
                 done
                   ? "bg-secondary-container text-primary"
                   : isNext
                     ? "bg-primary text-pure-white shadow-md"
                     : "bg-tertiary-fixed text-on-tertiary-fixed-variant"
-              }`}
+              } ${isHighlighted ? "ring-2 ring-tertiary-container ring-offset-2 ring-offset-pure-white" : ""}`}
             >
               {done ? <Icon name="check" size={16} /> : day}
             </div>
-            <span className="font-label-sm text-[10px] text-on-surface-variant">D{day}</span>
+            <span
+              className={`font-label-sm text-[10px] ${
+                isHighlighted ? "font-bold text-tertiary-container" : "text-on-surface-variant"
+              }`}
+            >
+              D{day}
+            </span>
           </div>
         );
       })}
@@ -330,19 +384,19 @@ function DayGrid({ completed, next }: { completed: number[]; next: number }) {
   );
 }
 
-type TabId = "journey" | "compare";
+type TabId = "journey" | "compare" | "products";
 
 const TABS: Array<{ id: TabId; label: string; icon: string }> = [
   { id: "journey", label: "변화 추이", icon: "insights" },
   { id: "compare", label: "Before / After", icon: "compare" },
+  { id: "products", label: "제품 추천", icon: "shopping_bag" },
 ];
 
 /**
  * Icon-only control row. Each icon carries its own outline rather than
- * sharing one pill background, so the three read as separate controls, not
- * segments of one toggle — which matters here because they're not all the
- * same kind of action: the first two swap the panel below in place, the
- * third (제품 추천) navigates away to its own page.
+ * sharing one pill background, so the three read as separate controls — but
+ * all three now do the same kind of thing: swap the panel below in place,
+ * keeping the "Day N of 15" header above them on screen.
  */
 function TabStrip({ active, onChange }: { active: TabId; onChange: (id: TabId) => void }) {
   return (
@@ -368,15 +422,6 @@ function TabStrip({ active, onChange }: { active: TabId; onChange: (id: TabId) =
           </button>
         );
       })}
-
-      <Link
-        href="/products"
-        aria-label="제품 추천"
-        title="제품 추천"
-        className="flex h-9 w-9 items-center justify-center rounded-full border border-outline-variant text-on-surface-variant transition-colors hover:bg-surface-container-highest active:bg-surface-container-highest"
-      >
-        <Icon name="shopping_bag" size={18} />
-      </Link>
     </div>
   );
 }
