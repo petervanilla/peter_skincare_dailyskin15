@@ -18,6 +18,18 @@ npm test
 
 `npm test` 는 픽셀 분석 파이프라인·점수 엔진·Skin Coach 인사이트 엔진을 합성 데이터로 검증합니다 (카메라·브라우저 불필요).
 
+### 배포 (GitHub Pages 데모)
+
+앱은 서버 없이 동작하므로 정적으로 내보내 GitHub Pages에 올립니다. 소스는 비공개 팀 저장소에 두고, 빌드 결과만 공개 저장소 `dada-95/dailyskin15-demo` 에 올라갑니다.
+
+```bash
+scripts/deploy-demo.sh
+```
+
+- 데모 주소: https://dada-95.github.io/dailyskin15-demo/
+- 데이터 채운 상태: https://dada-95.github.io/dailyskin15-demo/?demo=12
+- 다른 계정으로 배포하려면 `DEMO_REPO=계정/저장소 DEMO_BASE=/저장소 scripts/deploy-demo.sh`
+
 ### 데모 (Live Demo)
 
 빈 상태 대신 15일 기록이 채워진 앱을 바로 보려면:

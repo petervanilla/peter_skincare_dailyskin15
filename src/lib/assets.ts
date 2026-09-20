@@ -6,7 +6,15 @@
  * Screens use these directly so the app matches the approved comps rather
  * than re-inventing the art direction.
  */
-export const IMG = {
+/** Sub-path the site is served from (GitHub Pages project site), else "". */
+export const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+/** Prefixes a `/public` asset path with the base path. next/image does not do this for string srcs. */
+export function withBase(path: string) {
+  return path.startsWith("/") ? `${BASE_PATH}${path}` : path;
+}
+
+const RAW_IMG = {
   /** 로딩 화면 — 15 / day / 당신의 피부변화 */
   splash: "/design/ref-loading-screen-concept.png",
   /** Soft Lab lifestyle interior, used behind onboarding. */
@@ -80,3 +88,13 @@ export const IMG = {
     "/design/12-leaderboard-ranking-7.jpg",
   ],
 } as const;
+
+type Prefixed<T> = { [K in keyof T]: T[K] extends readonly string[] ? readonly string[] : string };
+
+function prefixAll<T extends Record<string, string | readonly string[]>>(obj: T): Prefixed<T> {
+  const out: Record<string, string | readonly string[]> = {};
+  for (const [k, v] of Object.entries(obj)) out[k] = Array.isArray(v) ? v.map(withBase) : withBase(v as string);
+  return out as Prefixed<T>;
+}
+
+export const IMG = prefixAll(RAW_IMG);

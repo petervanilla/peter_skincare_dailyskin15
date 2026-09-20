@@ -1,5 +1,6 @@
 import catalog from "../data/products.json" with { type: "json" };
 import kbeauty from "../data/kbeauty.json" with { type: "json" };
+import { withBase } from "./assets.ts";
 
 /**
  * Product catalog.
@@ -146,7 +147,7 @@ function fromObf(row: ObfRow): Product | null {
     spf: row.spf,
     actives: row.actives as ActiveKey[],
     ingredients: row.ingredients,
-    image: row.image,
+    image: withBase(row.image),
     highlight: null,
     source: row.source,
     kbeauty: /cosrx|laneige|sulwhasoo|klairs|benton|missha|innisfree/i.test(row.brand),

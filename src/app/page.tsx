@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
+import { withBase } from "@/lib/assets";
 import { useStore } from "@/lib/store";
 
 /**
@@ -58,7 +59,7 @@ function Splash() {
   return (
     <div className="relative flex h-dvh w-full items-center justify-center overflow-hidden bg-background">
       <Image
-        src="/design/00_logo.png"
+        src={withBase("/design/00_logo.png")}
         alt="DailySkin"
         width={805}
         height={274}
