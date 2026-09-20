@@ -42,13 +42,16 @@ export function ProductImage({
 }) {
   if (product.image) {
     return (
-      <div className={`shimmer relative overflow-hidden bg-surface-container-low ${className}`}>
+      // White well: the photos are background-knocked PNGs (scripts/
+      // cutout-products.py), so the pack floats on the same white the card
+      // uses — no photo rectangle inside a grey tile.
+      <div className={`relative overflow-hidden bg-pure-white ${className}`}>
         <Image
           src={product.image}
           alt={`${product.brand} ${product.name}`}
           fill
           sizes={sizes}
-          className="object-contain p-3"
+          className="object-contain p-4 drop-shadow-[0_6px_14px_rgba(46,104,93,0.12)]"
         />
       </div>
     );

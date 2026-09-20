@@ -7,7 +7,8 @@ come from **Open Beauty Facts** (https://world.openbeautyfacts.org).
 - Images: Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA)
 - Each record links to its source page (`source` field) for attribution.
 
-Refresh with `node scripts/fetch-products.mjs`. Brand and product names are
+Refresh with `node scripts/fetch-products.mjs`, then `python3 scripts/cutout-products.py`
+to knock out the white studio background (PNG with alpha). Brand and product names are
 the property of their respective owners; the app links to a neutral search
 and does not sell or broker any product.
 

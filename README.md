@@ -27,7 +27,7 @@ npm test
 
 프로필 화면 하단 "데모 · 개발자" 버튼으로도 불러올 수 있습니다. 데모 수치는 실제 점수 엔진과 같은 경로로 생성됩니다 (`src/lib/demo.ts`).
 
-제품 카탈로그는 Open Beauty Facts 스냅샷입니다. 갱신: `node scripts/fetch-products.mjs` (라이선스: `public/products/ATTRIBUTION.md`).
+제품 카탈로그는 Open Beauty Facts 스냅샷입니다. 갱신: `node scripts/fetch-products.mjs && python3 scripts/cutout-products.py` (배경 누끼 · 라이선스: `public/products/ATTRIBUTION.md`).
 
 디벨롭 방향과 Mobbin 레퍼런스는 `docs/DEVELOP_PLAN.md` 에 정리돼 있습니다.
 

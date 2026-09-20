@@ -119,6 +119,9 @@ async function download(url, file) {
   return true;
 }
 
+/** Codes whose photos are not clean product shots (box sides, grey scenes). */
+const BAD_CODES = new Set(["3282770390179","3337872413018","3337872413575","3337875398961","3337875598996","3337875698696","3337875757669"]);
+
 const seen = new Set();
 const products = [];
 for (const brand of BRANDS) {
@@ -128,7 +131,7 @@ for (const brand of BRANDS) {
     const ingredients = cleanName(p.ingredients_text_en || p.ingredients_text || "");
     if (!name || name.length < 4 || !p.image_front_url || ingredients.length < 40) continue;
     if (!/[a-zA-Z]{3}/.test(name) || /^\d+$/.test(name)) continue; // barcode-as-name
-    if (EXCLUDE.test(name)) continue;
+    if (EXCLUDE.test(name) || BAD_CODES.has(p.code)) continue;
     const key = `${brand}:${name.toLowerCase()}`;
     if (seen.has(key)) continue;
     const category = classify(name, p.categories_tags);
