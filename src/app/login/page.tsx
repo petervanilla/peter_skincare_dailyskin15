@@ -62,14 +62,16 @@ export default function LoginPage() {
           fill
           priority
           sizes="430px"
-          className="object-cover object-[50%_35%]"
+          className="object-cover object-[50%_35%] opacity-80"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-graphite/25 via-transparent to-background" />
-        <div className="absolute top-12 left-margin-main rounded-full bg-pure-white/85 px-3 py-1.5 backdrop-blur-md">
-          <LogoMark height={24} />
+        {/* Softer than the photo alone: a light wash on top so the wordmark
+            sits on the scene without a pill, then the fade into the sheet. */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/45 via-background/10 to-background" />
+        <div className="absolute top-12 left-margin-main drop-shadow-[0_2px_10px_rgba(255,255,255,0.9)]">
+          <LogoMark height={30} />
         </div>
         <div className="absolute right-margin-main bottom-6 left-margin-main">
-          <h1 className="font-display-hero-mobile text-display-hero-mobile whitespace-pre-line text-primary">
+          <h1 className="font-sans text-[32px] leading-[40px] font-bold tracking-[-0.02em] break-keep whitespace-pre-line text-primary">
             {"매일 30초.\n15일의 변화."}
           </h1>
           <p className="mt-2 font-body-md text-body-md break-keep text-on-surface-variant">
