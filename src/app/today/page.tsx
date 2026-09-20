@@ -10,7 +10,9 @@ import { CheckInSheet } from "@/components/CheckInSheet";
 import { CoachCard } from "@/components/CoachCard";
 import { HeroCover } from "@/components/HeroCover";
 import { Icon } from "@/components/Icon";
+import { haptic } from "@/lib/haptics";
 import { buildInsights } from "@/lib/insights";
+import { isReminderDue, maybeNotifyOnce } from "@/lib/reminder";
 import { buildCarePlan } from "@/lib/recommendations";
 import { currentStreak, latestRecord, previousRecord, scoreDelta } from "@/lib/scoring";
 import { useStore } from "@/lib/store";
@@ -22,8 +24,16 @@ export default function TodayPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (hydrated && !state.survey) router.replace("/");
-  }, [hydrated, state.survey, router]);
+    if (!hydrated) return;
+    if (!state.user) router.replace("/login");
+    else if (!state.survey) router.replace("/");
+  }, [hydrated, state.user, state.survey, router]);
+
+  const reminderDue = hydrated && isReminderDue(state.settings, state.records);
+
+  useEffect(() => {
+    if (reminderDue) maybeNotifyOnce("DailySkin 15", "오늘 촬영 시간이에요. 같은 자리에서 30초!");
+  }, [reminderDue]);
 
   if (!hydrated) return <div className="p-margin-main">불러오는 중…</div>;
 
@@ -44,6 +54,10 @@ export default function TodayPage() {
       <AppHeader />
 
       <NewsTicker />
+
+      {reminderDue && !capturedToday ? (
+        <ReminderBanner time={state.settings.reminderTime} />
+      ) : null}
 
       <main className="px-margin-main">
         {/* Day tracker */}
@@ -139,6 +153,7 @@ export default function TodayPage() {
           ) : (
             <Link
               href="/scan"
+              onClick={() => haptic("tap")}
               className={`shiny-button lavender-glow flex w-full items-center justify-center gap-2 rounded-full bg-tertiary-fixed py-4 font-label-bold text-label-bold text-on-tertiary-fixed shadow-md transition-all hover:opacity-90 active:scale-95 ${
                 isFirstEver ? "pulse-cta" : ""
               }`}
@@ -219,6 +234,31 @@ export default function TodayPage() {
       </main>
 
       <BottomNav />
+    </div>
+  );
+}
+
+/**
+ * Same-time reminder, shown only while it is due (settings on, time passed,
+ * nothing captured today). The banner is the web stand-in for a push.
+ */
+function ReminderBanner({ time }: { time: string }) {
+  return (
+    <div className="sheet-up mx-margin-main mt-4 flex items-center gap-3 rounded-2xl bg-primary p-4 text-pure-white shadow-[0_8px_24px_rgba(0,67,57,0.25)]">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-pure-white/15">
+        <Icon name="notifications_active" filled size={20} />
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="font-label-bold text-label-bold">오늘 촬영 시간이에요 · {time}</p>
+        <p className="font-label-sm text-label-sm text-pure-white/75">같은 자리, 같은 조명으로 30초</p>
+      </div>
+      <Link
+        href="/scan"
+        onClick={() => haptic("tap")}
+        className="shrink-0 rounded-full bg-pure-white px-4 py-2 font-label-bold text-label-bold text-primary"
+      >
+        지금 찍기
+      </Link>
     </div>
   );
 }

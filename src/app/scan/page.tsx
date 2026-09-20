@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/Icon";
+import { haptic } from "@/lib/haptics";
 import { IMG } from "@/lib/assets";
 import {
   analyzeImageData,
@@ -52,7 +53,11 @@ export default function ScanPage() {
   const [qualityOk, setQualityOk] = useState(false);
   /** Yesterday's photo for the current pose, faded over the live preview. */
   const [ghost, setGhost] = useState<{ day: number; photos: Partial<Record<PoseId, string>> } | null>(null);
-  const [ghostOn, setGhostOn] = useState(true);
+  // null = follow the Settings default; a tap on the toggle overrides it for
+  // this session only.
+  const [ghostPref, setGhostPref] = useState<boolean | null>(null);
+  const ghostOn = ghostPref ?? state.settings.ghostOverlay;
+  const autoCapture = state.settings.autoCapture;
 
   const pose = POSES[poseIndex];
   const done = poseIndex >= POSES.length;
@@ -105,6 +110,7 @@ export default function ScanPage() {
       setCameraError(null);
       setFeedback("얼굴을 가이드 안에 맞춰주세요");
     } catch {
+      haptic("warning");
       setCameraError("camera-unavailable");
       setFeedback("카메라 권한을 허용해주세요");
     }
@@ -139,6 +145,7 @@ export default function ScanPage() {
     async (imageData: ImageData, dataUrl: string, poseId: PoseId) => {
       const metrics = analyzeImageData(imageData);
       await putPhoto(photoKey(nextDay, poseId), dataUrl);
+      haptic("success");
       setCaptured((prev) => ({ ...prev, [poseId]: metrics }));
       setPoseIndex((i) => i + 1);
       goodFramesRef.current = 0;
@@ -150,7 +157,10 @@ export default function ScanPage() {
     if (capturingRef.current || done) return;
     const imageData = grabFrame();
     const canvas = canvasRef.current;
-    if (!imageData || !canvas) return;
+    if (!imageData || !canvas) {
+      haptic("warning");
+      return;
+    }
 
     capturingRef.current = true;
     setBusy(true);
@@ -186,7 +196,9 @@ export default function ScanPage() {
       if (check.ok) {
         goodFramesRef.current += 1;
         setProgress(Math.min(1, goodFramesRef.current / HOLD_FRAMES));
-        if (goodFramesRef.current >= HOLD_FRAMES) void captureNow();
+        // Manual mode (Settings) still fills the ring so the user can read
+        // the frame quality; only the shutter fires.
+        if (autoCapture && goodFramesRef.current >= HOLD_FRAMES) void captureNow();
       } else {
         goodFramesRef.current = 0;
         setProgress(check.progress * 0.6);
@@ -194,7 +206,7 @@ export default function ScanPage() {
     }, 120);
 
     return () => window.clearInterval(interval);
-  }, [cameraError, done, grabFrame, captureNow]);
+  }, [cameraError, done, grabFrame, captureNow, autoCapture]);
 
   // --- finish ---------------------------------------------------------------
   useEffect(() => {
@@ -264,7 +276,7 @@ export default function ScanPage() {
   }
 
   return (
-    <div className="relative flex h-dvh w-full flex-col overflow-hidden bg-graphite text-pure-white">
+    <div className="no-stagger relative flex h-dvh w-full flex-col overflow-hidden bg-graphite text-pure-white">
       <video
         ref={videoRef}
         playsInline
@@ -307,7 +319,10 @@ export default function ScanPage() {
             aria-label={ghostOn ? "이전 사진 겹치기 끄기" : "이전 사진 겹치기 켜기"}
             aria-pressed={ghostOn}
             title="이전 사진 겹치기"
-            onClick={() => setGhostOn((v) => !v)}
+            onClick={() => {
+              haptic("select");
+              setGhostPref(!ghostOn);
+            }}
             className={`absolute top-24 right-margin-main flex h-10 w-10 items-center justify-center rounded-full backdrop-blur-md transition-colors ${
               ghostOn ? "bg-tertiary-fixed text-on-tertiary-fixed" : "bg-glass-overlay text-graphite"
             }`}
@@ -408,6 +423,11 @@ export default function ScanPage() {
         <p className="mt-1 text-center font-label-sm text-label-sm text-pure-white/60">
           {pose.purpose}
         </p>
+        {!autoCapture && !cameraError ? (
+          <p className="mt-2 rounded-full bg-glass-overlay px-3 py-1 font-label-sm text-label-sm text-graphite backdrop-blur-sm">
+            수동 촬영 모드 · 준비되면 셔터를 눌러주세요
+          </p>
+        ) : null}
         {ghostSrc && ghostOn ? (
           <p className="mt-2 flex items-center gap-1 rounded-full bg-tertiary-fixed/80 px-3 py-1 font-label-sm text-label-sm text-on-tertiary-fixed backdrop-blur-sm">
             <Icon name="layers" size={14} />

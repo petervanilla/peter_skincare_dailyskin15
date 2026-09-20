@@ -66,8 +66,8 @@ export function StepChart({
         />
       ) : null}
 
-      {sorted.map((p) => (
-        <g key={p.day}>
+      {sorted.map((p, i) => (
+        <g key={p.day} className="dot-in" style={{ animationDelay: `${i * 50}ms` }}>
           <line
             x1={xs(p.day) + 3}
             x2={xs(p.day) + stepW - 3}

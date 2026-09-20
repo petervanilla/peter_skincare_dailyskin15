@@ -70,7 +70,7 @@ export function ProductCatalog() {
               key={p.id}
               className="flex flex-col overflow-hidden rounded-2xl bg-pure-white shadow-[0_4px_20px_rgba(46,104,93,0.05)]"
             >
-              <div className="relative aspect-square w-full bg-surface-container-low">
+              <div className="shimmer relative aspect-square w-full bg-surface-container-low">
                 <Image
                   src={p.image}
                   alt={p.name}

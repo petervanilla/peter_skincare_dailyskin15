@@ -61,6 +61,16 @@ Mobbin에서 찾은 레퍼런스 화면을 각 항목에 붙였다. 링크는 Mo
 | Share card | [Hevy — 첫 운동 완료 카드](https://mobbin.com/screens/db9dd20e-1263-4da0-88ef-4fdca528cc6a) | 완료 순간의 컨페티 + 공유 — Day-15 완주 리포트 |
 | Scan | [Noom — 얼굴 프레임 + Lighting quality 5점](https://mobbin.com/screens/c895a2bc-8a1c-4064-961b-604669bead68) | 조명 품질을 도트로 — 5-시그널 스트립 |
 | Scan | [MoonPay — Auto capture on](https://mobbin.com/screens/0b529724-9dc3-45c1-971f-c94123dfa0e2) | "Auto capture on" 상태 표기 — 자동 촬영 신뢰감 |
+| Login | [Cleo AI — Welcome Back (Google/Apple/Email)](https://mobbin.com/screens/46f5e2fc-950c-4bd0-be0f-c8e35b362411) | 라이프스타일 사진 위 바텀시트, 소셜 버튼 위계 |
+| Login | [Replika — Continue with Email/Apple/Google](https://mobbin.com/screens/bd84a073-8759-4205-b536-aa777f9cf052) | 헤드라인 + 3버튼 + 약관 한 줄 |
+| Login | [Anything — Text to App](https://mobbin.com/screens/cf34fc72-82c1-4563-b773-92c39b8bd33c) | 배경이 브랜드 무드를 다 하고 버튼은 최소 |
+| Login flow | [Opal — Creating an account](https://mobbin.com/flows/b4f8e6ea-fa05-43fe-83bf-748bd9dd9dd3) | "민감한 데이터는 기기 밖으로 나가지 않는다" 문구를 로그인 화면에 |
+| Settings | [Withings Health Mate — Settings](https://mobbin.com/screens/2a1694f5-ca8f-436c-8356-935ea4062e58) | 아이콘 행 목록, Export All Health Data |
+| Settings | [Fitbit — Settings](https://mobbin.com/screens/6d9739b7-df0a-427d-953c-f1a5e5a75693) | 섹션 그룹 + 하단 Sign out |
+| Settings | [pushr — reminders + schedule](https://mobbin.com/screens/4f74fc4c-589c-40ab-8c39-d93935c8d313) | 리마인더 토글과 스케줄 행의 조합 |
+| Settings · 리마인더 | [Whering — Set reminder (시간 + 요일)](https://mobbin.com/screens/7bd14b82-6a82-4bfc-a3fe-665ddf14b8c4) | 시간 + 요일 반복 + 토글 |
+| Settings · 리마인더 | [Fitbit — 리마인더 요일 칩](https://mobbin.com/screens/251a9da7-3721-49b4-a11c-ed47773c1d10) | S M T W T F S 원형 칩 |
+| Settings · 리마인더 | [Mindvalley — 하루 한 번 / 시간 설정](https://mobbin.com/screens/d674fb6a-0827-4a2c-bf83-6586503d133d) | "하루 한 번" 프리셋 + 시간 입력 |
 
 ## 4. 디자인 원칙 (Soft Lab 유지 + 추가)
 
@@ -84,9 +94,18 @@ Mobbin에서 찾은 레퍼런스 화면을 각 항목에 붙였다. 링크는 Mo
 - `/scan` — 5-시그널 스트립, Day 1 고스트 오버레이
 - `/profile` — Skin Memory(사이클 기록), 데모 시드 버튼
 
+## 5-1. v2.1 (같은 브랜치, 2차 라운드)
+
+- **로그인** `/login` — Google · Apple · 카카오 · 이메일 · 게스트. 백엔드 없음: `lib/auth.ts`의 `signInWith`가 로컬 프로필을 돌려주고, 실제 OAuth로 바꿀 때 이 파일만 교체하면 되게 `User` 형태를 고정.
+- **설정** `/settings` — 계정 · 리마인더(시간·요일·브라우저 알림 권한) · 촬영(자동 촬영, 고스트 오버레이) · 화면(햅틱, 모션 줄이기) · 데이터(JSON 내보내기, 초기화) · 정보.
+- **리마인더** — 설정 시간이 지났고 오늘 기록이 없으면 Today 상단 배너 + 브라우저 알림 1회. 완주율에 직접 영향을 주는 첫 번째 장치.
+- **터치감** — 전역 :active 스퀴시, 라우트 페이드+스태거 진입, 시트 슬라이드업, 칩 pop, 차트 선 draw-in, 스위치 썸 스트레치, 하단 내비 pill 스프링, 햅틱(Android).
+- **약점 수정** — Skin Age Index 하한(18→10)과 "내 나이 기준 ±N" 표기, Glow Board 얼굴 사진 → 이니셜 아바타(덱 원칙), 페이스 요가 히어로 크롭, Before/After 기준일 칩.
+
 ## 6. 아직 안 한 것 (다음 브랜치)
 
 - 서버 없음: 초대코드는 로컬 저장만. 친구 진행률은 데모 값.
 - 거리/각도 실측 없음(가이드 기반). TrueDepth는 Native iOS 단계.
 - 사이클 아카이브의 사진은 IndexedDB에 남지만 리포트에서 이전 사이클 비교 UI는 미구현.
-- 알림(같은 시간 촬영 리마인더) 미구현 — 완주율에 직접 영향, 다음 우선.
+- 실제 OAuth 연결(Google/Apple/카카오 앱 키 필요) — 현재는 로컬 모의 로그인.
+- 푸시 알림은 브라우저가 열려 있을 때만. 백그라운드 푸시는 서비스 워커 + 서버(FCM/APNs) 단계.

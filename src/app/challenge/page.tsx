@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
 import { Confetti } from "@/components/ui/confetti";
+import { haptic } from "@/lib/haptics";
 import { IMG } from "@/lib/assets";
 import { firstRecord, latestRecord } from "@/lib/scoring";
 import { renderShareCard, shareOrDownload, type ShareCardData } from "@/lib/shareCard";
@@ -195,7 +196,7 @@ export default function ChallengePage() {
           </p>
         </section>
 
-        <section className="flex flex-col gap-2">
+        <section className="stagger flex flex-col gap-2">
           {board.map((entry, i) => (
             <div
               key={entry.id}
@@ -289,6 +290,7 @@ function InviteCodeRow({ code }: { code: string | null }) {
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(code);
+      haptic("success");
       setCopied(true);
     } catch {
       /* clipboard blocked — nothing else to do */
@@ -321,12 +323,17 @@ function InviteCodeRow({ code }: { code: string | null }) {
         aria-label="초대코드 복사"
         className="flex h-10 items-center gap-1 rounded-full bg-pure-white px-3 font-label-sm text-label-sm text-primary transition-colors hover:bg-surface-container-low active:scale-95"
       >
-        <Icon name={copied ? "check" : "content_copy"} size={16} />
-        {copied ? "복사됨" : "복사"}
+        <span key={copied ? "copied" : "idle"} className={`flex items-center gap-1 ${copied ? "pop" : ""}`}>
+          <Icon name={copied ? "check" : "content_copy"} size={16} />
+          {copied ? "복사됨" : "복사"}
+        </span>
       </button>
       <button
         type="button"
-        onClick={() => void share()}
+        onClick={() => {
+          haptic("tap");
+          void share();
+        }}
         aria-label="초대코드 공유"
         className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-pure-white transition-colors hover:bg-primary-container active:scale-95"
       >
@@ -399,7 +406,10 @@ function ShareCardPreview({ data }: { data: ShareCardData }) {
         <button
           type="button"
           disabled={busy}
-          onClick={() => void act()}
+          onClick={() => {
+            haptic("tap");
+            void act();
+          }}
           className="flex items-center justify-center gap-2 rounded-full border border-primary py-3 font-label-bold text-label-bold text-primary transition-colors hover:bg-secondary-container active:bg-secondary-container disabled:opacity-60"
         >
           <Icon name="download" size={18} />
@@ -408,7 +418,10 @@ function ShareCardPreview({ data }: { data: ShareCardData }) {
         <button
           type="button"
           disabled={busy}
-          onClick={() => void act()}
+          onClick={() => {
+            haptic("tap");
+            void act();
+          }}
           className="flex items-center justify-center gap-2 rounded-full bg-primary py-3 font-label-bold text-label-bold text-pure-white transition-colors hover:bg-primary-container active:bg-primary-container disabled:opacity-60"
         >
           <Icon name="ios_share" size={18} />

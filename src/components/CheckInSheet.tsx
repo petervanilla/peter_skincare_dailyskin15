@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "@/components/Icon";
+import { haptic } from "@/lib/haptics";
 import type { CheckInPatch } from "@/lib/store";
 import type { DayRecord, Experiment } from "@/lib/types";
 
@@ -52,13 +53,24 @@ export function CheckInSheet({ record, experiment, onChange }: CheckInSheetProps
   const answered = questions.filter((q) => record[q.field] !== undefined).length;
   const allDone = answered === questions.length;
 
+  /** Answers one question; a stronger buzz when this answer completes the sheet. */
+  const answer = (patch: CheckInPatch) => {
+    const nextAnswered = questions.filter((q) => {
+      const v = q.field in patch ? patch[q.field] : record[q.field];
+      return v !== undefined;
+    }).length;
+    haptic(!allDone && nextAnswered === questions.length ? "success" : "select");
+    onChange(patch);
+  };
+
   return (
-    <section className="rounded-[24px] bg-pure-white p-5 shadow-[0_4px_20px_rgba(46,104,93,0.05)]">
+    <section className="sheet-up rounded-[24px] bg-pure-white p-5 shadow-[0_4px_20px_rgba(46,104,93,0.05)]">
       <div className="mb-1 flex items-center justify-between">
         <h3 className="font-label-bold text-label-bold text-on-surface">오늘의 체크인</h3>
         <span
+          key={allDone ? "done" : "progress"}
           className={`rounded-full px-2.5 py-0.5 font-label-sm text-label-sm ${
-            allDone ? "bg-primary-fixed text-primary" : "bg-surface-container text-on-surface-variant"
+            allDone ? "pop bg-primary-fixed text-primary" : "bg-surface-container text-on-surface-variant"
           }`}
         >
           {allDone ? "완료" : `${answered}/${questions.length}`}
@@ -88,7 +100,7 @@ export function CheckInSheet({ record, experiment, onChange }: CheckInSheetProps
                   active={value === true}
                   answered={value !== undefined}
                   tone="yes"
-                  onClick={() => onChange({ [q.field]: true })}
+                  onClick={() => answer({ [q.field]: true })}
                 >
                   예
                 </Pill>
@@ -96,7 +108,7 @@ export function CheckInSheet({ record, experiment, onChange }: CheckInSheetProps
                   active={value === false}
                   answered={value !== undefined}
                   tone="no"
-                  onClick={() => onChange({ [q.field]: false })}
+                  onClick={() => answer({ [q.field]: false })}
                 >
                   아니요
                 </Pill>
@@ -129,11 +141,12 @@ function Pill({
     : "bg-pure-white text-on-surface-variant hover:bg-surface-container";
   return (
     <button
+      key={active ? "active" : "idle"}
       type="button"
       aria-pressed={active}
       onClick={onClick}
-      className={`rounded-full px-3 py-1.5 font-label-bold text-label-bold transition-colors active:scale-95 ${
-        active ? filled : idle
+      className={`rounded-full px-3 py-1.5 font-label-bold text-label-bold transition-colors ${
+        active ? `pop ${filled}` : idle
       }`}
     >
       {children}

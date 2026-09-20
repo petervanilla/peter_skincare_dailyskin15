@@ -7,7 +7,9 @@ import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
 import { StepChart } from "@/components/StepChart";
 import { TopAppBar } from "@/components/TopAppBar";
+import { AnimatedNumber } from "@/components/AnimatedNumber";
 import { Confetti } from "@/components/ui/confetti";
+import { haptic } from "@/lib/haptics";
 import {
   buildInsights,
   experimentVerdict,
@@ -127,6 +129,7 @@ export default function ReportPage() {
   };
 
   const startNext = () => {
+    haptic("success");
     startNextCycle({
       id: newExperimentId(),
       kind: suggestion.kind,
@@ -150,7 +153,7 @@ export default function ReportPage() {
           </p>
           <div className="mt-3 flex items-end gap-3">
             <span className="font-display-hero text-display-hero leading-none">
-              {latest.dailySkinScore}
+              <AnimatedNumber value={latest.dailySkinScore} />
             </span>
             <span className="mb-1 rounded-full bg-pure-white/20 px-3 py-1 font-label-bold text-label-bold">
               {signed(delta)} vs Day 1
@@ -180,7 +183,7 @@ export default function ReportPage() {
         </section>
 
         {/* Delta chips */}
-        <section className="grid grid-cols-2 gap-3">
+        <section className="stagger grid grid-cols-2 gap-3">
           {indexDeltas.map((d) => (
             <DeltaChip key={d.key} label={d.label} value={d.value} improved={d.value >= 0} />
           ))}
@@ -265,7 +268,7 @@ export default function ReportPage() {
             </span>
           </div>
           {insights.length ? (
-            <ol className="flex flex-col gap-4">
+            <ol className="stagger flex flex-col gap-4">
               {insights.map((i, idx) => (
                 <InsightRow key={i.id} index={idx + 1} insight={i} />
               ))}

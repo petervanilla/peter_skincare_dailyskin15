@@ -1,12 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
-import { IMG } from "@/lib/assets";
 import { firstRecord, latestRecord } from "@/lib/scoring";
 import { useStore } from "@/lib/store";
 
@@ -27,6 +25,18 @@ const SCHOOLS = [
   { id: "b", name: "대치고등학교", members: 388, avgImprovement: 6.9 },
   { id: "c", name: "역삼고등학교", members: 355, avgImprovement: 5.8 },
   { id: "d", name: "삼성고등학교", members: 301, avgImprovement: 4.2 },
+];
+
+/**
+ * Glow Board shows initials, never faces — the deck's rule is "compete with
+ * yesterday, not with faces", and nobody's photo leaves their device.
+ */
+const GLOW_NAMES = ["지민", "서연", "하은", "도윤", "아윤", "시우", "유나"];
+const INITIAL_FILLS = [
+  "bg-secondary-container",
+  "bg-tertiary-fixed",
+  "bg-primary-fixed",
+  "bg-surface-container-high",
 ];
 
 const GLOW_UPDATES = [
@@ -121,14 +131,17 @@ export default function LeaderboardPage() {
           <h3 className="mb-4 font-label-bold text-label-bold text-on-surface">Glow Board</h3>
           <GlowBoardTicker />
           <div className="no-scrollbar flex gap-4 overflow-x-auto">
-            {IMG.boardAvatars.map((src, i) => (
-              <div key={src} className="flex w-16 shrink-0 flex-col items-center gap-1">
+            {GLOW_NAMES.map((name, i) => (
+              <div key={name} className="flex w-16 shrink-0 flex-col items-center gap-1">
                 <div
-                  className={`relative h-14 w-14 overflow-hidden rounded-full ${
-                    i === 0 ? "ring-2 ring-primary ring-offset-2" : ""
-                  }`}
+                  className={`flex h-14 w-14 items-center justify-center rounded-full ${
+                    INITIAL_FILLS[i % INITIAL_FILLS.length]
+                  } ${i === 0 ? "ring-2 ring-primary ring-offset-2" : ""}`}
+                  aria-label={name}
                 >
-                  <Image src={src} alt="" fill sizes="56px" className="object-cover" />
+                  <span className="font-headline-md text-[20px] font-bold text-primary">
+                    {name.charAt(0)}
+                  </span>
                 </div>
                 <span className="font-label-sm text-[10px] text-primary">
                   +{(14 - i * 2).toFixed(0)}
@@ -146,7 +159,7 @@ export default function LeaderboardPage() {
           내 Friends Challenge · 공유하기
         </Link>
 
-        <section className="flex flex-col gap-2">
+        <section className="stagger flex flex-col gap-2">
           {groups.map((g, i) => (
             <div
               key={g.id}

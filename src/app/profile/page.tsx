@@ -21,6 +21,7 @@ import {
   CONCERN_LABELS,
   CONDITION_LABELS,
   OUTDOOR_LABELS,
+  PROVIDER_LABELS,
   SKIN_TYPE_LABELS,
   type SubScores,
 } from "@/lib/types";
@@ -40,7 +41,7 @@ function weakestSubScore(s: SubScores): keyof SubScores {
 }
 
 export default function ProfilePage() {
-  const { state, hydrated, reset, updateProfile, saveAvatarPhoto, loadDemo } = useStore();
+  const { state, hydrated, reset, updateProfile, saveAvatarPhoto, loadDemo, signOut } = useStore();
   const router = useRouter();
   const [confirming, setConfirming] = useState(false);
   const [editingProfile, setEditingProfile] = useState(false);
@@ -75,7 +76,18 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-dvh pb-32">
-      <TopAppBar title={<LogoMark height={28} />} />
+      <TopAppBar
+        title={<LogoMark height={28} />}
+        action={
+          <Link
+            href="/settings"
+            aria-label="설정"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-primary hover:bg-surface-container-low active:bg-surface-container-low"
+          >
+            <Icon name="settings" />
+          </Link>
+        }
+      />
 
       <main className="flex flex-col gap-4 px-margin-main pt-2">
         {/* Personal info — the one place nickname and age are entered and
@@ -172,6 +184,30 @@ export default function ProfilePage() {
             }}
           />
         </section>
+
+        {/* Account — provider + email, with sign-out. Records stay on the
+            device after sign-out, so a re-login finds them again. */}
+        {state.user ? (
+          <section className="flex items-center gap-3 rounded-2xl bg-pure-white px-4 py-3 shadow-[0_4px_20px_rgba(46,104,93,0.05)]">
+            <Icon name="account_circle" className="text-primary" />
+            <p className="min-w-0 flex-1 truncate font-label-sm text-label-sm text-on-surface-variant">
+              <span className="font-label-bold text-label-bold text-on-surface">
+                {PROVIDER_LABELS[state.user.provider]}
+              </span>
+              {state.user.email ? ` · ${state.user.email}` : ""}
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                signOut();
+                router.replace("/login");
+              }}
+              className="shrink-0 font-label-bold text-label-bold text-error"
+            >
+              로그아웃
+            </button>
+          </section>
+        ) : null}
 
         {/* Analysis summary — moved above the survey card so the freshest,
             most visual content sits right under the profile header. */}

@@ -23,6 +23,15 @@ function valueFor(p: Point, key: SeriesKey) {
   return key === "score" ? p.dailySkinScore : p.subScores[key];
 }
 
+/** Polyline length in viewBox units — feeds the CSS draw-in without a DOM measure. */
+function polylineLength(pts: Array<[number, number]>) {
+  let len = 0;
+  for (let i = 1; i < pts.length; i++) {
+    len += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+  }
+  return Math.max(1, Math.ceil(len));
+}
+
 /**
  * Merges the old single-line score chart and the 4-line sub-score chart into
  * one: the overall score keeps its area-fill "anchor" treatment, the 4
@@ -124,9 +133,10 @@ export function TrendChart({
         ) : null}
 
         {SERIES.map((s) => {
-          const path = records
-            .map((r, i) => `${i === 0 ? "M" : "L"} ${xs(r.day)} ${ys(valueFor(r, s.key))}`)
-            .join(" ");
+          const pts = records.map(
+            (r) => [xs(r.day), ys(valueFor(r, s.key))] as [number, number],
+          );
+          const path = pts.map(([x, y], i) => `${i === 0 ? "M" : "L"} ${x} ${y}`).join(" ");
           const dimmed = focused !== null && focused !== s.key;
           return (
             <g key={s.key} opacity={dimmed ? 0.12 : 1} style={{ transition: "opacity 200ms ease" }}>
@@ -136,8 +146,10 @@ export function TrendChart({
                 stroke={s.color}
                 strokeWidth={s.key === "score" ? 3 : 2.5}
                 strokeLinecap="round"
+                className="draw-line"
+                style={{ "--draw-len": polylineLength(pts) } as React.CSSProperties}
               />
-              {records.map((r) => {
+              {records.map((r, i) => {
                 const hollow = s.key === "score" && routineDays?.[r.day] === false;
                 return (
                   <circle
@@ -148,6 +160,8 @@ export function TrendChart({
                     fill={hollow ? "#ffffff" : s.color}
                     stroke={s.color}
                     strokeWidth={hollow ? 2 : 0}
+                    className="dot-in"
+                    style={{ animationDelay: `${120 + i * 40}ms` }}
                   />
                 );
               })}

@@ -5,6 +5,8 @@ import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
+import { Switch } from "@/components/Switch";
+import { haptic } from "@/lib/haptics";
 import { IMG } from "@/lib/assets";
 import { buildCarePlan } from "@/lib/recommendations";
 import { latestRecord } from "@/lib/scoring";
@@ -48,14 +50,14 @@ export default function RoutinePage() {
 
         <Link
           href="/face-yoga"
-          className="group relative block aspect-[16/9] overflow-hidden rounded-[24px]"
+          className="group no-press relative block aspect-[16/9] overflow-hidden rounded-[24px]"
         >
           <Image
             src={IMG.faceYogaHero}
             alt="오늘의 3분 케어"
             fill
             sizes="430px"
-            className="object-cover"
+            className="scale-[1.28] object-cover object-[50%_74%]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-graphite/70 via-graphite/10 to-transparent" />
           <div className="absolute inset-x-5 bottom-4 flex items-center justify-between">
@@ -84,21 +86,11 @@ export default function RoutinePage() {
                 </p>
               </div>
             </div>
-            <button
-              type="button"
-              role="switch"
-              aria-checked={Boolean(today.sunExposure)}
-              onClick={() => setSunExposure(today.day, !today.sunExposure)}
-              className={`relative h-7 w-12 rounded-full transition-colors ${
-                today.sunExposure ? "bg-primary" : "bg-surface-container-highest"
-              }`}
-            >
-              <span
-                className={`absolute top-1 h-5 w-5 rounded-full bg-pure-white transition-all ${
-                  today.sunExposure ? "left-6" : "left-1"
-                }`}
-              />
-            </button>
+            <Switch
+              checked={Boolean(today.sunExposure)}
+              onChange={(v) => setSunExposure(today.day, v)}
+              label="오늘 야외활동"
+            />
           </section>
         ) : null}
 
@@ -106,7 +98,7 @@ export default function RoutinePage() {
           Morning Protocol
         </h3>
 
-        <section className="flex flex-col gap-3">
+        <section className="stagger flex flex-col gap-3">
           {plan.actions.map((action) => {
             const done = completed.includes(action.id);
             return (
@@ -114,14 +106,22 @@ export default function RoutinePage() {
                 key={action.id}
                 type="button"
                 disabled={!today}
-                onClick={() => today && toggleAction(today.day, action.id)}
+                onClick={() => {
+                  if (!today) return;
+                  const willFinishAll =
+                    !done &&
+                    plan.actions.every((a) => a.id === action.id || completed.includes(a.id));
+                  haptic(willFinishAll ? "success" : "select");
+                  toggleAction(today.day, action.id);
+                }}
                 className={`flex items-start gap-4 rounded-[24px] p-5 text-left shadow-[0_4px_20px_rgba(46,104,93,0.05)] transition-colors disabled:opacity-60 ${
                   done ? "bg-secondary-container" : "bg-pure-white"
                 }`}
               >
                 <div
+                  key={done ? "done" : "todo"}
                   className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${
-                    done ? "bg-primary text-pure-white" : "bg-secondary-container text-primary"
+                    done ? "pop bg-primary text-pure-white" : "bg-secondary-container text-primary"
                   }`}
                 >
                   <Icon name={done ? "check" : action.icon} size={24} />

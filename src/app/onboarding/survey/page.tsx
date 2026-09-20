@@ -1,10 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@/components/Icon";
 import { LogoMark } from "@/components/Logo";
 import { TopAppBar } from "@/components/TopAppBar";
+import { haptic } from "@/lib/haptics";
 import { useStore } from "@/lib/store";
 import {
   CONCERN_LABELS,
@@ -47,7 +48,11 @@ const STEPS = 5;
 
 export default function SurveyPage() {
   const router = useRouter();
-  const { saveSurvey } = useStore();
+  const { state, hydrated, saveSurvey } = useStore();
+
+  useEffect(() => {
+    if (hydrated && !state.user) router.replace("/login");
+  }, [hydrated, state.user, router]);
 
   const [step, setStep] = useState(0);
   const [concerns, setConcerns] = useState<SkinConcern[]>([]);
@@ -59,6 +64,7 @@ export default function SurveyPage() {
   const [age, setAge] = useState<string>("");
 
   const toggle = <T,>(list: T[], value: T, set: (v: T[]) => void) => {
+    haptic("select");
     set(list.includes(value) ? list.filter((v) => v !== value) : [...list, value]);
   };
 
@@ -118,6 +124,8 @@ export default function SurveyPage() {
                     // surfaces, but this selection state deliberately borrows
                     // it too, per direct request.
                     className={`flex h-28 flex-col items-center justify-center rounded-xl border px-4 py-4 text-center shadow-[0_8px_32px_rgba(0,0,0,0.05)] transition-colors duration-200 ${
+                      active ? "pop" : ""
+                    } ${
                       active
                         ? "border-tertiary-container bg-tertiary-fixed text-on-tertiary-fixed"
                         : "border-outline-variant bg-pure-white/70 text-on-surface hover:bg-white active:bg-white"
@@ -181,6 +189,8 @@ export default function SurveyPage() {
                     type="button"
                     onClick={() => toggle(products, p, setProducts)}
                     className={`rounded-full border px-4 py-2 font-label-bold text-label-bold transition-colors ${
+                      active ? "pop" : ""
+                    } ${
                       active
                         ? "border-primary bg-secondary-container text-primary"
                         : "border-outline-variant bg-pure-white text-on-surface-variant hover:bg-surface-container-low active:bg-surface-container-low"
@@ -288,8 +298,13 @@ function OptionList<T extends string>({
           <button
             key={key}
             type="button"
-            onClick={() => onChange(key)}
+            onClick={() => {
+              haptic("select");
+              onChange(key);
+            }}
             className={`flex items-center justify-between rounded-xl border px-5 py-4 text-left transition-colors ${
+              active ? "pop" : ""
+            } ${
               active
                 ? "border-primary bg-secondary-container text-primary"
                 : "border-outline-variant bg-pure-white text-on-surface hover:bg-surface-container-low active:bg-surface-container-low"

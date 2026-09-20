@@ -10,6 +10,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { CoachCard } from "@/components/CoachCard";
 import { HabitTiles } from "@/components/HabitTiles";
 import { Icon } from "@/components/Icon";
+import { haptic } from "@/lib/haptics";
 import { ProductRecommendations } from "@/components/ProductRecommendations";
 import { StoredPhoto } from "@/components/StoredPhoto";
 import { TrendChart } from "@/components/TrendChart";
@@ -475,16 +476,19 @@ function TabStrip({ active, onChange }: { active: TabId; onChange: (id: TabId) =
         const isActive = t.id === active;
         return (
           <button
-            key={t.id}
+            key={`${t.id}-${isActive ? "on" : "off"}`}
             type="button"
             role="tab"
             aria-selected={isActive}
             aria-label={t.label}
             title={t.label}
-            onClick={() => onChange(t.id)}
+            onClick={() => {
+              haptic("tap");
+              onChange(t.id);
+            }}
             className={`flex h-9 w-9 items-center justify-center rounded-full border transition-colors ${
               isActive
-                ? "border-primary bg-primary text-pure-white shadow-sm"
+                ? "pop border-primary bg-primary text-pure-white shadow-sm"
                 : "border-outline-variant text-on-surface-variant hover:bg-surface-container-highest active:bg-surface-container-highest"
             }`}
           >

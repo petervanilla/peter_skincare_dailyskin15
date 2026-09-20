@@ -18,7 +18,7 @@ import {
   SUB_SCORE_LABELS,
 } from "@/lib/scoring";
 import { useStore } from "@/lib/store";
-import type { SubScores } from "@/lib/types";
+import { DEFAULT_BASELINE_AGE, type SubScores } from "@/lib/types";
 
 /** AI 피부 분석 결과 (spec §6–§7). All figures are visible estimates. */
 export default function AnalysisPage() {
@@ -52,6 +52,7 @@ function AnalysisContent() {
 
   const prev = previousRecord(state.records, record.day);
   const plan = buildCarePlan(state.records, record);
+  const baselineAge = state.survey?.age ?? DEFAULT_BASELINE_AGE;
   const weakest = weakestIndex(record.subScores);
 
   return (
@@ -100,6 +101,14 @@ function AnalysisContent() {
               </p>
               <p className="font-headline-md text-headline-md text-primary">
                 {record.skinAgeIndex}
+              </p>
+              <p
+                className={`mt-0.5 font-label-sm text-label-sm ${
+                  record.skinAgeIndex - baselineAge <= 0 ? "text-primary" : "text-on-surface-variant"
+                }`}
+              >
+                내 나이 {baselineAge} 기준 {record.skinAgeIndex - baselineAge > 0 ? "+" : ""}
+                {record.skinAgeIndex - baselineAge}
               </p>
             </div>
             <Icon name="auto_awesome" className="text-tertiary-container" size={28} />

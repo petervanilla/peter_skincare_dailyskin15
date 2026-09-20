@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
+import { haptic } from "@/lib/haptics";
 import type { Insight, InsightTone } from "@/lib/insights";
 
 /**
@@ -52,7 +53,7 @@ export function CoachCard({ insights, limit, showMoreLink = false }: CoachCardPr
         </h3>
       </div>
 
-      <ul className="flex flex-col gap-2">
+      <ul className="stagger flex flex-col gap-2">
         {shown.map((insight) => {
           const tone = TONE[insight.tone];
           return (
@@ -74,6 +75,7 @@ export function CoachCard({ insights, limit, showMoreLink = false }: CoachCardPr
       {showMoreLink ? (
         <Link
           href="/progress?tab=coach"
+          onClick={() => haptic("tap")}
           className="mt-3 flex items-center justify-center gap-1 rounded-lg py-1.5 font-label-bold text-label-bold text-primary transition-colors hover:bg-surface-container-low active:bg-surface-container-low"
         >
           전체 인사이트 보기{hidden > 0 ? ` (+${hidden})` : ""}

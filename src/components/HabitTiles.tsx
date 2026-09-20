@@ -1,5 +1,7 @@
 "use client";
 
+import type { ReactNode } from "react";
+import { AnimatedNumber } from "@/components/AnimatedNumber";
 import { Icon } from "@/components/Icon";
 import { habitStreak } from "@/lib/insights";
 import { currentStreak, firstRecord, latestRecord } from "@/lib/scoring";
@@ -29,11 +31,16 @@ export function HabitTiles({ records, challengeJoined }: HabitTilesProps) {
   const friends = challengeJoined ? FRIENDS_ON_TRACK : 0;
 
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="stagger grid grid-cols-2 gap-3">
       <Tile
         eyebrow="15-Day Glow"
         title="Day 1 대비 개선량"
-        value={`${delta > 0 ? "+" : ""}${delta}`}
+        value={
+          <>
+            {delta > 0 ? "+" : ""}
+            <AnimatedNumber value={delta} from={0} />
+          </>
+        }
         unit="Δ SCORE"
         icon="trending_up"
         className="bg-secondary-container text-primary"
@@ -41,7 +48,7 @@ export function HabitTiles({ records, challengeJoined }: HabitTilesProps) {
       <Tile
         eyebrow="Routine Streak"
         title="스킨케어 실천"
-        value={`${routineDays}`}
+        value={<AnimatedNumber value={routineDays} from={0} />}
         unit={`/ ${CHALLENGE_LENGTH}`}
         note={`${streak}일 연속 촬영`}
         icon="favorite"
@@ -50,7 +57,7 @@ export function HabitTiles({ records, challengeJoined }: HabitTilesProps) {
       <Tile
         eyebrow="No-Touch"
         title="얼굴 만지지 않기"
-        value={`${noTouch}`}
+        value={<AnimatedNumber value={noTouch} from={0} />}
         unit="DAYS"
         icon="back_hand"
         className="bg-pure-white text-on-surface shadow-[0_4px_20px_rgba(46,104,93,0.05)]"
@@ -58,7 +65,7 @@ export function HabitTiles({ records, challengeJoined }: HabitTilesProps) {
       <Tile
         eyebrow="Friends Challenge"
         title="함께 완주하기"
-        value={`${friends}`}
+        value={<AnimatedNumber value={friends} from={0} />}
         unit={`/ ${FRIENDS_TOTAL}`}
         icon="groups"
         className="bg-pure-white text-on-surface shadow-[0_4px_20px_rgba(46,104,93,0.05)]"
@@ -78,7 +85,7 @@ function Tile({
 }: {
   eyebrow: string;
   title: string;
-  value: string;
+  value: ReactNode;
   unit: string;
   note?: string;
   icon: string;

@@ -10,8 +10,9 @@ import { useStore } from "@/lib/store";
  * the survey for new users or the dashboard for returning ones — no
  * separate landing/hero screen in between.
  *
- * `/?demo=12` (any 1–15) replaces local state with the deterministic demo
- * data and lands on the dashboard — the deck's "Live Demo" link.
+ * Signed-out users go to /login first. `/?demo=12` (any 1–15) replaces local
+ * state with the deterministic demo data (which includes a demo user) and
+ * lands on the dashboard — the deck's "Live Demo" link.
  */
 const SPLASH_MS = 2000;
 
@@ -43,8 +44,12 @@ function Entry() {
       router.replace("/today");
       return;
     }
+    if (!state.user) {
+      router.replace("/login");
+      return;
+    }
     router.replace(state.survey ? "/today" : "/onboarding/survey");
-  }, [splashDone, hydrated, state.survey, demoParam, loadDemo, router]);
+  }, [splashDone, hydrated, state.user, state.survey, demoParam, loadDemo, router]);
 
   return <Splash />;
 }

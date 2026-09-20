@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Icon } from "@/components/Icon";
+import { haptic } from "@/lib/haptics";
 import { TopAppBar } from "@/components/TopAppBar";
 import { SUB_SCORE_LABELS } from "@/lib/scoring";
 import { useStore } from "@/lib/store";
@@ -91,11 +92,13 @@ function ExperimentForm({ existing }: { existing: Experiment | null }) {
       target,
       createdAt: existing?.createdAt ?? new Date().toISOString(),
     };
+    haptic("success");
     setExperiment(experiment);
     router.push("/today");
   };
 
   const pickKind = (k: ExperimentKind) => {
+    haptic("select");
     setKind(k);
     if (k === "observe") setTitle(SUGGESTIONS.observe[0]);
     else if (kind === "observe") setTitle("");
@@ -126,12 +129,12 @@ function ExperimentForm({ existing }: { existing: Experiment | null }) {
               const active = k === kind;
               return (
                 <button
-                  key={k}
+                  key={`${k}-${active ? "on" : "off"}`}
                   type="button"
                   onClick={() => pickKind(k)}
                   className={`flex items-center gap-3 rounded-2xl border px-4 py-3 text-left transition-colors ${
                     active
-                      ? "border-primary bg-secondary-container text-primary"
+                      ? "pop border-primary bg-secondary-container text-primary"
                       : "border-outline-variant bg-pure-white text-on-surface hover:bg-surface-container-low active:bg-surface-container-low"
                   }`}
                 >
@@ -169,12 +172,15 @@ function ExperimentForm({ existing }: { existing: Experiment | null }) {
               const active = s === title;
               return (
                 <button
-                  key={s}
+                  key={`${s}-${active ? "on" : "off"}`}
                   type="button"
-                  onClick={() => setTitle(s)}
+                  onClick={() => {
+                    haptic("select");
+                    setTitle(s);
+                  }}
                   className={`rounded-full px-3 py-1.5 font-label-sm text-label-sm transition-colors ${
                     active
-                      ? "bg-primary text-pure-white"
+                      ? "pop bg-primary text-pure-white"
                       : "bg-surface-container text-on-surface-variant hover:bg-surface-container-highest"
                   }`}
                 >
@@ -192,12 +198,15 @@ function ExperimentForm({ existing }: { existing: Experiment | null }) {
               const active = t === target;
               return (
                 <button
-                  key={t}
+                  key={`${t}-${active ? "on" : "off"}`}
                   type="button"
-                  onClick={() => setTarget(active ? undefined : t)}
+                  onClick={() => {
+                    haptic("select");
+                    setTarget(active ? undefined : t);
+                  }}
                   className={`rounded-full border px-4 py-2 font-label-bold text-label-bold transition-colors ${
                     active
-                      ? "border-primary bg-secondary-container text-primary"
+                      ? "pop border-primary bg-secondary-container text-primary"
                       : "border-outline-variant bg-pure-white text-on-surface-variant hover:bg-surface-container-low"
                   }`}
                 >
