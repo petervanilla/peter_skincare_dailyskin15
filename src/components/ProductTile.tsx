@@ -27,9 +27,8 @@ function fillFor(brand: string) {
 }
 
 /**
- * Product image well: the OBF photo when we have one, otherwise a monogram
- * tile (brand initials + category glyph) so curated K-beauty items sit in the
- * same grid without a fake pack shot.
+ * Local packshot or clearly labelled category mockup; initials are only a
+ * fallback for catalog entries without an image.
  */
 export function ProductImage({
   product,
@@ -42,17 +41,19 @@ export function ProductImage({
 }) {
   if (product.image) {
     return (
-      // White well: the photos are background-knocked PNGs (scripts/
-      // cutout-products.py), so the pack floats on the same white the card
-      // uses — no photo rectangle inside a grey tile.
       <div className={`relative overflow-hidden bg-pure-white ${className}`}>
         <Image
           src={product.image}
-          alt={`${product.brand} ${product.name}`}
+          alt={product.mockup ? `${product.brand} ${product.name} · 제품 유형 목업` : `${product.brand} ${product.name}`}
           fill
           sizes={sizes}
-          className="object-contain p-4 drop-shadow-[0_6px_14px_rgba(46,104,93,0.12)]"
+          className="object-contain p-1.5"
         />
+        {product.mockup ? (
+          <span className="absolute right-1 bottom-1 rounded-full bg-surface-container/95 px-1.5 py-0.5 font-label-sm text-[8px] text-on-surface-variant">
+            목업
+          </span>
+        ) : null}
       </div>
     );
   }

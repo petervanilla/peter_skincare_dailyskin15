@@ -124,7 +124,7 @@ export function ProductCatalog({ initialProductId = null }: ProductCatalogProps)
       )}
 
       <footer className="flex flex-col gap-1 px-1 pt-2 font-label-sm text-[11px] leading-4 text-on-surface-variant">
-        <p>
+        {PRODUCTS.some((p) => p.source) ? <p>
           제품 정보·사진:{" "}
           <a
             href={CATALOG_ATTRIBUTION.url}
@@ -135,8 +135,9 @@ export function ProductCatalog({ initialProductId = null }: ProductCatalogProps)
             {CATALOG_ATTRIBUTION.source}
           </a>{" "}
           (ODbL · CC BY-SA){fetched ? ` · ${fetched} 기준` : ""}
-        </p>
-        <p>K-뷰티 항목은 제품명과 대표 성분만 표기해요.</p>
+        </p> : null}
+        <p>국내 스킨케어 브랜드의 제품명과 대표 성분을 모았어요.</p>
+        <p>이미지는 제품 유형을 표현한 AI 목업으로, 실제 패키지와 달라요.</p>
       </footer>
 
       <ProductSheet product={selected} open={selected !== null} onClose={() => setSelected(null)} />

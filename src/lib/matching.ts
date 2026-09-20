@@ -147,7 +147,14 @@ export function recommendProducts(
     scored.push({ product, score: Math.round(score), needs: served, hits: [...hits], reason, cautions });
   }
 
-  scored.sort((a, b) => b.score - a.score);
+  // Keep the first recommendation aligned with the headline even when the
+  // catalog changes and a multi-purpose item scores highly on secondary needs.
+  const primaryNeed = needs[0]?.id;
+  scored.sort((a, b) => {
+    const aPrimary = primaryNeed && a.needs.includes(primaryNeed) ? 1 : 0;
+    const bPrimary = primaryNeed && b.needs.includes(primaryNeed) ? 1 : 0;
+    return bPrimary - aPrimary || b.score - a.score;
+  });
 
   if (options.diversify) {
     const seen = new Set<ProductCategoryId>();

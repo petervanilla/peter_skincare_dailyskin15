@@ -1,10 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
+import { IMG } from "@/lib/assets";
 import { firstRecord, latestRecord } from "@/lib/scoring";
 import { useStore } from "@/lib/store";
 
@@ -28,16 +30,10 @@ const SCHOOLS = [
 ];
 
 /**
- * Glow Board shows initials, never faces — the deck's rule is "compete with
- * yesterday, not with faces", and nobody's photo leaves their device.
+ * Fixed design portraits represent demo participants. User-uploaded photos
+ * remain on-device; rankings still compare improvement, not appearance.
  */
 const GLOW_NAMES = ["지민", "서연", "하은", "도윤", "아윤", "시우", "유나"];
-const INITIAL_FILLS = [
-  "bg-secondary-container",
-  "bg-tertiary-fixed",
-  "bg-primary-fixed",
-  "bg-surface-container-high",
-];
 
 const GLOW_UPDATES = [
   { name: "지민", score: 14 },
@@ -128,24 +124,29 @@ export default function LeaderboardPage() {
 
         {/* Glow Board — top improvers this week */}
         <section className="rounded-[24px] bg-pure-white p-5 shadow-[0_4px_20px_rgba(46,104,93,0.05)]">
-          <h3 className="mb-4 font-label-bold text-label-bold text-on-surface">Glow Board</h3>
+          <div className="mb-4 flex items-center justify-between gap-2">
+            <h3 className="font-label-bold text-label-bold text-on-surface">Glow Board</h3>
+            <span className="font-label-sm text-[10px] text-on-surface-variant">데모 프로필</span>
+          </div>
           <GlowBoardTicker />
           <div className="no-scrollbar flex gap-4 overflow-x-auto">
             {GLOW_NAMES.map((name, i) => (
               <div key={name} className="flex w-16 shrink-0 flex-col items-center gap-1">
                 <div
-                  className={`flex h-14 w-14 items-center justify-center rounded-full ${
-                    INITIAL_FILLS[i % INITIAL_FILLS.length]
-                  } ${i === 0 ? "ring-2 ring-primary ring-offset-2" : ""}`}
-                  aria-label={name}
+                  className={`relative h-14 w-14 overflow-hidden rounded-full ${
+                    i === 0 ? "ring-2 ring-primary ring-offset-2" : ""
+                  }`}
                 >
-                  <span className="font-headline-md text-[20px] font-bold text-primary">
-                    {name.charAt(0)}
-                  </span>
+                  <Image
+                    src={IMG.boardAvatars[i % IMG.boardAvatars.length]}
+                    alt={`${name} 데모 프로필`}
+                    fill
+                    sizes="56px"
+                    className="scale-[1.55] object-cover"
+                  />
                 </div>
-                <span className="font-label-sm text-[10px] text-primary">
-                  +{(14 - i * 2).toFixed(0)}
-                </span>
+                <span className="font-label-sm text-[10px] text-on-surface-variant">{name}</span>
+                <span className="font-label-sm text-[10px] text-primary">+{14 - i * 2}</span>
               </div>
             ))}
           </div>

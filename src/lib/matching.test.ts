@@ -1,15 +1,25 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { existsSync } from "node:fs";
 import { buildDemoRecords, DEMO_SURVEY } from "./demo.ts";
 import { deriveNeeds, focusHeadline, recommendProducts } from "./matching.ts";
 import { PRODUCTS } from "./products.ts";
 
 const FIXED_TODAY = new Date("2026-09-20T12:00:00Z");
 
-test("catalog loads both sources with valid categories and unique ids", () => {
-  assert.ok(PRODUCTS.length >= 50);
-  assert.ok(PRODUCTS.some((p) => p.image !== null && p.ingredients));
-  assert.ok(PRODUCTS.some((p) => p.kbeauty && p.image === null));
+test("default catalog contains Korean products with local, labelled mockups", () => {
+  const curated = PRODUCTS.filter((p) => p.id.startsWith("kb-"));
+  assert.ok(curated.length >= 30);
+  for (const p of curated) {
+    assert.ok(p.kbeauty && p.mockup && p.image);
+    const assetPath = p.image!.replace(process.env.NEXT_PUBLIC_BASE_PATH ?? "", "");
+    assert.ok(existsSync(new URL(`../../public${assetPath}`, import.meta.url)), p.image!);
+  }
+  if (process.env.NEXT_PUBLIC_CATALOG_GLOBAL !== "1") {
+    assert.equal(curated.length, PRODUCTS.length);
+  } else {
+    assert.ok(PRODUCTS.some((p) => p.source && p.ingredients && !p.mockup));
+  }
   assert.equal(new Set(PRODUCTS.map((p) => p.id)).size, PRODUCTS.length);
 });
 

@@ -85,6 +85,12 @@ export function ProductSheet({ product, match, open, onClose }: ProductSheetProp
             className="aspect-[4/3] w-full rounded-2xl"
           />
 
+          {product.mockup ? (
+            <p className="mt-2 font-label-sm text-label-sm text-on-surface-variant">
+              제품 유형을 보여주는 AI 목업이며, 실제 브랜드 패키지와 달라요.
+            </p>
+          ) : null}
+
           <div className="mt-4">
             <p className="font-label-sm text-label-sm tracking-wide text-on-surface-variant uppercase">
               {product.brand} · {CATEGORY_LABELS[product.category]}

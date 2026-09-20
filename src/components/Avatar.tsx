@@ -1,13 +1,15 @@
 "use client";
 
+import Image from "next/image";
 import { StoredPhoto } from "@/components/StoredPhoto";
+import { IMG } from "@/lib/assets";
 import { useStore } from "@/lib/store";
 
 /**
  * The user's profile photo, everywhere it's shown. Uploading one (from the
  * Profile page) replaces the fallback everywhere at once; until then it
- * shows the nickname's first character as an initial, not a stock photo —
- * nobody in this app is a real person. The caller's wrapper controls
+ * shows the demo portrait for the demo account and an initial for other
+ * accounts. The caller's wrapper controls
  * size/shape (e.g. `relative h-10 w-10 overflow-hidden rounded-full`); this
  * only fills it.
  */
@@ -20,7 +22,9 @@ export function Avatar({ sizePx = 40 }: { sizePx?: number }) {
       photoKey={state.avatarPhotoKey}
       alt="프로필"
       className="h-full w-full object-cover"
-      fallback={
+      fallback={state.user?.id === "demo-user" ? (
+        <Image src={IMG.avatar} alt="데모 프로필" fill sizes={`${sizePx}px`} className="object-cover" />
+      ) : (
         <div
           className="flex h-full w-full items-center justify-center bg-primary-container text-pure-white"
           aria-label="프로필"
@@ -32,7 +36,7 @@ export function Avatar({ sizePx = 40 }: { sizePx?: number }) {
             {initial}
           </span>
         </div>
-      }
+      )}
     />
   );
 }

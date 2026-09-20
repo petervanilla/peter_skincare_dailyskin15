@@ -29,7 +29,7 @@ function ShopContent() {
 
         <section className="flex flex-col gap-4">
           <h2 className="font-label-bold text-label-bold tracking-wider text-on-surface-variant uppercase">
-            전체 상품
+            K-뷰티 컬렉션
           </h2>
           <ProductCatalog initialProductId={productId} />
         </section>

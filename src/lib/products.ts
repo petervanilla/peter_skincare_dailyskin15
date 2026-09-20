@@ -10,7 +10,7 @@ import { withBase } from "./assets.ts";
  *    fetched by scripts/fetch-products.mjs — real products with a photo and a
  *    full INCI list.
  *  - Hand-curated K-beauty staples (src/data/kbeauty.json) — real product
- *    names and headline actives, rendered as monogram tiles (no photo).
+ *    names and headline actives, with labelled category mockups.
  *
  * Nothing here is a purchase: the app links out to a search, never to a cart.
  */
@@ -97,6 +97,8 @@ export interface Product {
   ingredients: string | null;
   /** Local path under /public, or null → render a monogram tile. */
   image: string | null;
+  /** True when the image is a generated, unbranded mockup rather than a photo of the real pack. */
+  mockup: boolean;
   /** One-line Korean hook for curated items. */
   highlight: string | null;
   /** Attribution link (Open Beauty Facts product page) when applicable. */
@@ -127,7 +129,8 @@ interface CuratedRow {
   spf?: number;
   actives: string[];
   highlight: string;
-  kbeauty: boolean;
+  /** Generated, unbranded package type under /public/products/mockups/. */
+  mock?: "serum" | "toner" | "sunscreen" | "cream" | "cleanser" | "mask";
 }
 
 const CATEGORY_IDS = new Set<string>(Object.keys(CATEGORY_LABELS));
@@ -148,6 +151,7 @@ function fromObf(row: ObfRow): Product | null {
     actives: row.actives as ActiveKey[],
     ingredients: row.ingredients,
     image: withBase(row.image),
+    mockup: false,
     highlight: null,
     source: row.source,
     kbeauty: /cosrx|laneige|sulwhasoo|klairs|benton|missha|innisfree/i.test(row.brand),
@@ -165,17 +169,24 @@ function fromCurated(row: CuratedRow): Product | null {
     spf: row.spf ?? null,
     actives: row.actives as ActiveKey[],
     ingredients: null,
-    image: null,
+    image: row.mock ? withBase(`/products/mockups/${row.mock}.webp`) : null,
+    mockup: Boolean(row.mock),
     highlight: row.highlight,
     source: null,
     kbeauty: true,
   };
 }
 
-/** Curated K-beauty first (they have Korean hooks), then the photographed OBF items. */
+/**
+ * The Shop catalog is the Korean (Olive Young-style) set. The Open Beauty
+ * Facts snapshot (global dermo brands with real photos + INCI) stays in the
+ * repo and can be appended by setting NEXT_PUBLIC_CATALOG_GLOBAL=1.
+ */
+const INCLUDE_GLOBAL = process.env.NEXT_PUBLIC_CATALOG_GLOBAL === "1";
+
 export const PRODUCTS: Product[] = [
   ...(kbeauty.products as CuratedRow[]).map(fromCurated),
-  ...(catalog.products as ObfRow[]).map(fromObf),
+  ...(INCLUDE_GLOBAL ? (catalog.products as ObfRow[]).map(fromObf) : []),
 ].filter((p): p is Product => p !== null);
 
 export const CATALOG_ATTRIBUTION = {
