@@ -29,7 +29,7 @@ npm test
 
 제품 카탈로그는 Open Beauty Facts 스냅샷입니다. 갱신: `node scripts/fetch-products.mjs && python3 scripts/cutout-products.py` (배경 누끼 · 라이선스: `public/products/ATTRIBUTION.md`).
 
-디벨롭 방향과 Mobbin 레퍼런스는 `docs/DEVELOP_PLAN.md` 에 정리돼 있습니다.
+디벨롭 방향과 Mobbin 레퍼런스는 `docs/DEVELOP_PLAN.md`, 화면 캡처는 `docs/SCREENS.md` 에 있습니다.
 
 ## 화면 연결도
 
