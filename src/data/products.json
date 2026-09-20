@@ -1,0 +1,735 @@
+{
+  "source": "Open Beauty Facts",
+  "license": "Database: ODbL 1.0 · Images: CC BY-SA 3.0",
+  "attribution": "https://world.openbeautyfacts.org",
+  "fetchedAt": "2026-09-20T13:40:10.036Z",
+  "products": [
+    {
+      "id": "obf-3282779365529",
+      "code": "3282779365529",
+      "brand": "Avène",
+      "name": "Cleanance Cleansing Gel",
+      "category": "cleanser",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "aha",
+        "zinc",
+        "thermalWater",
+        "fragrance",
+        "alcohol"
+      ],
+      "ingredients": "Avene Thermal Spring Water (Avene Aqua), Water (Aqua), Zinc Coceth Sulphate, Lauryl Betaine, Decyl Glucoside, Ceteareth-60 Myristyl Glycol, Peg-7 Glyceryl Cocoate, Polysorbate 20, Citric Acid, Fragrance (Perfume), Green 5 (Ci 61570), Isopropyl Alcohol, Peg-40 Hydrogenated Castor Oil, Peg-6, Ppg-26-Buteth-26, Silybum Marianum Fruit Extract, Sodium Benzoate, Sodium Chloride, Sodium Hydroxide, Trisodium Ethylenediamine Disuccinate, Yellow 5 (Ci 19140), Zinc Gluconate.",
+      "image": "/products/3282779365529.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/328/277/936/5529/front_fr.6.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3282779365529",
+      "cutout": true
+    },
+    {
+      "id": "obf-3282779350655",
+      "code": "3282779350655",
+      "brand": "Avène",
+      "name": "Cleansing Foam",
+      "category": "cleanser",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "aha",
+        "thermalWater",
+        "fragrance",
+        "oilFree"
+      ],
+      "ingredients": "Water (Avène Thermal Spring Water), Sodium Cocoamphoacetate, Disodium Cocoyl Glutamate, Sodium Chloride, Citric Acid, Disodium Edta, Fragrance, Glutamic Acid, Lactic Acid, Propylene Glycol, Sodium Benzoate.",
+      "image": "/products/3282779350655.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/328/277/935/0655/front_fr.9.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3282779350655",
+      "cutout": true
+    },
+    {
+      "id": "obf-3282779002738",
+      "code": "3282779002738",
+      "brand": "Avène",
+      "name": "Cold Cream - crème",
+      "category": "moisturizer",
+      "quantity": "40 ml",
+      "spf": null,
+      "actives": [
+        "thermalWater",
+        "fragrance",
+        "alcohol"
+      ],
+      "ingredients": "MINERAL OIL (PARAF - FINUM LIQUIDUM). AVENE THERMAL SPRING WATER (AVENE AQUA). BEES WAX (CERA ALBA). GLYCERYL STEARATE. CETYL ALCOHOL, BHT. C20-40 PA - RETH-10. CAPRYLYL GLYCOL. CETYL PHOSPHATE. FRAGRANCE (PARFUM). POLYACRYLATE-13. POLYISOBUTENE. POLYSORBATE 20. SODIUM HYDROX - DE. SORBITAN ISOSTEARATE. TRIETHA - NOLAMINE. WATER (AQUA).",
+      "image": "/products/3282779002738.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/328/277/900/2738/front_fr.6.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3282779002738",
+      "cutout": true
+    },
+    {
+      "id": "obf-3282779051514",
+      "code": "3282779051514",
+      "brand": "Avène",
+      "name": "Gentle Milk Cleanser",
+      "category": "cleanser",
+      "quantity": "200 ml",
+      "spf": null,
+      "actives": [
+        "hyaluronic",
+        "thermalWater",
+        "fragrance"
+      ],
+      "ingredients": "Water (Avène Thermal Spring Water), Mineral Oil, Propylene Glycol, Peg-6 Stearate, Peg-32 Stearate, 1,2 Hexanediol, Acrylates/C10-30 Alkyl Acrylate Crosspolymer, C12-20 Alkyl Glucoside, C14-22 Alcohols, Capryl Glycol, Carbomer, Fragrance, Palmitic Acid, Sodium Hyaluronate, Sodium Hydroxide, Stearic Acid.",
+      "image": "/products/3282779051514.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/328/277/905/1514/front_fr.6.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3282779051514",
+      "cutout": true
+    },
+    {
+      "id": "obf-3701129804445",
+      "code": "3701129804445",
+      "brand": "Bioderma",
+      "name": "Créaline Défensive",
+      "category": "moisturizer",
+      "quantity": "40 ml",
+      "spf": null,
+      "actives": [
+        "peptide",
+        "squalane"
+      ],
+      "ingredients": "AQUA/WATER/EAU, GLYCERIN, DICAPRYLYL ETHER, PROPYLHEPTYL CAPRYLATE, BUTYLENE GLYCOL, GLYCERYL STEARATE CITRATE, GLYCOL PALMITATE, SQUALANE, SUCROSE STEARATE, MANGIFERA INDICA (MANGO) SEED BUTTER, PENTYLENE GLYCOL, ACRYLATES/C10-30 ALKYL ACRYLATE CROSSPOLYMER, CAPRYLYL GLYCOL, CARNOSINE, HYDROXYETHYL ACRYLATE/SODIUM ACRYLOYLDIMETHYL TAURATE COPOLYMER, MANNITOL, XYLITOL, TOCOPHEROL, SALVIA MILTIORRHIZA FLOWER/LEAF/ROOT EXTRACT, RHAMNOSE, GLYCINE SOJA (SOYBEAN) OIL, POLYSORBATE 60, SORBITAN ISOSTEARATE, PALMITOYL TETRAPEPTIDE-10. [BI 2012]",
+      "image": "/products/3701129804445.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/370/112/980/4445/front_fr.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3701129804445",
+      "cutout": true
+    },
+    {
+      "id": "obf-3701129802076",
+      "code": "3701129802076",
+      "brand": "Bioderma",
+      "name": "crème ultra apaisant",
+      "category": "moisturizer",
+      "quantity": "500ml",
+      "spf": null,
+      "actives": [
+        "ceramide",
+        "zinc",
+        "alcohol"
+      ],
+      "ingredients": "AQUA/WATER/EAU, GLYCERIN, PARAFFINUM LIQUIDUM/MINERAL OIL/HUILE MINERALE, HELIANTHUS ANNUUS (SUNFLOWER) SEED OIL, BEHENYL ALCOHOL, CANOLA/CANOLA OIL/HUILE DE COLZA, SUCROSE STEARATE, HYDROXYETHYL ACRYLATE/SODIUM ACRYLOYL DIMETHYL TAURATE COPOLYMER, PENTYLENE GLYCOL, PHYTOSTEROLS, XYLITOL, ZINC GLUCONATE, ACRYLATES/C10-30 ALKYL ACRYLATE CROSSPOLYMER, PALMITAMIDE MEA, 12-HEXANEDIOL, CAPRYLYL GLYCOL, SODIUM CITRATE, MANNITOL, RHAMNOSE, SODUIM LAUROYL LACTYLATE, SODIUM HYDROXIDE, POLYSORBATE 60, SORBITAN ISOSTEARATE, TOCOPHEROL, PHYTOSPHINGOSINE, CERAMIDE NP, ETHYLHEXYLGLYCERIN, CERAMIDE AP, CHOLESTEROL, CARBOMER, XANTHAN GUM, FRUCTOOLIGOSACCHARIDES, CAPRALIC/CAPRI TRIGLYCERIDE, LAMINARIA OCHROLEUCA EXTRACT, CERAMIDE EOP. [BI 669]",
+      "image": "/products/3701129802076.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/370/112/980/2076/front_fr.5.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3701129802076",
+      "cutout": true
+    },
+    {
+      "id": "obf-3401578653709",
+      "code": "3401578653709",
+      "brand": "Bioderma",
+      "name": "Sébium gel mousse",
+      "category": "cleanser",
+      "quantity": "200 ml",
+      "spf": null,
+      "actives": [
+        "aha",
+        "fragrance",
+        "oilFree"
+      ],
+      "ingredients": "Aqua/water/eau, sodium cocoamphoacetate, sodium laureth sulfate, methylpropanediol, disodium edta, mannitol, xylitol, rhamnose, fructooligosaccharides, zinc sulfate, copper sulfate, ginkgo biloba leaf extract, peg-90 glyceryl isostearate, lactic acid, laureth-2, potassium sorbate, sodium chloride, propylene glycol, sodium hydroxide, fragrance (parfum). [bi 418]",
+      "image": "/products/3401578653709.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/340/157/865/3709/front_fr.5.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3401578653709",
+      "cutout": true
+    },
+    {
+      "id": "obf-3701129800843",
+      "code": "3701129800843",
+      "brand": "Bioderma",
+      "name": "Sensibio",
+      "category": "moisturizer",
+      "quantity": "500 ml",
+      "spf": null,
+      "actives": [
+        "fragrance",
+        "oilFree"
+      ],
+      "ingredients": "BIODERMA LABORATOIRE DERMATOLOGIQUE Sensibio Gel moussant Nettoyant apaisant micellaire Hydrate Visage et yeux. A rincer Peaux sensibles Soothing micellar cleansing foaming gel Moisturises Face and eyes. Rinse off Sensitive skin NON PARFUME SANS SAVON UNFRAGRANCED SOAP FREE DERMO-BREVETE/DERMO-PATENTED Care first. NAOS 500 ml e 16.7 FL.OZ.",
+      "image": "/products/3701129800843.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/370/112/980/0843/front_fr.12.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3701129800843",
+      "cutout": true
+    },
+    {
+      "id": "obf-3701129809082",
+      "code": "3701129809082",
+      "brand": "Bioderma",
+      "name": "Sensibio H₂O Micellar Water",
+      "category": "cleanser",
+      "quantity": "5 mL",
+      "spf": null,
+      "actives": [
+        "oilFree"
+      ],
+      "ingredients": "Water, PEG-6 Caprylic/Capric Glycerides, Fructooligosaccharides, Mannitol, Xylitol, Rhamnose, Cucumis Sativus (Cucumber) Fruit Extract, Propylene Glycol, Cetrimonium Bromide, Disodium EDTA",
+      "image": "/products/3701129809082.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/370/112/980/9082/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3701129809082",
+      "cutout": true
+    },
+    {
+      "id": "obf-3606000512238",
+      "code": "3606000512238",
+      "brand": "CeraVe",
+      "name": "Acne Foaming Cream Cleanser",
+      "category": "cleanser",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "niacinamide",
+        "hyaluronic",
+        "ceramide",
+        "aha",
+        "oilFree"
+      ],
+      "ingredients": "Benzoyl Peroxide 4%. Water, Glycerin, Propylene Glycol, Cocamidopropyl Hydroxysultaine, Sodium C14-16 Olefin Sulfonate, Xanthan Gum, Potassium Hydroxide, Ceramide Np, Ceramide Ap, Ceramide Eop, Carbomer, Niacinamide, Glycolic Acid, Sodium Chloride, Sodium Citrate, Sodium Hyaluronate, Sodium Lauroyl Lactylate, Sodium Hydroxide, Cholesterol, Phenoxyethanol, Propanediol, Citric Acid, Tetrasodium Edta, Diethylhexyl Sodium Sulfosuccinate, Phytosphingosine, Ethylhexylglycerin, Benzoic Acid.",
+      "image": "/products/3606000512238.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/360/600/051/2238/front_en.4.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3606000512238",
+      "cutout": true
+    },
+    {
+      "id": "obf-0793379245584",
+      "code": "0793379245584",
+      "brand": "CeraVe",
+      "name": "AM Facial Moisturizing Lotion SPF 30",
+      "category": "sunscreen",
+      "quantity": null,
+      "spf": 30,
+      "actives": [
+        "niacinamide",
+        "hyaluronic",
+        "ceramide",
+        "zinc",
+        "alcohol",
+        "mineralUv",
+        "chemicalUv",
+        "oilFree"
+      ],
+      "ingredients": "Homosalate 12%, Octinoxate 7.5%, Octocrylene 2%, Zinc Oxide 3.5%. Purified Water, Niacinamide, Behentrimonium Methosulfate and Cetearyl Alcohol, Glycerin, Aluminum Starch Octenylsuccinate and Boron Nitride, Dimethicone, Ceramide 3, Ceramide 6-II, Ceramide 1, Cholesterol, Hyaluronic Acid, Phytosphingosine, Hydroxyethylcellulose, Disodium EDTA, Sodium Lauroyl Lactylate, Methylparaben, Propylparaben, Carbomer, Xanthan Gum.",
+      "image": "/products/0793379245584.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/079/337/924/5584/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/0793379245584",
+      "cutout": true
+    },
+    {
+      "id": "obf-3606000537583",
+      "code": "3606000537583",
+      "brand": "CeraVe",
+      "name": "CeraVe SA Cream for Rough & Bumpy Skin",
+      "category": "moisturizer",
+      "quantity": "12oz (340 g)",
+      "spf": null,
+      "actives": [
+        "niacinamide",
+        "hyaluronic",
+        "ceramide",
+        "salicylic",
+        "alcohol"
+      ],
+      "ingredients": "aqua/water/eau, glycerin, paraffinum liqui huile minerale, glyceryl stearate, cetearyl alcohol, triethanolamine, salicylic acid, niacinamide, cetyl alcohol, ammonium lactate, behentrimonium methosulfate peg-100 stearate, zea mays oil/corn oil, ceramide np, ceramide ap, ceramide eop carbomer, dimethicone, methylparaben, sodium lauroyl lactylate, cholecalciferol, cholesterol, phenoxyethanol, disodium edta, tocopherol, propylparaben, hydrolyzed hyaluronic acid, phytosphingosine, xanthan gum",
+      "image": "/products/3606000537583.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/360/600/053/7583/front_en.8.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3606000537583",
+      "cutout": true
+    },
+    {
+      "id": "obf-0787734793087",
+      "code": "0787734793087",
+      "brand": "CeraVe",
+      "name": "Foaming Facial Cleanser",
+      "category": "cleanser",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "hyaluronic",
+        "ceramide",
+        "alcohol",
+        "oilFree"
+      ],
+      "ingredients": "Purified Water, Glycerin, Behentrimonium Methosulfate and Cetearyl Alcohol, Ceramide 3, Ceramide 6-II, Ceramide 1, Hyaluronic Acid, Cholesterol, Polyoxyl 40 Stearate, Glyceryl Monostearate, Stearyl Alcohol, Polysorbate 20, Potassium Phosphate, Dipotassium Phosphate, Sodium Lauroyl Lactylate, Cetyl Alcohol, Disodium EDTA, Phytosphingosine, Methylparaben, Propylparaben, Carbomer, Xanthan Gum.",
+      "image": "/products/0787734793087.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/078/773/479/3087/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/0787734793087",
+      "cutout": true
+    },
+    {
+      "id": "obf-3606000534797",
+      "code": "3606000534797",
+      "brand": "CeraVe",
+      "name": "Moisturing Lotion",
+      "category": "moisturizer",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "hyaluronic",
+        "ceramide",
+        "alcohol",
+        "oilFree"
+      ],
+      "ingredients": "aqua/water/eau, glycerin, caprylic/capric triglyceride, cetearyl alcohol, cetyl alcohol, potassium phosphate, ceramide np, ceramide ap, ceramide eop, carbomer, dimethicone, ceteareth-20, behentrimonium methosulfate, methylparaben, sodium lauroyl lactylate, cholesterol, disodium edta, dipotassium phosphate, propylparaben, hydrolyzed hyaluronic acid, phytosphingosine, xanthan gum, polysorbate 20, polyglyceryl-3 diisostearate",
+      "image": "/products/3606000534797.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/360/600/053/4797/front_en.9.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3606000534797",
+      "cutout": true
+    },
+    {
+      "id": "obf-3606000537422",
+      "code": "3606000537422",
+      "brand": "CeraVe",
+      "name": "Moisturizing cream",
+      "category": "moisturizer",
+      "quantity": "453 grams",
+      "spf": null,
+      "actives": [
+        "hyaluronic",
+        "ceramide",
+        "alcohol",
+        "oilFree"
+      ],
+      "ingredients": "AQUA/WATER, GLYCERIN, CETEARYL ALCOHOL, CAPRYLIC, CETEARETH-20, PETROLATUM, POTASSIUM PHOSPHATE, CERAMIDE NP, CERAMIDE AP, CERAMIDE EOP, CARBOMER, DIMETHICONE, BEHENTRIMONIUM METHOSULFATE, SODIUM LAUROYL LACTYLATE, SODIUM HYALURONATE, CHOLESTEROL, PHENOXY-ETHANOL, DISODIUM EDTA, DIPOTASSIUM PHOSPHATE, TOCOPHEROL, PHYTOSPHINGOSINE, XANTHAN GUM, ETHYLHEXYLGLYCERIN.",
+      "image": "/products/3606000537422.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/360/600/053/7422/front_en.5.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3606000537422",
+      "cutout": true
+    },
+    {
+      "id": "obf-3606000537453",
+      "code": "3606000537453",
+      "brand": "CeraVe",
+      "name": "PM Facial Moisturizing Lotion",
+      "category": "moisturizer",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "niacinamide",
+        "hyaluronic",
+        "ceramide",
+        "alcohol",
+        "oilFree"
+      ],
+      "ingredients": "Purified Water, Glycerin, Caprylic/Capric Triglycerides, Niacinamide, Behentrimonium Methosulfate and Cetearyl Alcohol, Ceteareth-20 and Cetearyl Alcohol, Ceramide 3, Ceramide 6-II, Ceramide 1, Phytosphingosine, Hyaluronic Acid, Cholesterol, Dimethicone, Polyglyceryl-3 Diisostearate, Potassium Phosphate, Dipotassium Phosphate, Sodium Lauroyl Lactylate, Disodium EDTA, Methylparaben, Propylparaben, Carbomer, Xanthan Gum.",
+      "image": "/products/3606000537453.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/360/600/053/7453/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3606000537453",
+      "cutout": true
+    },
+    {
+      "id": "obf-3606000537712",
+      "code": "3606000537712",
+      "brand": "CeraVe",
+      "name": "SA Lotion For Rough & Bumpy Skin",
+      "category": "moisturizer",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "hyaluronic",
+        "ceramide",
+        "salicylic",
+        "alcohol"
+      ],
+      "ingredients": "Salicylic Acid, Water, Glycerin, Mineral Oil, Triethanolamine, Glyceryl Stearate, Ammonium Lactate, Peg-100 Stearate, Cetearyl Alcohol, Cetyl Alcohol, Zea Mays (Corn) Oil, Ceramide Np, Ceramide Ap, Ceramide Eop, Carbomer, Behentrimonium Methosulfate, Dimethicone, Methylparaben, Sodium Lauroyl Lactylate, Cholecalciferol, Cholesterol, Disodium Edta, Propylparaben, Hydrolyzed Hyaluronic Acid, Phytosphingosine, Xanthan Gum.",
+      "image": "/products/3606000537712.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/360/600/053/7712/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3606000537712",
+      "cutout": true
+    },
+    {
+      "id": "obf-3337875795456",
+      "code": "3337875795456",
+      "brand": "CeraVe",
+      "name": "SA Smoothing Cleanser",
+      "category": "cleanser",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "niacinamide",
+        "hyaluronic",
+        "ceramide",
+        "salicylic",
+        "oilFree"
+      ],
+      "ingredients": "AQUA/WATER, SODIUM LAUROYL SARCOSINATE. COCAMIDOPROPYL HYDROXYSULTAINE, GLYCERIN, NIACINAMIDE. GLUCONOLACTONE, SODIUM METHYL COCOYL TAURATE, PEG-150 PENTAERYTHRITYL TETRASTEARATE, CERAMIDE NP, CERAMIDE AP, CERAMIDE EOP, CARBOMER, CALCIUM GLUCONATE, SALICYLIC ACID. SODIUM BENZOATE, SODIUM LAUROYL LACTYLATE, CHOLESTEROL. PHENOXYETHANOL, DISODIUM EDTA, TETRASODIUM EDTA, HYALURONIC ACID, PHYTOSPHINGOSINE, XANTHAN GUM, ETHYLHEXYLGLYCERIN.",
+      "image": "/products/3337875795456.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/333/787/579/5456/front_en.14.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3337875795456",
+      "cutout": true
+    },
+    {
+      "id": "obf-8809598451926",
+      "code": "8809598451926",
+      "brand": "COSRX",
+      "name": "Hydrium Triple Hyaluronic Moisturizing Cleanser",
+      "category": "cleanser",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "panthenol",
+        "hyaluronic",
+        "aha",
+        "fragrance",
+        "oilFree"
+      ],
+      "ingredients": "Water, Glycerin, Stearic Acid, Myristic Acid, Lauric Acid, Potassium Hydroxide, Palmitic Acid, Potassium Cocoyl Glycinate, Coco-Glucoside, Glyceryl Stearate, Fragrance (Parfum), Polyquaternium-7, Acrylates/C10-30 Alkyl Acrylate Crosspolymer, Sodium Cocoyl Isethionate, Arachidic Acid, Disodium EDTA, 1,2-Hexanediol, Oleic Acid, Sodium Benzoate, Quillaja Saponaria Bark Extract, Citric Acid, Butylene Gylcol, Panthenol, Hyaluronic Acid, Ethylhexylglycerin, Hydrolyzed Hyaluronic Acid, Sodium Hyaluronate.",
+      "image": "/products/8809598451926.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/880/959/845/1926/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/8809598451926",
+      "cutout": true
+    },
+    {
+      "id": "obf-8809115025937",
+      "code": "8809115025937",
+      "brand": "Klairs",
+      "name": "Gentle Black Deep Cleansing Oil",
+      "category": "cleanser",
+      "quantity": "150 ML",
+      "spf": null,
+      "actives": [
+        "fragrance"
+      ],
+      "ingredients": "Caprylic/Capric Triglyceride, Cetyl Ethylhexanoate, Isononyl Isononanoate, PEG-7 Glyceryl Cocoate, Simmondsia Chinensis (Jojoba) Seed Oil, Isopropyl Myristate, PEG-20 Glyceryl Triisostearate, Polysorbate 20, Ribes Nigrum (Black Currant) Seed Oil , Tocopheryl Acetate, Fragrance, Isopropyl Palmitate, Glycine Max (Soybean) Oil, Sesamum Indicum (Sesame) Seed Oil, Butyrospermum Parkii (Shea) Butter, Vaccinium Macrocarpon (Cranberry) Seed Oil, Carapa Guaianensis Seed Oil, Tocopherol",
+      "image": "/products/8809115025937.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/880/911/502/5937/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/8809115025937",
+      "cutout": true
+    },
+    {
+      "id": "obf-3337872414527",
+      "code": "3337872414527",
+      "brand": "La Roche-Posay",
+      "name": "Anthelios XL 50+ ultra-léger",
+      "category": "sunscreen",
+      "quantity": "50 ml",
+      "spf": null,
+      "actives": [
+        "zinc",
+        "alcohol",
+        "chemicalUv",
+        "oilFree"
+      ],
+      "ingredients": "Aqua / water, diisopropyl sebacate, alcohol denat., glycerin, dimethicone, isohexadecane, butyl methoxydibenzoylmethane, octocrylene, silica, drometrizole trisiloxane, isononyl isononanoate, zea mays starch / corn starch, c12-15 alkyl benzoate, styrene/acrylates copolymer, ethylhexyl triazone, peg-30 dipolyhydroxystearate, bis-ethylhexyloxyphenol methoxyphenyl triazine, isododecane, phenoxyethanol, isopropyl lauroyl sarcosinate, terephthalylidene dicamphor sulfonic acid, silica silylate, lauryl peg/ppg-18/18 methicone, peg-8 laurate, caprylyl glycol, triethanolamine, disteardimonium hectorite, tocopherol, disodium edta, dodecene, propylene carbonate, poloxamer 407, zinc gluconate, perlite",
+      "image": "/products/3337872414527.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/333/787/241/4527/front_fr.6.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3337872414527",
+      "cutout": true
+    },
+    {
+      "id": "obf-3337875545846",
+      "code": "3337875545846",
+      "brand": "La Roche-Posay",
+      "name": "Toleriane Double Repair Face Moisturizer UV SPF 30",
+      "category": "sunscreen",
+      "quantity": null,
+      "spf": 30,
+      "actives": [
+        "niacinamide",
+        "ceramide",
+        "aha",
+        "thermalWater",
+        "alcohol",
+        "chemicalUv",
+        "oilFree"
+      ],
+      "ingredients": "Avobenzone 3% (Sunscreen), Homosalate 5% (Sunscreen), Octisalate 5% (Sunscreen), Octocrylene 7% (Sunscreen) Water (La Roche-Posay Prebiotic Thermal Water), Glycerin, Silica, Dimethicone, Niacinamide, Peg-100 Stearate, Glyceryl Stearate, Stearic Acid, Stearyl Alcohol, Allantoin, Ceramide Np, Dimethicone/Vinyl Dimethicone Crosspolymer, Sodium Hydroxide, Myristic Acid, Myristyl Alcohol, Palmitic Acid, Ammonium Polyacryloyldimethyl Taurate, Disodium Edta, Capryloyl Glycine, Caprylyl Glycol, Citric Acid, Xanthan Gum, T-Butyl Alcohol, Cetyl Alcohol, Tocopherol.",
+      "image": "/products/3337875545846.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/333/787/554/5846/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3337875545846",
+      "cutout": true
+    },
+    {
+      "id": "obf-0688098772469",
+      "code": "0688098772469",
+      "brand": "La Roche-Posay",
+      "name": "Toleriane Hydrating Gentle Face Cleanser",
+      "category": "cleanser",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "panthenol",
+        "niacinamide",
+        "ceramide",
+        "thermalWater",
+        "alcohol",
+        "oilFree"
+      ],
+      "ingredients": "Aqua / Water / Eau (La Roche-Posay Prebiotic Thermal Water), Glycerin, Pentaerythrityl Tetraethylhexanoate, Propylene Glycol, Ammonium Polyacryloyldimethyl Taurate, Polysorbate 60, Ceramide Np, Niacinamide, Sodium Chloride, Coco-Betaine, Disodium Edta, Caprylyl Glycol, Panthenol, T-Butyl Alcohol, Tocopherol.",
+      "image": "/products/0688098772469.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/068/809/877/2469/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/0688098772469",
+      "cutout": true
+    },
+    {
+      "id": "obf-0070501050217",
+      "code": "0070501050217",
+      "brand": "Neutrogena",
+      "name": "Deep Clean Invigorating Foaming Scrub",
+      "category": "cleanser",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "fragrance",
+        "oilFree"
+      ],
+      "ingredients": "Water, Glycerin, Sodium Laureth Sulfate, Cellulose, Lauryl Glucoside, Acrylates/C10-30 Alkyl Acrylate Crosspolymer, Microcrystalline Cellulose, Phenoxyethanol, Fragrance, Synthetic Wax, Methylparaben, Sodium Hydroxide, Menthol, Disodium EDTA, Polyquaternium-7, Sodium Benzotriazolyl Butylphenol Sulfonate, Ultramarines, Blue 1.",
+      "image": "/products/0070501050217.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/007/050/105/0217/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/0070501050217",
+      "cutout": true
+    },
+    {
+      "id": "obf-0070501111505",
+      "code": "0070501111505",
+      "brand": "Neutrogena",
+      "name": "Hydro Boost Gentle Cleansing Lotion",
+      "category": "cleanser",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "hyaluronic",
+        "oilFree"
+      ],
+      "ingredients": "Water, Glycerin, Butylene Glycol, Sodium Hydrolyzed Potato Starch Dodecenylsuccinate, Zea Mays (Corn) Starch, Polysorbate 20, Poloxamer 188, Hydroxyacetophenone, Acrylates/C10-30 Alkyl Acrylate Crosspolymer, PEG-100 Stearate, Glyceryl Stearate, Ethylhexylglycerin, Disodium EDTA, Sodium Polyacrylate, Sodium Hydroxide, Sodium Hyaluronate",
+      "image": "/products/0070501111505.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/007/050/111/1505/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/0070501111505",
+      "cutout": true
+    },
+    {
+      "id": "obf-0070501110478",
+      "code": "0070501110478",
+      "brand": "Neutrogena",
+      "name": "Hydro Boost Water Gel",
+      "category": "moisturizer",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "hyaluronic",
+        "fragrance",
+        "oilFree"
+      ],
+      "ingredients": "Water, Dimethicone, Glycerin, Dimethicone/Vinyl Dimethicone Crosspolymer, Phenoxyethanol, Polyacrylamide, Cetearyl Olivate, Sorbitan Olivate, Dimethiconol, C13-14 Isoparafin, Dimethicone Crosspolymer, Chlorphenesin, Carbomer, Laureth-7, Sodium Hyaluronate, Ethylhexylglycerin, Fragrance, C12-14 Pareth-12, Sodium Hydroxide, Blue 1.",
+      "image": "/products/0070501110478.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/007/050/111/0478/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/0070501110478",
+      "cutout": true
+    },
+    {
+      "id": "obf-3574661338439",
+      "code": "3574661338439",
+      "brand": "Neutrogena",
+      "name": "Pureté Pamplemousse",
+      "category": "cleanser",
+      "quantity": "200ml",
+      "spf": null,
+      "actives": [
+        "vitaminC",
+        "oilFree"
+      ],
+      "ingredients": "Agua, Gycerin, Sodium Laureth Sultate, Lauryl Glucoside, Acrylates/C10-30 Akyt Acrylate Crosspolymer, Citrus Grandis Frult Extract, Propylene Gycol, Sodium Benzotriazoly Butyphenol Sulfonate, Disodium EDTA, Ctric Acid, Sodium Hydroxide, Sodium Ascorbyl Phosphate, Sodum Berzoate, Partum, Cl 16035, CI 60725. [PR-0000651]",
+      "image": "/products/3574661338439.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/357/466/133/8439/front_fr.6.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3574661338439",
+      "cutout": true
+    },
+    {
+      "id": "obf-0070501112618",
+      "code": "0070501112618",
+      "brand": "Neutrogena",
+      "name": "Skin Balancing Clay Cleanser",
+      "category": "cleanser",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "aha",
+        "fragrance",
+        "mineralUv",
+        "oilFree"
+      ],
+      "ingredients": "Water, Glycerin, Kaolin, Bentonite, Sodium Methyl Cocoyl Taurate, Gluconolactone, Citric Acid, Sodium Hydroxide, Sodium Benzoate, Xanthan Gum, Fragrance, Sodium Citrate, Disodium EDTA, Titanium Dioxide.",
+      "image": "/products/0070501112618.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/007/050/111/2618/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/0070501112618",
+      "cutout": true
+    },
+    {
+      "id": "obf-0070501112601",
+      "code": "0070501112601",
+      "brand": "Neutrogena",
+      "name": "Skin Balancing Gel Cleanser",
+      "category": "cleanser",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "aloe",
+        "fragrance",
+        "oilFree"
+      ],
+      "ingredients": "Water, Sodium C14-16 Olefin Sulfonate, Cocamidopropyl Hydroxysultaine, Sorbitol, Gluconolactone, Sodium Benzoate, Sodium Hydroxide, Potassium Acrylates Copolymer, Disodium EDTA, Fragrance, Glycerin, Aloe Barbadensis Leaf Extract.",
+      "image": "/products/0070501112601.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/007/050/111/2601/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/0070501112601",
+      "cutout": true
+    },
+    {
+      "id": "obf-0070501112625",
+      "code": "0070501112625",
+      "brand": "Neutrogena",
+      "name": "Skin Balancing Milky Cleanser",
+      "category": "cleanser",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "fragrance"
+      ],
+      "ingredients": "Water, Helianthus Annuus (Sunflower) Seed Oil, Glycerin, Gluconolactone, Glyceryl Stearate, PEG-100 Stearate, Sorbitol, Sodium Acrylates Copolymer, Carbomer, Sodium Hydroxide, PEG-40 Hydrogenated Castor Oil, Persea Gratissima (Avocado) Oil, Caprylyl Glycol, Fragrance, Lecithin, Sodium Citrate, p-Anisic Acid, Chlorphenesin, Allantoin.",
+      "image": "/products/0070501112625.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/007/050/111/2625/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/0070501112625",
+      "cutout": true
+    },
+    {
+      "id": "obf-0070501872963",
+      "code": "0070501872963",
+      "brand": "Neutrogena",
+      "name": "Ultra Gentle Hydrating Cleanser",
+      "category": "cleanser",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "alcohol",
+        "oilFree"
+      ],
+      "ingredients": "Water, Glycerin, Cetearyl Alcohol, Polyglyceryl-10 Laurate, Ethylhexylglycerin, Cetearyl Glucoside, Caprylyl Glycol, Carbomer, Sodium Hydroxide, Phenoxyethanol.",
+      "image": "/products/0070501872963.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/007/050/187/2963/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/0070501872963",
+      "cutout": true
+    },
+    {
+      "id": "obf-2000000152356",
+      "code": "2000000152356",
+      "brand": "Paula's Choice",
+      "name": "Skin Perfecting 6% Mandelic Acid + 2% Lactic Acid Liquid Exfoliant",
+      "category": "exfoliant",
+      "quantity": "3 fl. oz",
+      "spf": null,
+      "actives": [
+        "aha",
+        "oilFree"
+      ],
+      "ingredients": "Water, 2,3-Butanediol, Mandelic Acid,Lactic Acid,Sodium Hydroxide, Myrica Cerifera (Bayberry) Fruit Extract, Akebia Quinata (Chocolate Vine) Stem Extract, Prunus Lannesiana (Cherry Blossom) Flower Extract, Lactobacillus Ferment Lysate, Saccharomyces Lysate, Achillea Millefolium Extract, Saccharide Isomerate, Arginine, Hydroxyacetophenone, Butylene Glycol, Sodium Phytate, Pentylene Glycol, Xanthan Gum, Citric Acid, Sodium Citrate, 1, 2-Hexanediol, Caprylyl Glycol, Sodium Benzoate",
+      "image": "/products/2000000152356.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/200/000/015/2356/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/2000000152356",
+      "cutout": true
+    },
+    {
+      "id": "obf-8809925175372",
+      "code": "8809925175372",
+      "brand": "Sulwhasoo",
+      "name": "Concentrated Ginseng Rejuvenating Cream Rich",
+      "category": "moisturizer",
+      "quantity": "5 mL",
+      "spf": null,
+      "actives": [
+        "hyaluronic",
+        "salicylic",
+        "retinol",
+        "vitaminC",
+        "peptide",
+        "squalane",
+        "fragrance",
+        "alcohol"
+      ],
+      "ingredients": "WATER/ AQUA / EAU, GLYCERIN, SQUALANE, BUTYLENE GLYCOL, TREHALOSE, LIMNANTHES ALBA (MEADOWFOAM) SEED OIL, CAPRYLYL METHICONE, GLYCERYL STEARATE, DIMETHICONE, PHYTOSTERYL ISOSTEARYL DIMER DILINOLEATE, OCTYLDODECYL MYRISTATE, PEG-40 STEARATE, PHYTOSTERYL/BEHENYL/OCTYLDODECYL LAUROYL GLUTAMATE, HELIANTHUS ANNUUS (SUNFLOWER) SEED OIL, JOJOBA ESTERS, PALMITIC ACID, PEG-100 STEARATE, STEARIC ACID, PROPANEDIOL, METHOXY PEG - 114/POLYEPSILON CAPROLACTONE, MANGIFERA INDICA (MANGO) SEED BUTTER, POLYACRYLATE-13, CETEARYL ALCOHOL, GLYCINE SOJA (SOYBEAN) OIL, PHENOXYETHANOL, PEG-30 DIPOLYHYDROXYSTEARATE, CETYL PEG/PPG-10/1 DIMETHICONE, FRAGRANCE / PARFUM, HYDROGENATED VEGETABLE OIL, PROPYLENE GLYCOL, GLYCINE SOJA (SOYBEAN) STEROLS, POLYISOBUTENE, ACETYL GLUCOSAMINE, PANAX GINSENG ROOT EXTRACT, POLYQUATERNIUM-51, TOCOPHEROL, COPERNICIA CERIFERA (CARNAUBA) WAX / COPERNICIA CERIFERA CERA / CIRE DE CARNAUBA, TOCOPHERYL LINOLEATE, HYDROLYZED GINSENG SAPONINS, HEXYL LAURATE, PERSEA GRATISSIMA (AVOCADO) OIL, PANTETHINE, SALICYLIC ACID, LAURYL PEG/PPG-18/18 METHICONE, ETHYLHEXYLGLYCERIN, GARDENIA FLORIDA FRUIT EXTRACT, VITIS VINIFERA (GRAPE) LEAF EXTRACT, POLYSORBATE 20, LINALOOL, SORBITAN ISOSTEARATE, 1,2-HEXANEDIOL, BETA - GLUCAN, RETINOL, SODIUM METAPHOSPHATE, DEXTRIN, DIMETHICONOL, SODIUM HYALURONATE, PHYTOSPHINGOSINE, MANNITOL, LIMONENE, ISOSTEARYL ALCOHOL, SODIUM CHLORIDE, ASCORBYL PALMITATE, HYDROGENATED VEGETABLE GLYCERIDES CITRATE, REHMANNIA GLUTINOSA ROOT EXTRACT, PAEONIA LACTIFLORA ROOT EXTRACT, PANAX GINSENG FLOWER EXTRACT, POLYGONATUM ODORATUM RHIZOME EXTRACT, ALPHA-ISOMETHYL IONONE, LECITHIN, NELUMBO NUCIFERA FLOWER EXTRACT, LILIUM TIGRINUM BULB EXTRACT, TBHQ, CAPRYLYL GLYCOL, ACETYL HEPTAPEPTIDE-4, PENTAERYTHRITYL TETRA-DI - T-BUTYL HYDROXYHYDROCINNAMATE, ACETYL TETRAPEPTIDE-11, HEXAPEPTIDE-9, ACETYL HEXAPEPTIDE-8, SODIUM HYDROXIDE, ACETYL OCTAPEPTIDE-3",
+      "image": "/products/8809925175372.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/880/992/517/5372/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/8809925175372",
+      "cutout": true
+    },
+    {
+      "id": "obf-0769915195712",
+      "code": "0769915195712",
+      "brand": "The Ordinary",
+      "name": "Caffeine Solution",
+      "category": "serum",
+      "quantity": "30 mL",
+      "spf": null,
+      "actives": [
+        "hyaluronic",
+        "aha",
+        "alcohol",
+        "oilFree"
+      ],
+      "ingredients": "AQUA (WATER) CAFFEINE, MALTODEXTRIN, GLYCERIN, PROPANEDIOL, EPIGALLOCATECHIN, GALLATYL GLUCOSIDE, GALLYL GLUCOSIDE, HYALURONIC ACID, OXIDIZED GLUTATHIONE, MELANIN, GLYCINE SOJA (SOYBEAN) SEED EXTRACT, PENTYLENE GLYCOL, HYDROXYETHYLCELLULOSE, POLYACRYLATE CROSSPOLYMER-6, XANTHAN GUM, LACTIC ACID, DEHYDROACETIC ACID, TRISODIUM ETHYLENEDIAMINE DISUCCINATE, PROPYL GALLATE, DIMETHYL ISOSORBIDE, BENZYL ALCOHOL, 1.2 - HEXANEDIOL, ETHYLHEXYLGLYCERIN, PHENOXYETHANOL, CAPRYLYL, GLYCOL.",
+      "image": "/products/0769915195712.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/076/991/519/5712/front_en.6.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/0769915195712",
+      "cutout": true
+    },
+    {
+      "id": "obf-0769915190731",
+      "code": "0769915190731",
+      "brand": "The Ordinary",
+      "name": "Natural Moisturizing Factors + HA",
+      "category": "moisturizer",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "hyaluronic",
+        "aha",
+        "alcohol",
+        "oilFree"
+      ],
+      "ingredients": "Aqua (Water), Caprylic/Capric Triglyceride, Cetyl Alcohol, Propanediol, Stearyl Alcohol, Glycerin, Sodium Hyaluronate, Arginine, Aspartic Acid, Glycine, Alanine, Serine, Valine, Isoleucine, Proline, Threonine, Histidine, Phenylalanine, Glucose, Maltose, Fructose, Trehalose, Sodium Pca, Pca, Sodium Lactate, Urea, Allantoin, Linoleic Acid, Oleic Acid, Phytosteryl Canola Glycerides, Palmitic Acid, Stearic Acid, Lecithin, Triolein, Tocopherol, Carbomer, Isoceteth-20, Polysorbate 60, Sodium Chloride, Citric Acid, Trisodium Ethylenediamine Disuccinate, Pentylene Glycol, Triethanolamine, Sodium Hydroxide, Phenoxyethanol, Chlorphenesin.",
+      "image": "/products/0769915190731.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/076/991/519/0731/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/0769915190731",
+      "cutout": true
+    },
+    {
+      "id": "obf-3337875674997",
+      "code": "3337875674997",
+      "brand": "Vichy",
+      "name": "Mineral micellar water",
+      "category": "cleanser",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "thermalWater",
+        "oilFree"
+      ],
+      "ingredients": "aire me изготовлено во франции, pais de origen: francia, distribution reserved for approved depositaries vichy, distribution reserved to agreed vichy suppliers, london w6 8az изготовитель: косметик актив продюксьон, z1 de vichy rhue, 03300 creuzier-le-vieux, 7 франция, адрес в россии&quot;: ао лореаль, 119180, , москва, 4 й голутвинский пер, a, 18, стр, 1-2 &quot;уполномоченный представитель marotobmtear/hminoptep, годен до: см, на упоковке, pzn: 15211234 cn:159217,0",
+      "image": "/products/3337875674997.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/333/787/567/4997/front_en.10.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3337875674997",
+      "cutout": true
+    },
+    {
+      "id": "obf-3337875674942",
+      "code": "3337875674942",
+      "brand": "Vichy",
+      "name": "Pureté Thermale Mineral Micellar Water for Sensitive Skin",
+      "category": "cleanser",
+      "quantity": null,
+      "spf": null,
+      "actives": [
+        "panthenol",
+        "fragrance",
+        "oilFree"
+      ],
+      "ingredients": "Aqua, Hexylene Glycol, Glycerin, Sodium Cocoamphoacetate, Sodium Chloride, Poloxamer 184, Disodium Edta, Panthenol, Myrtrimonium Bromide, Parfum.",
+      "image": "/products/3337875674942.png",
+      "imageSource": "https://images.openbeautyfacts.org/images/products/333/787/567/4942/front_en.3.400.jpg",
+      "source": "https://world.openbeautyfacts.org/product/3337875674942",
+      "cutout": true
+    }
+  ]
+}

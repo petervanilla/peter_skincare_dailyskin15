@@ -72,7 +72,7 @@ export function computeDailySkinScore(s: SubScores): number {
 export function computeSkinAgeIndex(score: number, survey: Survey | null): number {
   const baseline = survey?.age ?? DEFAULT_BASELINE_AGE;
   const delta = (75 - score) * 0.3;
-  return Math.max(18, Math.round(baseline + delta));
+  return Math.max(10, Math.round(baseline + delta));
 }
 
 export interface Delta {

@@ -6,8 +6,15 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatedNumber } from "@/components/AnimatedNumber";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
+import { CheckInSheet } from "@/components/CheckInSheet";
+import { CoachCard } from "@/components/CoachCard";
 import { HeroCover } from "@/components/HeroCover";
 import { Icon } from "@/components/Icon";
+import { ProductImage } from "@/components/ProductTile";
+import { haptic } from "@/lib/haptics";
+import { recommendProducts } from "@/lib/matching";
+import { buildInsights } from "@/lib/insights";
+import { isReminderDue, maybeNotifyOnce } from "@/lib/reminder";
 import { buildCarePlan } from "@/lib/recommendations";
 import { currentStreak, latestRecord, previousRecord, scoreDelta } from "@/lib/scoring";
 import { useStore } from "@/lib/store";
@@ -15,12 +22,20 @@ import { CHALLENGE_LENGTH } from "@/lib/types";
 
 /** Main Dashboard (spec §8) — ported from design/screens/05-hero-dashboard. */
 export default function TodayPage() {
-  const { state, hydrated, nextDay } = useStore();
+  const { state, hydrated, nextDay, setCheckIn, cycleComplete } = useStore();
   const router = useRouter();
 
   useEffect(() => {
-    if (hydrated && !state.survey) router.replace("/");
-  }, [hydrated, state.survey, router]);
+    if (!hydrated) return;
+    if (!state.user) router.replace("/login");
+    else if (!state.survey) router.replace("/");
+  }, [hydrated, state.user, state.survey, router]);
+
+  const reminderDue = hydrated && isReminderDue(state.settings, state.records);
+
+  useEffect(() => {
+    if (reminderDue) maybeNotifyOnce("DailySkin 15", "오늘 촬영 시간이에요. 같은 자리에서 30초!");
+  }, [reminderDue]);
 
   if (!hydrated) return <div className="p-margin-main">불러오는 중…</div>;
 
@@ -33,12 +48,18 @@ export default function TodayPage() {
   const capturedToday = today?.date === new Date().toISOString().slice(0, 10);
   /** No record at all yet — the very first visit after onboarding. */
   const isFirstEver = !today;
+  const experiment = state.experiment;
+  const insights = buildInsights(state.records, experiment);
 
   return (
     <div className="min-h-dvh pb-32">
       <AppHeader />
 
       <NewsTicker />
+
+      {reminderDue && !capturedToday ? (
+        <ReminderBanner time={state.settings.reminderTime} />
+      ) : null}
 
       <main className="px-margin-main">
         {/* Day tracker */}
@@ -114,15 +135,81 @@ export default function TodayPage() {
 
         {/* Primary actions */}
         <section className="flex flex-col gap-4">
-          <Link
-            href="/scan"
-            className={`shiny-button lavender-glow flex w-full items-center justify-center gap-2 rounded-full bg-tertiary-fixed py-4 font-label-bold text-label-bold text-on-tertiary-fixed shadow-md transition-all hover:opacity-90 active:scale-95 ${
-              isFirstEver ? "pulse-cta" : ""
-            }`}
-          >
-            <Icon name="center_focus_strong" />
-            {capturedToday ? "촬영하기" : isFirstEver ? "첫 기록 남기고 시작하기" : "오늘의 피부 기록하기"}
-          </Link>
+          {cycleComplete ? (
+            <>
+              <Link
+                href="/report"
+                className="shiny-button lavender-glow flex w-full items-center justify-center gap-2 rounded-full bg-primary py-4 font-label-bold text-label-bold text-pure-white shadow-md transition-all hover:opacity-90 active:scale-95"
+              >
+                <Icon name="summarize" />
+                15일 리포트 보기
+              </Link>
+              <Link
+                href="/scan"
+                className="-mt-2 flex items-center justify-center gap-1 py-1 font-label-sm text-label-sm text-on-surface-variant transition-colors hover:text-primary"
+              >
+                <Icon name="photo_camera" size={14} />
+                다시 촬영
+              </Link>
+            </>
+          ) : (
+            <Link
+              href="/scan"
+              onClick={() => haptic("tap")}
+              className={`shiny-button lavender-glow flex w-full items-center justify-center gap-2 rounded-full bg-tertiary-fixed py-4 font-label-bold text-label-bold text-on-tertiary-fixed shadow-md transition-all hover:opacity-90 active:scale-95 ${
+                isFirstEver ? "pulse-cta" : ""
+              }`}
+            >
+              <Icon name="center_focus_strong" />
+              {capturedToday ? "촬영하기" : isFirstEver ? "첫 기록 남기고 시작하기" : "오늘의 피부 기록하기"}
+            </Link>
+          )}
+
+          {/* One-variable experiment — the deck's "Skin Experiment Platform" */}
+          {experiment ? (
+            <Link
+              href="/experiment"
+              className="flex items-center gap-3 rounded-2xl border border-tertiary-fixed-dim/50 bg-tertiary-fixed/40 px-4 py-3 transition-colors hover:bg-tertiary-fixed active:bg-tertiary-fixed"
+            >
+              <Icon name="science" size={20} className="text-tertiary-container" />
+              <p className="min-w-0 flex-1 truncate font-label-bold text-label-bold text-on-tertiary-fixed">
+                실험 중: {experiment.title}
+                <span className="font-label-sm text-label-sm text-on-tertiary-fixed/70">
+                  {" "}
+                  · Day {experiment.startDay}부터
+                </span>
+              </p>
+              <Icon name="chevron_right" size={20} className="text-tertiary-container" />
+            </Link>
+          ) : (
+            <Link
+              href="/experiment"
+              className="flex items-center gap-4 rounded-[24px] bg-tertiary-fixed p-5 text-on-tertiary-fixed transition-colors hover:bg-tertiary-fixed-dim active:bg-tertiary-fixed-dim"
+            >
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-pure-white/60 text-tertiary-container">
+                <Icon name="science" size={26} />
+              </div>
+              <div className="min-w-0 flex-1 break-keep">
+                <h3 className="font-label-bold text-label-bold">이번 15일, 무엇을 실험할까요?</h3>
+                <p className="mt-0.5 font-label-sm text-label-sm text-on-tertiary-fixed/70">
+                  한 번에 하나만 바꿔야 무엇이 효과였는지 알 수 있어요.
+                </p>
+              </div>
+              <Icon name="chevron_right" className="text-tertiary-container" />
+            </Link>
+          )}
+
+          {today && capturedToday ? (
+            <CheckInSheet
+              record={today}
+              experiment={experiment}
+              onChange={(patch) => setCheckIn(today.day, patch)}
+            />
+          ) : null}
+
+          <CoachCard insights={insights} limit={2} showMoreLink />
+
+          {today ? <TodayPick survey={state.survey} record={today} /> : null}
 
           <Link
             href="/routine"
@@ -151,6 +238,31 @@ export default function TodayPage() {
       </main>
 
       <BottomNav />
+    </div>
+  );
+}
+
+/**
+ * Same-time reminder, shown only while it is due (settings on, time passed,
+ * nothing captured today). The banner is the web stand-in for a push.
+ */
+function ReminderBanner({ time }: { time: string }) {
+  return (
+    <div className="sheet-up mx-margin-main mt-4 flex items-center gap-3 rounded-2xl bg-primary p-4 text-pure-white shadow-[0_8px_24px_rgba(0,67,57,0.25)]">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-pure-white/15">
+        <Icon name="notifications_active" filled size={20} />
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="font-label-bold text-label-bold">오늘 촬영 시간이에요 · {time}</p>
+        <p className="font-label-sm text-label-sm text-pure-white/75">같은 자리, 같은 조명으로 30초</p>
+      </div>
+      <Link
+        href="/scan"
+        onClick={() => haptic("tap")}
+        className="shrink-0 rounded-full bg-pure-white px-4 py-2 font-label-bold text-label-bold text-primary"
+      >
+        지금 찍기
+      </Link>
     </div>
   );
 }
@@ -318,5 +430,53 @@ function DayStrip({
         );
       })}
     </div>
+  );
+}
+
+/** One product matched to today's indices — the shortest path from score to shelf. */
+function TodayPick({
+  survey,
+  record,
+}: {
+  survey: Parameters<typeof recommendProducts>[0];
+  record: NonNullable<Parameters<typeof recommendProducts>[1]>;
+}) {
+  const pick = recommendProducts(survey, record, { limit: 1 })[0];
+  if (!pick) return null;
+  return (
+    <section className="rounded-[24px] bg-pure-white p-4 shadow-[0_4px_20px_rgba(46,104,93,0.05)]">
+      <div className="mb-3 flex items-center justify-between">
+        <div className="flex items-center gap-1.5 text-tertiary-container">
+          <Icon name="auto_awesome" size={14} filled />
+          <span className="font-label-sm text-[10px] font-bold tracking-[0.18em] uppercase">
+            오늘의 매칭 제품
+          </span>
+        </div>
+        <Link
+          href="/shop"
+          onClick={() => haptic("tap")}
+          className="font-label-sm text-label-sm text-primary"
+        >
+          더 보기
+        </Link>
+      </div>
+      <Link
+        href={`/shop?product=${pick.product.id}`}
+        onClick={() => haptic("tap")}
+        className="flex items-center gap-3"
+      >
+        <ProductImage product={pick.product} sizes="56px" className="h-14 w-14 shrink-0 rounded-xl" />
+        <div className="min-w-0 flex-1">
+          <p className="font-label-sm text-[10px] tracking-wide text-on-surface-variant uppercase">
+            {pick.product.brand}
+          </p>
+          <p className="line-clamp-1 font-label-bold text-label-bold text-on-surface">
+            {pick.product.name}
+          </p>
+          <p className="line-clamp-2 font-label-sm text-label-sm text-primary">{pick.reason}</p>
+        </div>
+        <Icon name="chevron_right" className="shrink-0 text-on-surface-variant" />
+      </Link>
+    </section>
   );
 }

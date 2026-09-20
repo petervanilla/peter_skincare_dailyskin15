@@ -117,6 +117,58 @@ export interface DayRecord {
   /** Self-reported context for the day, used by the recommendation rules. */
   sunExposure?: boolean;
   completedActions: string[];
+  /**
+   * Daily check-in (deck "Routine + Product History"). Each is a tri-state:
+   * undefined = not answered, true/false = answered. The Response Graph and
+   * Skin Coach only reason over answered days.
+   */
+  routineDone?: boolean;
+  /** Whether today's routine included the variable under experiment. */
+  experimentApplied?: boolean;
+  /** "얼굴 만지지 않기" habit — the No-Touch streak on Progress. */
+  noTouch?: boolean;
+}
+
+/** What the user is changing for this 15-day cycle — one variable only. */
+export type ExperimentKind =
+  | "add-product"
+  | "remove-product"
+  | "routine-change"
+  | "habit"
+  | "observe";
+
+export interface Experiment {
+  id: string;
+  kind: ExperimentKind;
+  /** Short, user-facing name. e.g. "논코메도제닉 선크림 추가" */
+  title: string;
+  /** Day (1–15) the variable was introduced. 1 = from the very start. */
+  startDay: number;
+  /** Which of the four indices the user expects to move. */
+  target?: keyof Omit<SubScores, "captureConsistency">;
+  createdAt: string;
+}
+
+export const EXPERIMENT_KIND_LABELS: Record<ExperimentKind, string> = {
+  "add-product": "제품 1개 추가",
+  "remove-product": "제품 1개 빼기",
+  "routine-change": "루틴 순서/시간 바꾸기",
+  habit: "생활 습관 하나 바꾸기",
+  observe: "아무것도 바꾸지 않고 관찰만",
+};
+
+/**
+ * A finished 15-day cycle, kept so Skin Memory outlives a single challenge.
+ * Photo keys stay valid as long as the IndexedDB store is not cleared.
+ */
+export interface CompletedCycle {
+  id: string;
+  startedAt: string;
+  completedAt: string;
+  experiment: Experiment | null;
+  records: DayRecord[];
+  scoreStart: number;
+  scoreEnd: number;
 }
 
 /** A cover photo the user picked for the dashboard, framed by hand. */
@@ -128,7 +180,59 @@ export interface HeroPhoto {
   y: number;
 }
 
+/** Sign-in providers the login sheet offers. Auth is mocked locally in MVP. */
+export type AuthProvider = "google" | "apple" | "kakao" | "email" | "guest";
+
+export interface User {
+  id: string;
+  provider: AuthProvider;
+  name: string;
+  email?: string;
+  /** Remote avatar URL from the provider, if any. */
+  avatarUrl?: string;
+  signedInAt: string;
+}
+
+export const PROVIDER_LABELS: Record<AuthProvider, string> = {
+  google: "Google",
+  apple: "Apple",
+  kakao: "카카오",
+  email: "이메일",
+  guest: "게스트",
+};
+
+/** User preferences edited on /settings. */
+export interface Settings {
+  /** Same-time capture reminder — the single biggest completion lever. */
+  reminderEnabled: boolean;
+  /** "HH:MM", 24h. */
+  reminderTime: string;
+  /** 0 = Sunday … 6 = Saturday. */
+  reminderDays: number[];
+  /** Fill the ring and shoot automatically once the frame is stable. */
+  autoCapture: boolean;
+  /** Show the previous day's photo over the camera by default. */
+  ghostOverlay: boolean;
+  /** Light vibration on taps where the platform supports it. */
+  haptics: boolean;
+  /** Collapse decorative motion (also honours prefers-reduced-motion). */
+  reduceMotion: boolean;
+}
+
+export const DEFAULT_SETTINGS: Settings = {
+  reminderEnabled: false,
+  reminderTime: "21:00",
+  reminderDays: [0, 1, 2, 3, 4, 5, 6],
+  autoCapture: true,
+  ghostOverlay: true,
+  haptics: true,
+  reduceMotion: false,
+};
+
 export interface AppState {
+  /** null until the user passes the login screen (guest counts as a user). */
+  user: User | null;
+  settings: Settings;
   survey: Survey | null;
   onboardedAt: string | null;
   records: DayRecord[];
@@ -138,6 +242,12 @@ export interface AppState {
   heroPhoto: HeroPhoto | null;
   /** IndexedDB key for a user-uploaded profile photo; null uses the stock avatar. */
   avatarPhotoKey: string | null;
+  /** The single variable being tested in the current cycle, if any. */
+  experiment: Experiment | null;
+  /** Earlier cycles, newest last. */
+  cycles: CompletedCycle[];
+  /** Invite code of the friends challenge the user joined or created. */
+  inviteCode: string | null;
 }
 
 export const DEFAULT_BASELINE_AGE = 28;

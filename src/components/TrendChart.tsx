@@ -23,17 +23,48 @@ function valueFor(p: Point, key: SeriesKey) {
   return key === "score" ? p.dailySkinScore : p.subScores[key];
 }
 
+/** Polyline length in viewBox units — feeds the CSS draw-in without a DOM measure. */
+function polylineLength(pts: Array<[number, number]>) {
+  let len = 0;
+  for (let i = 1; i < pts.length; i++) {
+    len += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+  }
+  return Math.max(1, Math.ceil(len));
+}
+
 /**
  * Merges the old single-line score chart and the 4-line sub-score chart into
  * one: the overall score keeps its area-fill "anchor" treatment, the 4
  * indicators keep their own colored lines, and hovering (or tapping, for
  * touch) a legend chip isolates just that line.
  */
-export function TrendChart({ records }: { records: Point[] }) {
+interface TrendChartProps {
+  records: Point[];
+  /** Day the experiment variable was introduced — drawn as a dashed marker. */
+  experimentStartDay?: number;
+  experimentTitle?: string;
+  /**
+   * Routine check-in per day. `false` renders that day's score dot hollow so
+   * off-days are visible on the line — the "Response Graph" from the deck.
+   */
+  routineDays?: Record<number, boolean | undefined>;
+}
+
+export function TrendChart({
+  records,
+  experimentStartDay,
+  experimentTitle,
+  routineDays,
+}: TrendChartProps) {
   const [focused, setFocused] = useState<SeriesKey | null>(null);
   const width = 320;
   const height = 170;
   const pad = 16;
+  const hasExperiment =
+    experimentStartDay !== undefined &&
+    experimentStartDay >= 1 &&
+    experimentStartDay <= CHALLENGE_LENGTH;
+  const hasRoutineData = routineDays ? Object.values(routineDays).some((v) => v !== undefined) : false;
 
   if (records.length < 2) {
     return (
@@ -78,10 +109,34 @@ export function TrendChart({ records }: { records: Point[] }) {
           style={{ transition: "opacity 200ms ease" }}
         />
 
+        {hasExperiment ? (
+          <g aria-label={experimentTitle ? `실험 시작: ${experimentTitle}` : "실험 시작"}>
+            <line
+              x1={xs(experimentStartDay)}
+              x2={xs(experimentStartDay)}
+              y1={pad - 4}
+              y2={height - pad}
+              stroke="#cbbeff"
+              strokeWidth="1.5"
+              strokeDasharray="4 3"
+            />
+            <text
+              x={xs(experimentStartDay) + 4}
+              y={pad + 2}
+              fontSize="8"
+              fill="#544594"
+              fontWeight="600"
+            >
+              실험 시작
+            </text>
+          </g>
+        ) : null}
+
         {SERIES.map((s) => {
-          const path = records
-            .map((r, i) => `${i === 0 ? "M" : "L"} ${xs(r.day)} ${ys(valueFor(r, s.key))}`)
-            .join(" ");
+          const pts = records.map(
+            (r) => [xs(r.day), ys(valueFor(r, s.key))] as [number, number],
+          );
+          const path = pts.map(([x, y], i) => `${i === 0 ? "M" : "L"} ${x} ${y}`).join(" ");
           const dimmed = focused !== null && focused !== s.key;
           return (
             <g key={s.key} opacity={dimmed ? 0.12 : 1} style={{ transition: "opacity 200ms ease" }}>
@@ -91,16 +146,25 @@ export function TrendChart({ records }: { records: Point[] }) {
                 stroke={s.color}
                 strokeWidth={s.key === "score" ? 3 : 2.5}
                 strokeLinecap="round"
+                className="draw-line"
+                style={{ "--draw-len": polylineLength(pts) } as React.CSSProperties}
               />
-              {records.map((r) => (
-                <circle
-                  key={r.day}
-                  cx={xs(r.day)}
-                  cy={ys(valueFor(r, s.key))}
-                  r={s.key === "score" ? 3.5 : 3}
-                  fill={s.color}
-                />
-              ))}
+              {records.map((r, i) => {
+                const hollow = s.key === "score" && routineDays?.[r.day] === false;
+                return (
+                  <circle
+                    key={r.day}
+                    cx={xs(r.day)}
+                    cy={ys(valueFor(r, s.key))}
+                    r={s.key === "score" ? 3.5 : 3}
+                    fill={hollow ? "#ffffff" : s.color}
+                    stroke={s.color}
+                    strokeWidth={hollow ? 2 : 0}
+                    className="dot-in"
+                    style={{ animationDelay: `${120 + i * 40}ms` }}
+                  />
+                );
+              })}
             </g>
           );
         })}
@@ -127,6 +191,27 @@ export function TrendChart({ records }: { records: Point[] }) {
           </button>
         ))}
       </div>
+
+      {hasRoutineData || hasExperiment ? (
+        <p className="mt-2 flex flex-wrap gap-x-3 gap-y-1 font-label-sm text-[11px] text-on-surface-variant">
+          {hasRoutineData ? (
+            <>
+              <span className="flex items-center gap-1">
+                <span className="h-2 w-2 rounded-full bg-primary" /> 루틴한 날
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="h-2 w-2 rounded-full border-2 border-primary bg-pure-white" /> 루틴 건너뛴 날
+              </span>
+            </>
+          ) : null}
+          {hasExperiment ? (
+            <span className="flex items-center gap-1">
+              <span className="h-3 w-0 border-l-2 border-dashed border-tertiary-fixed-dim" /> 실험 시작
+              {experimentTitle ? ` · ${experimentTitle}` : ""}
+            </span>
+          ) : null}
+        </p>
+      ) : null}
     </div>
   );
 }

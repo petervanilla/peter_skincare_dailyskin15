@@ -1,20 +1,35 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { withBase } from "@/lib/assets";
 import { useStore } from "@/lib/store";
 
 /**
  * App entry. Shows the loading splash briefly, then hands off straight to
  * the survey for new users or the dashboard for returning ones — no
  * separate landing/hero screen in between.
+ *
+ * Signed-out users go to /login first. `/?demo=12` (any 1–15) replaces local
+ * state with the deterministic demo data (which includes a demo user) and
+ * lands on the dashboard — the deck's "Live Demo" link.
  */
 const SPLASH_MS = 2000;
 
 export default function EntryPage() {
-  const { state, hydrated } = useStore();
+  return (
+    <Suspense fallback={<Splash />}>
+      <Entry />
+    </Suspense>
+  );
+}
+
+function Entry() {
+  const { state, hydrated, loadDemo } = useStore();
   const router = useRouter();
+  const params = useSearchParams();
+  const demoParam = params.get("demo");
   const [splashDone, setSplashDone] = useState(false);
 
   useEffect(() => {
@@ -24,8 +39,18 @@ export default function EntryPage() {
 
   useEffect(() => {
     if (!splashDone || !hydrated) return;
+    if (demoParam !== null) {
+      const days = Number.parseInt(demoParam, 10);
+      loadDemo(Number.isFinite(days) && days > 0 ? days : 12);
+      router.replace("/today");
+      return;
+    }
+    if (!state.user) {
+      router.replace("/login");
+      return;
+    }
     router.replace(state.survey ? "/today" : "/onboarding/survey");
-  }, [splashDone, hydrated, state.survey, router]);
+  }, [splashDone, hydrated, state.user, state.survey, demoParam, loadDemo, router]);
 
   return <Splash />;
 }
@@ -34,7 +59,7 @@ function Splash() {
   return (
     <div className="relative flex h-dvh w-full items-center justify-center overflow-hidden bg-background">
       <Image
-        src="/design/00_logo.png"
+        src={withBase("/design/00_logo.png")}
         alt="DailySkin"
         width={805}
         height={274}

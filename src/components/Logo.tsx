@@ -1,5 +1,7 @@
 /** The real wordmark file — /public/design/00_logo.png, 805×274px. */
-const LOGO_SRC = "/design/00_logo.png";
+import { withBase } from "@/lib/assets";
+
+const LOGO_SRC = withBase("/design/00_logo.png");
 const LOGO_ASPECT = 805 / 274;
 
 function Leaf({

@@ -29,6 +29,12 @@ const SCHOOLS = [
   { id: "d", name: "삼성고등학교", members: 301, avgImprovement: 4.2 },
 ];
 
+/**
+ * Fixed design portraits represent demo participants. User-uploaded photos
+ * remain on-device; rankings still compare improvement, not appearance.
+ */
+const GLOW_NAMES = ["지민", "서연", "하은", "도윤", "아윤", "시우", "유나"];
+
 const GLOW_UPDATES = [
   { name: "지민", score: 14 },
   { name: "서연", score: 12 },
@@ -118,21 +124,29 @@ export default function LeaderboardPage() {
 
         {/* Glow Board — top improvers this week */}
         <section className="rounded-[24px] bg-pure-white p-5 shadow-[0_4px_20px_rgba(46,104,93,0.05)]">
-          <h3 className="mb-4 font-label-bold text-label-bold text-on-surface">Glow Board</h3>
+          <div className="mb-4 flex items-center justify-between gap-2">
+            <h3 className="font-label-bold text-label-bold text-on-surface">Glow Board</h3>
+            <span className="font-label-sm text-[10px] text-on-surface-variant">데모 프로필</span>
+          </div>
           <GlowBoardTicker />
           <div className="no-scrollbar flex gap-4 overflow-x-auto">
-            {IMG.boardAvatars.map((src, i) => (
-              <div key={src} className="flex w-16 shrink-0 flex-col items-center gap-1">
+            {GLOW_NAMES.map((name, i) => (
+              <div key={name} className="flex w-16 shrink-0 flex-col items-center gap-1">
                 <div
                   className={`relative h-14 w-14 overflow-hidden rounded-full ${
                     i === 0 ? "ring-2 ring-primary ring-offset-2" : ""
                   }`}
                 >
-                  <Image src={src} alt="" fill sizes="56px" className="object-cover" />
+                  <Image
+                    src={IMG.boardAvatars[i % IMG.boardAvatars.length]}
+                    alt={`${name} 데모 프로필`}
+                    fill
+                    sizes="56px"
+                    className="scale-[1.55] object-cover"
+                  />
                 </div>
-                <span className="font-label-sm text-[10px] text-primary">
-                  +{(14 - i * 2).toFixed(0)}
-                </span>
+                <span className="font-label-sm text-[10px] text-on-surface-variant">{name}</span>
+                <span className="font-label-sm text-[10px] text-primary">+{14 - i * 2}</span>
               </div>
             ))}
           </div>
@@ -143,10 +157,10 @@ export default function LeaderboardPage() {
           className="shiny-button flex items-center justify-center gap-2 rounded-full bg-primary py-4 font-label-bold text-label-bold text-pure-white shadow-md transition-opacity hover:opacity-90 active:scale-95"
         >
           <Icon name="military_tech" size={18} />
-          내 7-Day 챌린지 순위 · 공유하기
+          내 Friends Challenge · 공유하기
         </Link>
 
-        <section className="flex flex-col gap-2">
+        <section className="stagger flex flex-col gap-2">
           {groups.map((g, i) => (
             <div
               key={g.id}

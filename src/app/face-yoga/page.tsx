@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
+import { haptic } from "@/lib/haptics";
 import { TopAppBar } from "@/components/TopAppBar";
 import { IMG } from "@/lib/assets";
 import { FACE_YOGA_ROUTINES, type FaceYogaRoutine } from "@/lib/recommendations";
@@ -30,7 +31,7 @@ export default function FaceYogaPage() {
             fill
             priority
             sizes="430px"
-            className="object-cover"
+            className="scale-[1.28] object-cover object-[50%_74%]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-graphite/70 via-transparent to-transparent" />
           <div className="absolute inset-x-5 bottom-4">
@@ -51,7 +52,10 @@ export default function FaceYogaPage() {
             <button
               key={routine.id}
               type="button"
-              onClick={() => setActive(routine)}
+              onClick={() => {
+                haptic("tap");
+                setActive(routine);
+              }}
               className="flex items-center gap-4 rounded-[24px] bg-pure-white p-5 text-left shadow-[0_4px_20px_rgba(46,104,93,0.05)] transition-colors hover:bg-secondary-container active:bg-secondary-container"
             >
               <div
@@ -80,6 +84,7 @@ export default function FaceYogaPage() {
           routine={active}
           onClose={() => setActive(null)}
           onComplete={() => {
+            haptic("success");
             if (today) toggleAction(today.day, `yoga-${active.id}`);
             setActive(null);
           }}

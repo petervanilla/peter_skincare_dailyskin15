@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { haptic } from "@/lib/haptics";
 import { Icon } from "./Icon";
 
 const TABS = [
@@ -25,15 +26,22 @@ export function BottomNav() {
         const active = pathname === tab.href || pathname.startsWith(`${tab.href}/`);
         return (
           <Link
-            key={tab.href}
+            // Keyed on the active flag so the pill replays its spring-in
+            // whenever this tab becomes the current one.
+            key={`${tab.href}-${active ? "on" : "off"}`}
             href={tab.href}
-            className={`flex flex-col items-center justify-center rounded-full px-2.5 py-1 transition-all duration-200 active:scale-95 ${
+            onClick={() => haptic("tap")}
+            className={`flex flex-col items-center justify-center rounded-full px-2.5 py-1 transition-all duration-200 ${
               active
-                ? "bg-secondary-container text-primary"
+                ? "nav-pill-in bg-secondary-container text-primary"
                 : "text-on-surface-variant hover:bg-surface-container-low"
             }`}
           >
-            <Icon name={tab.icon} className="mb-1" filled={active} />
+            <Icon
+              name={tab.icon}
+              className={`mb-1 transition-transform duration-200 ${active ? "scale-110" : ""}`}
+              filled={active}
+            />
             <span className="font-label-sm text-label-sm">{tab.label}</span>
           </Link>
         );

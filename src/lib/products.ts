@@ -1,134 +1,212 @@
-import { IMG } from "./assets";
+import catalog from "../data/products.json" with { type: "json" };
+import kbeauty from "../data/kbeauty.json" with { type: "json" };
+import { withBase } from "./assets.ts";
 
 /**
- * Shop's browsable catalog. Same category ids `recommendProductCategories`
- * (recommendations.ts) already scores against, so the personalized section
- * and the full catalog stay in sync — categories only, no brand names, per
- * spec §12.
+ * Product catalog.
+ *
+ * Two sources, one shape:
+ *  - Open Beauty Facts snapshot (src/data/products.json, ODbL; images CC BY-SA)
+ *    fetched by scripts/fetch-products.mjs — real products with a photo and a
+ *    full INCI list.
+ *  - Hand-curated K-beauty staples (src/data/kbeauty.json) — real product
+ *    names and headline actives, with labelled category mockups.
+ *
+ * Nothing here is a purchase: the app links out to a search, never to a cart.
  */
+
 export type ProductCategoryId =
-  | "mild-cleanser"
-  | "soothing-moisturizer"
+  | "cleanser"
+  | "toner"
+  | "serum"
+  | "moisturizer"
   | "sunscreen"
-  | "hydrating-serum"
-  | "barrier-cream"
-  | "light-gel";
+  | "exfoliant"
+  | "mask";
 
 export const CATEGORY_LABELS: Record<ProductCategoryId, string> = {
-  "mild-cleanser": "저자극 클렌저",
-  "soothing-moisturizer": "진정 보습제",
+  cleanser: "클렌저",
+  toner: "토너 · 패드",
+  serum: "세럼 · 에센스",
+  moisturizer: "크림 · 로션",
   sunscreen: "자외선 차단제",
-  "hydrating-serum": "수분 세럼",
-  "barrier-cream": "장벽 강화 크림",
-  "light-gel": "가벼운 젤 보습제",
+  exfoliant: "각질 · 피지",
+  mask: "마스크 · 팩",
 };
 
-/**
- * Product shots from the Stitch comp, keyed by category. Loosely typed
- * (string keys) so it can also be indexed by the rule engine's
- * `ProductCategory.id`, which includes the "keep-current" fallback.
- */
-export const CATEGORY_IMAGE: Record<string, string> = {
-  "mild-cleanser": IMG.productCleanser,
-  "soothing-moisturizer": IMG.productCream,
-  sunscreen: IMG.productSunscreen,
-  "hydrating-serum": IMG.productCleanser,
-  "barrier-cream": IMG.productCream,
-  "light-gel": IMG.productLayers,
-  "keep-current": IMG.heroDashboardAlt,
-};
-
-/** A small glyph per category — cosmetic only, no data behind it. */
-export const CATEGORY_ICON: Record<string, string> = {
-  "mild-cleanser": "water_drop",
-  "soothing-moisturizer": "spa",
+export const CATEGORY_ICON: Record<ProductCategoryId, string> = {
+  cleanser: "water_drop",
+  toner: "opacity",
+  serum: "science",
+  moisturizer: "spa",
   sunscreen: "light_mode",
-  "hydrating-serum": "opacity",
-  "barrier-cream": "shield",
-  "light-gel": "air",
-  "keep-current": "check_circle",
+  exfoliant: "grain",
+  mask: "masks",
+};
+
+/** Ingredient/active keys detected by the fetcher or set on curated items. */
+export type ActiveKey =
+  | "centella" | "madecassoside" | "panthenol" | "niacinamide" | "hyaluronic" | "ceramide"
+  | "salicylic" | "aha" | "retinol" | "vitaminC" | "peptide" | "zinc" | "greenTea" | "aloe"
+  | "squalane" | "thermalWater" | "fragrance" | "alcohol" | "mineralUv" | "chemicalUv"
+  | "oilFree" | "snail" | "heartleaf" | "rice" | "fermented" | "tranexamic" | "propolis"
+  | "birch" | "citrus" | "shea";
+
+export const ACTIVE_LABELS: Record<ActiveKey, string> = {
+  centella: "센텔라",
+  madecassoside: "마데카소사이드",
+  panthenol: "판테놀",
+  niacinamide: "나이아신아마이드",
+  hyaluronic: "히알루론산",
+  ceramide: "세라마이드",
+  salicylic: "BHA",
+  aha: "AHA",
+  retinol: "레티놀",
+  vitaminC: "비타민C",
+  peptide: "펩타이드",
+  zinc: "아연",
+  greenTea: "녹차",
+  aloe: "알로에",
+  squalane: "스쿠알란",
+  thermalWater: "온천수",
+  fragrance: "향료",
+  alcohol: "알코올",
+  mineralUv: "무기자차",
+  chemicalUv: "유기자차",
+  oilFree: "오일프리",
+  snail: "달팽이 점액",
+  heartleaf: "어성초",
+  rice: "쌀 추출물",
+  fermented: "발효",
+  tranexamic: "트라넥사민산",
+  propolis: "프로폴리스",
+  birch: "자작나무 수액",
+  citrus: "시트러스",
+  shea: "시어버터",
 };
 
 export interface Product {
   id: string;
+  brand: string;
   name: string;
-  categoryId: ProductCategoryId;
-  /** Own photo, not derived from CATEGORY_IMAGE — guarantees no two catalog
-      cards ever share a picture. */
+  category: ProductCategoryId;
+  quantity: string | null;
+  spf: number | null;
+  actives: ActiveKey[];
+  /** Full INCI text when known (OBF items); null for curated K-beauty. */
+  ingredients: string | null;
+  /** Local path under /public, or null → render a monogram tile. */
+  image: string | null;
+  /** True when the image is a generated, unbranded mockup rather than a photo of the real pack. */
+  mockup: boolean;
+  /** One-line Korean hook for curated items. */
+  highlight: string | null;
+  /** Attribution link (Open Beauty Facts product page) when applicable. */
+  source: string | null;
+  kbeauty: boolean;
+}
+
+interface ObfRow {
+  id: string;
+  code: string;
+  brand: string;
+  name: string;
+  category: string;
+  quantity: string | null;
+  spf: number | null;
+  actives: string[];
+  ingredients: string;
   image: string;
-  /** KRW, mock pricing — no real transaction happens anywhere in the app. */
-  price: number;
-  tags: string[];
+  source: string;
+}
+
+interface CuratedRow {
+  id: string;
+  brand: string;
+  name: string;
+  category: string;
+  quantity?: string;
+  spf?: number;
+  actives: string[];
+  highlight: string;
+  /** Generated, unbranded package type under /public/products/mockups/. */
+  mock?: "serum" | "toner" | "sunscreen" | "cream" | "cleanser" | "mask";
+}
+
+const CATEGORY_IDS = new Set<string>(Object.keys(CATEGORY_LABELS));
+
+function isCategory(value: string): value is ProductCategoryId {
+  return CATEGORY_IDS.has(value);
+}
+
+function fromObf(row: ObfRow): Product | null {
+  if (!isCategory(row.category)) return null;
+  return {
+    id: row.id,
+    brand: row.brand,
+    name: row.name,
+    category: row.category,
+    quantity: row.quantity,
+    spf: row.spf,
+    actives: row.actives as ActiveKey[],
+    ingredients: row.ingredients,
+    image: withBase(row.image),
+    mockup: false,
+    highlight: null,
+    source: row.source,
+    kbeauty: /cosrx|laneige|sulwhasoo|klairs|benton|missha|innisfree/i.test(row.brand),
+  };
+}
+
+function fromCurated(row: CuratedRow): Product | null {
+  if (!isCategory(row.category)) return null;
+  return {
+    id: row.id,
+    brand: row.brand,
+    name: row.name,
+    category: row.category,
+    quantity: row.quantity ?? null,
+    spf: row.spf ?? null,
+    actives: row.actives as ActiveKey[],
+    ingredients: null,
+    image: row.mock ? withBase(`/products/mockups/${row.mock}.webp`) : null,
+    mockup: Boolean(row.mock),
+    highlight: row.highlight,
+    source: null,
+    kbeauty: true,
+  };
 }
 
 /**
- * Generic, un-branded product mockups — same "categories, not brand-name
- * prescriptions" rule the recommendation engine follows. Every entry has its
- * own photo — no two ever share one.
+ * The Shop catalog is the Korean (Olive Young-style) set. The Open Beauty
+ * Facts snapshot (global dermo brands with real photos + INCI) stays in the
+ * repo and can be appended by setting NEXT_PUBLIC_CATALOG_GLOBAL=1.
  */
+const INCLUDE_GLOBAL = process.env.NEXT_PUBLIC_CATALOG_GLOBAL === "1";
+
 export const PRODUCTS: Product[] = [
-  {
-    id: "cleanser-foam",
-    name: "저자극 약산성 클렌징 폼 150ml",
-    categoryId: "mild-cleanser",
-    image: IMG.productCleanser,
-    price: 18000,
-    tags: ["약산성", "무향"],
-  },
-  {
-    id: "cleanser-gel",
-    name: "약산성 클렌징 젤 200ml",
-    categoryId: "mild-cleanser",
-    image: IMG.shopProduct3,
-    price: 19000,
-    tags: ["약산성", "저자극"],
-  },
-  {
-    id: "soothe-cream",
-    name: "센텔라 진정 크림 50ml",
-    categoryId: "soothing-moisturizer",
-    image: IMG.productCream,
-    price: 26000,
-    tags: ["센텔라", "판테놀"],
-  },
-  {
-    id: "sunscreen-mineral",
-    name: "무기자차 선크림 SPF50+ PA++++ 50ml",
-    categoryId: "sunscreen",
-    image: IMG.productSunscreen,
-    price: 24000,
-    tags: ["무기자차", "SPF50+"],
-  },
-  {
-    id: "sunscreen-tone-up",
-    name: "톤업 선에센스 PA++++ 40ml",
-    categoryId: "sunscreen",
-    image: IMG.shopProduct4,
-    price: 19000,
-    tags: ["톤업", "논코메도제닉"],
-  },
-  {
-    id: "serum-hyaluronic",
-    name: "히알루론산 수분 세럼 30ml",
-    categoryId: "hydrating-serum",
-    image: IMG.productSkinTexture,
-    price: 28000,
-    tags: ["히알루론산", "고보습"],
-  },
-  {
-    id: "barrier-cream",
-    name: "세라마이드 장벽 크림 60ml",
-    categoryId: "barrier-cream",
-    image: IMG.shopProduct2,
-    price: 29000,
-    tags: ["세라마이드", "장벽 강화"],
-  },
-  {
-    id: "gel-moisturizer",
-    name: "오일프리 젤 모이스처라이저 70ml",
-    categoryId: "light-gel",
-    image: IMG.shopProduct1,
-    price: 20000,
-    tags: ["오일프리", "산뜻함"],
-  },
-];
+  ...(kbeauty.products as CuratedRow[]).map(fromCurated),
+  ...(INCLUDE_GLOBAL ? (catalog.products as ObfRow[]).map(fromObf) : []),
+].filter((p): p is Product => p !== null);
+
+export const CATALOG_ATTRIBUTION = {
+  source: catalog.source as string,
+  license: catalog.license as string,
+  url: catalog.attribution as string,
+  fetchedAt: catalog.fetchedAt as string,
+};
+
+export function findProduct(id: string): Product | null {
+  return PRODUCTS.find((p) => p.id === id) ?? null;
+}
+
+/** Search URL for a product — a neutral query, not an affiliate link. */
+export function productSearchUrl(p: Product) {
+  return `https://search.shopping.naver.com/search/all?query=${encodeURIComponent(`${p.brand} ${p.name}`)}`;
+}
+
+/** Two-letter monogram for photo-less tiles. */
+export function monogram(brand: string) {
+  const letters = brand.replace(/[^A-Za-z0-9가-힣]/g, "");
+  return letters.slice(0, 2).toUpperCase();
+}

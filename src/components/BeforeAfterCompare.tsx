@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import { Icon } from "@/components/Icon";
 import { StoredPhoto } from "@/components/StoredPhoto";
 import { IMG } from "@/lib/assets";
+import { haptic } from "@/lib/haptics";
 import { countDelta, firstRecord, latestRecord, scoreDelta } from "@/lib/scoring";
 import type { DayRecord } from "@/lib/types";
 
@@ -58,18 +59,25 @@ export function BeforeAfterCompare({ records }: { records: DayRecord[] }) {
     <div className="flex w-full flex-col">
       {/* Day selector for the right-hand side */}
       <nav className="no-scrollbar mb-stack-md flex gap-2 overflow-x-auto py-2">
+        <span className="flex shrink-0 items-center gap-1 rounded-full bg-surface-container px-3 py-2 font-label-bold text-label-bold whitespace-nowrap text-on-surface-variant">
+          <Icon name="push_pin" size={14} />
+          Day {base.day} 기준
+        </span>
         {sorted
           .filter((r) => r.day !== base.day)
           .map((r) => {
             const active = r.day === right.day;
             return (
               <button
-                key={r.day}
+                key={`${r.day}-${active}`}
                 type="button"
-                onClick={() => setRightDay(r.day)}
+                onClick={() => {
+                  haptic("select");
+                  setRightDay(r.day);
+                }}
                 className={`rounded-full px-4 py-2 font-label-bold text-label-bold whitespace-nowrap transition-colors ${
                   active
-                    ? "bg-secondary-container text-primary"
+                    ? "pop bg-secondary-container text-primary"
                     : "border border-surface-variant bg-pure-white text-on-surface-variant hover:bg-surface-container active:bg-surface-container"
                 }`}
               >
@@ -84,6 +92,7 @@ export function BeforeAfterCompare({ records }: { records: DayRecord[] }) {
         ref={containerRef}
         className="relative mb-stack-lg aspect-[3/4] w-full touch-none overflow-hidden rounded-2xl bg-surface-container-high shadow-[0_4px_20px_rgba(46,104,93,0.08)] select-none"
         onPointerDown={(e) => {
+          haptic("tap");
           dragging.current = true;
           e.currentTarget.setPointerCapture(e.pointerId);
           updateSplit(e.clientX);

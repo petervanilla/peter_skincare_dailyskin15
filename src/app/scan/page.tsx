@@ -4,9 +4,16 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/Icon";
+import { haptic } from "@/lib/haptics";
 import { IMG } from "@/lib/assets";
-import { analyzeImageData, checkCaptureQuality, combinePoseMetrics } from "@/lib/analysis";
-import { photoKey, putPhoto } from "@/lib/photoStore";
+import {
+  analyzeImageData,
+  checkCaptureQuality,
+  combinePoseMetrics,
+  type CaptureSignals,
+} from "@/lib/analysis";
+import { getPhoto, photoKey, putPhoto } from "@/lib/photoStore";
+import { latestRecord } from "@/lib/scoring";
 import { computeDailySkinScore, computeSkinAgeIndex, computeSubScores } from "@/lib/scoring";
 import { useStore } from "@/lib/store";
 import { POSES, type DayRecord, type PoseId, type RawMetrics } from "@/lib/types";
@@ -24,6 +31,8 @@ import { POSES, type DayRecord, type PoseId, type RawMetrics } from "@/lib/types
 const ANALYSIS_SIZE = 320;
 const HOLD_FRAMES = 8; // consecutive good frames (~1s) before auto-capture
 
+const NO_SIGNALS: CaptureSignals = { light: false, focus: false, frame: false };
+
 export default function ScanPage() {
   const router = useRouter();
   const { state, hydrated, upsertRecord, nextDay } = useStore();
@@ -40,9 +49,41 @@ export default function ScanPage() {
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [captured, setCaptured] = useState<Partial<Record<PoseId, RawMetrics>>>({});
   const [busy, setBusy] = useState(false);
+  const [signals, setSignals] = useState<CaptureSignals>(NO_SIGNALS);
+  const [qualityOk, setQualityOk] = useState(false);
+  /** Yesterday's photo for the current pose, faded over the live preview. */
+  const [ghost, setGhost] = useState<{ day: number; photos: Partial<Record<PoseId, string>> } | null>(null);
+  // null = follow the Settings default; a tap on the toggle overrides it for
+  // this session only.
+  const [ghostPref, setGhostPref] = useState<boolean | null>(null);
+  const ghostOn = ghostPref ?? state.settings.ghostOverlay;
+  const autoCapture = state.settings.autoCapture;
 
   const pose = POSES[poseIndex];
   const done = poseIndex >= POSES.length;
+  const ghostSrc = ghost?.photos[pose?.id] ?? null;
+
+  // Visual Continuity Engine: load the most recent day's captures once so the
+  // user can line today's face up against them (same distance, same angle).
+  const previous = latestRecord(state.records);
+  const previousDay = previous?.day ?? null;
+  const previousKeys = previous ? JSON.stringify(previous.photoKeys) : null;
+  useEffect(() => {
+    if (!hydrated || !previousKeys || previousDay === null) return;
+    let active = true;
+    const keys = JSON.parse(previousKeys) as Partial<Record<PoseId, string>>;
+    void Promise.all(
+      (Object.entries(keys) as Array<[PoseId, string]>).map(async ([id, key]) => [id, await getPhoto(key)] as const),
+    ).then((entries) => {
+      if (!active) return;
+      const photos: Partial<Record<PoseId, string>> = {};
+      for (const [id, src] of entries) if (src) photos[id] = src;
+      setGhost(Object.keys(photos).length ? { day: previousDay, photos } : null);
+    });
+    return () => {
+      active = false;
+    };
+  }, [hydrated, previousKeys, previousDay]);
 
   useEffect(() => {
     if (hydrated && !state.survey) router.replace("/onboarding/survey");
@@ -69,6 +110,7 @@ export default function ScanPage() {
       setCameraError(null);
       setFeedback("얼굴을 가이드 안에 맞춰주세요");
     } catch {
+      haptic("warning");
       setCameraError("camera-unavailable");
       setFeedback("카메라 권한을 허용해주세요");
     }
@@ -103,6 +145,7 @@ export default function ScanPage() {
     async (imageData: ImageData, dataUrl: string, poseId: PoseId) => {
       const metrics = analyzeImageData(imageData);
       await putPhoto(photoKey(nextDay, poseId), dataUrl);
+      haptic("success");
       setCaptured((prev) => ({ ...prev, [poseId]: metrics }));
       setPoseIndex((i) => i + 1);
       goodFramesRef.current = 0;
@@ -114,7 +157,10 @@ export default function ScanPage() {
     if (capturingRef.current || done) return;
     const imageData = grabFrame();
     const canvas = canvasRef.current;
-    if (!imageData || !canvas) return;
+    if (!imageData || !canvas) {
+      haptic("warning");
+      return;
+    }
 
     capturingRef.current = true;
     setBusy(true);
@@ -136,11 +182,23 @@ export default function ScanPage() {
 
       const check = checkCaptureQuality(frame);
       setFeedback(check.ok ? "좋아요. 그대로 1초만!" : check.message);
+      setQualityOk(check.ok);
+      // Only swap the object when a boolean actually flipped, so the strip
+      // does not re-render on every 120ms tick.
+      setSignals((prev) =>
+        prev.light === check.signals.light &&
+        prev.focus === check.signals.focus &&
+        prev.frame === check.signals.frame
+          ? prev
+          : check.signals,
+      );
 
       if (check.ok) {
         goodFramesRef.current += 1;
         setProgress(Math.min(1, goodFramesRef.current / HOLD_FRAMES));
-        if (goodFramesRef.current >= HOLD_FRAMES) void captureNow();
+        // Manual mode (Settings) still fills the ring so the user can read
+        // the frame quality; only the shutter fires.
+        if (autoCapture && goodFramesRef.current >= HOLD_FRAMES) void captureNow();
       } else {
         goodFramesRef.current = 0;
         setProgress(check.progress * 0.6);
@@ -148,7 +206,7 @@ export default function ScanPage() {
     }, 120);
 
     return () => window.clearInterval(interval);
-  }, [cameraError, done, grabFrame, captureNow]);
+  }, [cameraError, done, grabFrame, captureNow, autoCapture]);
 
   // --- finish ---------------------------------------------------------------
   useEffect(() => {
@@ -218,7 +276,7 @@ export default function ScanPage() {
   }
 
   return (
-    <div className="relative flex h-dvh w-full flex-col overflow-hidden bg-graphite text-pure-white">
+    <div className="no-stagger relative flex h-dvh w-full flex-col overflow-hidden bg-graphite text-pure-white">
       <video
         ref={videoRef}
         playsInline
@@ -226,6 +284,17 @@ export default function ScanPage() {
         className="absolute inset-0 z-0 h-full w-full -scale-x-100 object-cover"
       />
       <canvas ref={canvasRef} className="hidden" />
+
+      {ghostSrc && ghostOn && !cameraError ? (
+        // Local data: URL from IndexedDB, mirrored like the live preview.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={ghostSrc}
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-[1] h-full w-full -scale-x-100 object-cover opacity-35"
+        />
+      ) : null}
 
       {cameraError ? (
         <div className="absolute inset-0 z-0">
@@ -244,6 +313,23 @@ export default function ScanPage() {
         >
           <Icon name="close" size={28} weight={200} />
         </button>
+        {ghost ? (
+          <button
+            type="button"
+            aria-label={ghostOn ? "이전 사진 겹치기 끄기" : "이전 사진 겹치기 켜기"}
+            aria-pressed={ghostOn}
+            title="이전 사진 겹치기"
+            onClick={() => {
+              haptic("select");
+              setGhostPref(!ghostOn);
+            }}
+            className={`absolute top-24 right-margin-main flex h-10 w-10 items-center justify-center rounded-full backdrop-blur-md transition-colors ${
+              ghostOn ? "bg-tertiary-fixed text-on-tertiary-fixed" : "bg-glass-overlay text-graphite"
+            }`}
+          >
+            <Icon name="layers" size={20} filled={ghostOn} />
+          </button>
+        ) : null}
         <h1 className="font-headline-md text-headline-md drop-shadow-md">Face Scan</h1>
 
         <div className="mx-auto mt-2 flex w-full max-w-[300px] items-center justify-between">
@@ -267,6 +353,17 @@ export default function ScanPage() {
               </span>
             </div>
           ))}
+        </div>
+
+        {/* Visual Continuity Engine — the five conditions that make two days
+            comparable. LIGHT / FOCUS / FRAME are measured live; ANGLE is
+            guided by the pose step; QUALITY is the combined gate. */}
+        <div className="mt-1 flex w-full max-w-[320px] items-center justify-center gap-1.5">
+          <ContinuityChip label="Light" on={signals.light} />
+          <ContinuityChip label="Focus" on={signals.focus} />
+          <ContinuityChip label="Frame" on={signals.frame} />
+          <ContinuityChip label={`Angle · ${pose.label}`} on guide />
+          <ContinuityChip label="Quality" on={qualityOk} />
         </div>
       </header>
 
@@ -326,6 +423,17 @@ export default function ScanPage() {
         <p className="mt-1 text-center font-label-sm text-label-sm text-pure-white/60">
           {pose.purpose}
         </p>
+        {!autoCapture && !cameraError ? (
+          <p className="mt-2 rounded-full bg-glass-overlay px-3 py-1 font-label-sm text-label-sm text-graphite backdrop-blur-sm">
+            수동 촬영 모드 · 준비되면 셔터를 눌러주세요
+          </p>
+        ) : null}
+        {ghostSrc && ghostOn ? (
+          <p className="mt-2 flex items-center gap-1 rounded-full bg-tertiary-fixed/80 px-3 py-1 font-label-sm text-label-sm text-on-tertiary-fixed backdrop-blur-sm">
+            <Icon name="layers" size={14} />
+            Day {ghost?.day} 사진에 얼굴을 맞추면 비교가 정확해져요
+          </p>
+        ) : null}
       </main>
 
       {/* Shutter */}
@@ -380,5 +488,23 @@ export default function ScanPage() {
         </div>
       </footer>
     </div>
+  );
+}
+
+/** One condition of the continuity strip: mint when satisfied, glass when not. */
+function ContinuityChip({ label, on, guide = false }: { label: string; on: boolean; guide?: boolean }) {
+  return (
+    <span
+      className={`flex h-5 shrink-0 items-center gap-0.5 rounded-full px-2 font-label-sm text-[10px] font-semibold tracking-wider uppercase transition-colors ${
+        on
+          ? guide
+            ? "bg-tertiary-fixed/90 text-on-tertiary-fixed"
+            : "bg-primary-fixed text-primary"
+          : "bg-pure-white/20 text-pure-white/70 backdrop-blur-sm"
+      }`}
+    >
+      {on && !guide ? <Icon name="check" size={10} /> : null}
+      {label}
+    </span>
   );
 }

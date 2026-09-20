@@ -21,6 +21,7 @@ import {
   CONCERN_LABELS,
   CONDITION_LABELS,
   OUTDOOR_LABELS,
+  PROVIDER_LABELS,
   SKIN_TYPE_LABELS,
   type SubScores,
 } from "@/lib/types";
@@ -40,7 +41,7 @@ function weakestSubScore(s: SubScores): keyof SubScores {
 }
 
 export default function ProfilePage() {
-  const { state, hydrated, reset, updateProfile, saveAvatarPhoto } = useStore();
+  const { state, hydrated, reset, updateProfile, saveAvatarPhoto, loadDemo, signOut } = useStore();
   const router = useRouter();
   const [confirming, setConfirming] = useState(false);
   const [editingProfile, setEditingProfile] = useState(false);
@@ -75,7 +76,18 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-dvh pb-32">
-      <TopAppBar title={<LogoMark height={28} />} />
+      <TopAppBar
+        title={<LogoMark height={28} />}
+        action={
+          <Link
+            href="/settings"
+            aria-label="설정"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-primary hover:bg-surface-container-low active:bg-surface-container-low"
+          >
+            <Icon name="settings" />
+          </Link>
+        }
+      />
 
       <main className="flex flex-col gap-4 px-margin-main pt-2">
         {/* Personal info — the one place nickname and age are entered and
@@ -172,6 +184,30 @@ export default function ProfilePage() {
             }}
           />
         </section>
+
+        {/* Account — provider + email, with sign-out. Records stay on the
+            device after sign-out, so a re-login finds them again. */}
+        {state.user ? (
+          <section className="flex items-center gap-3 rounded-2xl bg-pure-white px-4 py-3 shadow-[0_4px_20px_rgba(46,104,93,0.05)]">
+            <Icon name="account_circle" className="text-primary" />
+            <p className="min-w-0 flex-1 truncate font-label-sm text-label-sm text-on-surface-variant">
+              <span className="font-label-bold text-label-bold text-on-surface">
+                {PROVIDER_LABELS[state.user.provider]}
+              </span>
+              {state.user.email ? ` · ${state.user.email}` : ""}
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                signOut();
+                router.replace("/login");
+              }}
+              className="shrink-0 font-label-bold text-label-bold text-error"
+            >
+              로그아웃
+            </button>
+          </section>
+        ) : null}
 
         {/* Analysis summary — moved above the survey card so the freshest,
             most visual content sits right under the profile header. */}
@@ -294,6 +330,53 @@ export default function ProfilePage() {
           </section>
         ) : null}
 
+        {/* Skin Memory — completed 15-day cycles, the deck's compounding asset. */}
+        <section className="rounded-[24px] bg-pure-white p-5 shadow-[0_4px_20px_rgba(46,104,93,0.05)]">
+          <div className="mb-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Icon name="history" className="text-primary" />
+              <h3 className="font-label-bold text-label-bold text-on-surface">Skin Memory</h3>
+            </div>
+            <span className="rounded-full bg-surface-container px-3 py-1 font-label-sm text-label-sm text-on-surface-variant">
+              {state.cycles.length}회 완주
+            </span>
+          </div>
+          {state.cycles.length ? (
+            <ul className="flex flex-col gap-2">
+              {[...state.cycles].reverse().map((c) => {
+                const d = c.scoreEnd - c.scoreStart;
+                return (
+                  <li key={c.id} className="flex items-center gap-3 rounded-xl bg-surface-container-low p-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-tertiary-fixed text-on-tertiary-fixed">
+                      <Icon name="science" size={18} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-label-bold text-label-bold text-on-surface">
+                        실험: {c.experiment?.title ?? "관찰만"}
+                      </p>
+                      <p className="font-label-sm text-label-sm text-on-surface-variant">
+                        {fmtDate(c.startedAt)} → {fmtDate(c.completedAt)} · {c.scoreStart} → {c.scoreEnd}
+                      </p>
+                    </div>
+                    <span
+                      className={`shrink-0 rounded-full px-2.5 py-1 font-label-bold text-label-bold ${
+                        d >= 0 ? "bg-primary-fixed text-primary" : "bg-error-container text-on-error-container"
+                      }`}
+                    >
+                      {d > 0 ? "+" : ""}
+                      {d}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className="font-body-md text-body-md text-on-surface-variant">
+              완주한 15일이 여기에 쌓여요. 사이클이 쌓일수록 나만의 반응 기록이 돼요.
+            </p>
+          )}
+        </section>
+
         <section className="rounded-[24px] bg-pure-white p-5 shadow-[0_4px_20px_rgba(46,104,93,0.05)]">
           <div className="mb-3 flex items-center gap-2">
             <Icon name="lock" className="text-primary" />
@@ -302,6 +385,39 @@ export default function ProfilePage() {
           <p className="font-body-md text-body-md text-on-surface-variant">
             촬영한 사진과 분석 결과는 이 브라우저 안에만 저장돼요 (IndexedDB · localStorage).
             서버로 전송되지 않습니다.
+          </p>
+        </section>
+
+        {/* Demo seed — the deck's "Live Demo" without 15 real days of selfies. */}
+        <section className="rounded-[24px] border border-dashed border-outline-variant bg-pure-white/60 p-5">
+          <div className="mb-3 flex items-center gap-2">
+            <Icon name="science" className="text-tertiary-container" />
+            <h3 className="font-label-bold text-label-bold text-on-surface">데모 · 개발자</h3>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                loadDemo(12);
+                router.push("/today");
+              }}
+              className="rounded-full border border-primary py-3 font-label-bold text-label-bold text-primary transition-colors hover:bg-secondary-container active:bg-secondary-container"
+            >
+              데모 12일차
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                loadDemo(15);
+                router.push("/today");
+              }}
+              className="rounded-full bg-primary py-3 font-label-bold text-label-bold text-pure-white transition-colors hover:bg-primary-container active:bg-primary-container"
+            >
+              데모 15일차 (리포트)
+            </button>
+          </div>
+          <p className="mt-3 font-label-sm text-label-sm text-on-surface-variant">
+            투자자 데모용 합성 데이터예요. 실제 촬영 기록을 덮어씁니다.
           </p>
         </section>
 
@@ -402,6 +518,13 @@ function MiniMetric({
       </div>
     </div>
   );
+}
+
+/** ISO timestamp → yyyy.mm.dd for the Skin Memory rows. */
+function fmtDate(iso: string) {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso.slice(0, 10).replaceAll("-", ".");
+  return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
 }
 
 function Row({ label, value }: { label: string; value: string }) {

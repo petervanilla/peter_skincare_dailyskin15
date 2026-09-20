@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Hanken_Grotesk, Source_Serif_4 } from "next/font/google";
+import { RouteTransition } from "@/components/RouteTransition";
 import { StoreProvider } from "@/lib/store";
 import "./globals.css";
 
@@ -52,8 +53,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <StoreProvider>
           {/* The designs are iPhone frames; centre them and cap the width. */}
-          <div className="mx-auto min-h-dvh w-full max-w-[430px] bg-background shadow-[0_0_60px_rgba(0,67,57,0.06)]">
-            {children}
+          <div className="mx-auto min-h-dvh w-full max-w-[430px] overflow-x-hidden bg-background shadow-[0_0_60px_rgba(0,67,57,0.06)]">
+            <RouteTransition>{children}</RouteTransition>
           </div>
         </StoreProvider>
       </body>
