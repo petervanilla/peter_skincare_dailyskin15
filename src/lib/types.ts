@@ -117,6 +117,58 @@ export interface DayRecord {
   /** Self-reported context for the day, used by the recommendation rules. */
   sunExposure?: boolean;
   completedActions: string[];
+  /**
+   * Daily check-in (deck "Routine + Product History"). Each is a tri-state:
+   * undefined = not answered, true/false = answered. The Response Graph and
+   * Skin Coach only reason over answered days.
+   */
+  routineDone?: boolean;
+  /** Whether today's routine included the variable under experiment. */
+  experimentApplied?: boolean;
+  /** "얼굴 만지지 않기" habit — the No-Touch streak on Progress. */
+  noTouch?: boolean;
+}
+
+/** What the user is changing for this 15-day cycle — one variable only. */
+export type ExperimentKind =
+  | "add-product"
+  | "remove-product"
+  | "routine-change"
+  | "habit"
+  | "observe";
+
+export interface Experiment {
+  id: string;
+  kind: ExperimentKind;
+  /** Short, user-facing name. e.g. "논코메도제닉 선크림 추가" */
+  title: string;
+  /** Day (1–15) the variable was introduced. 1 = from the very start. */
+  startDay: number;
+  /** Which of the four indices the user expects to move. */
+  target?: keyof Omit<SubScores, "captureConsistency">;
+  createdAt: string;
+}
+
+export const EXPERIMENT_KIND_LABELS: Record<ExperimentKind, string> = {
+  "add-product": "제품 1개 추가",
+  "remove-product": "제품 1개 빼기",
+  "routine-change": "루틴 순서/시간 바꾸기",
+  habit: "생활 습관 하나 바꾸기",
+  observe: "아무것도 바꾸지 않고 관찰만",
+};
+
+/**
+ * A finished 15-day cycle, kept so Skin Memory outlives a single challenge.
+ * Photo keys stay valid as long as the IndexedDB store is not cleared.
+ */
+export interface CompletedCycle {
+  id: string;
+  startedAt: string;
+  completedAt: string;
+  experiment: Experiment | null;
+  records: DayRecord[];
+  scoreStart: number;
+  scoreEnd: number;
 }
 
 /** A cover photo the user picked for the dashboard, framed by hand. */
@@ -138,6 +190,12 @@ export interface AppState {
   heroPhoto: HeroPhoto | null;
   /** IndexedDB key for a user-uploaded profile photo; null uses the stock avatar. */
   avatarPhotoKey: string | null;
+  /** The single variable being tested in the current cycle, if any. */
+  experiment: Experiment | null;
+  /** Earlier cycles, newest last. */
+  cycles: CompletedCycle[];
+  /** Invite code of the friends challenge the user joined or created. */
+  inviteCode: string | null;
 }
 
 export const DEFAULT_BASELINE_AGE = 28;

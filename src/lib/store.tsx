@@ -10,8 +10,9 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
+import { buildDemoState } from "./demo";
 import { clearPhotos, putPhoto } from "./photoStore";
-import type { AppState, DayRecord, Survey } from "./types";
+import type { AppState, CompletedCycle, DayRecord, Experiment, Survey } from "./types";
 import { CHALLENGE_LENGTH } from "./types";
 
 const STORAGE_KEY = "dailyskin15:state:v1";
@@ -24,7 +25,15 @@ const EMPTY_STATE: AppState = {
   nickname: "Amy",
   heroPhoto: null,
   avatarPhotoKey: null,
+  experiment: null,
+  cycles: [],
+  inviteCode: null,
 };
+
+/** Fields on a record the daily check-in sheet can set. */
+export type CheckInPatch = Partial<
+  Pick<DayRecord, "routineDone" | "experimentApplied" | "noTouch" | "sunExposure">
+>;
 
 interface StoreValue {
   state: AppState;
@@ -45,9 +54,24 @@ interface StoreValue {
   /** Stores a picked profile photo, replacing the stock avatar everywhere it's shown. */
   saveAvatarPhoto: (dataUrl: string) => Promise<void>;
   removeAvatarPhoto: () => void;
+  /** Sets (or clears) the one variable under test this cycle. */
+  setExperiment: (experiment: Experiment | null) => void;
+  /** Answers the daily check-in for a day that already has a capture. */
+  setCheckIn: (day: number, patch: CheckInPatch) => void;
+  /** Stores the friends-challenge invite code the user joined or created. */
+  setInviteCode: (code: string | null) => void;
+  /**
+   * Archives the current records + experiment as a completed cycle and starts
+   * a fresh Day 1 with `nextExperiment`. Survey, profile and photos survive.
+   */
+  startNextCycle: (nextExperiment: Experiment | null) => void;
+  /** Replaces state with the deterministic demo data (`days` records). */
+  loadDemo: (days: number) => void;
   reset: () => void;
   /** The day number a new capture should be filed under (1–15). */
   nextDay: number;
+  /** True once every one of the 15 days has a record — time for the report. */
+  cycleComplete: boolean;
 }
 
 const StoreContext = createContext<StoreValue | null>(null);
@@ -58,7 +82,12 @@ function loadState(): AppState {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return EMPTY_STATE;
     const parsed = JSON.parse(raw) as Partial<AppState>;
-    return { ...EMPTY_STATE, ...parsed, records: parsed.records ?? [] };
+    return {
+      ...EMPTY_STATE,
+      ...parsed,
+      records: parsed.records ?? [],
+      cycles: parsed.cycles ?? [],
+    };
   } catch {
     return EMPTY_STATE;
   }
@@ -197,6 +226,63 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setState((s) => ({ ...s, avatarPhotoKey: null }));
   }, [setState]);
 
+  const setExperiment = useCallback(
+    (experiment: Experiment | null) => {
+      setState((s) => ({ ...s, experiment }));
+    },
+    [setState],
+  );
+
+  const setCheckIn = useCallback(
+    (day: number, patch: CheckInPatch) => {
+      setState((s) => ({
+        ...s,
+        records: s.records.map((r) => (r.day === day ? { ...r, ...patch } : r)),
+      }));
+    },
+    [setState],
+  );
+
+  const setInviteCode = useCallback(
+    (code: string | null) => {
+      setState((s) => ({ ...s, inviteCode: code ? code.trim().toUpperCase() : null }));
+    },
+    [setState],
+  );
+
+  const startNextCycle = useCallback(
+    (nextExperiment: Experiment | null) => {
+      setState((s) => {
+        if (!s.records.length) return { ...s, experiment: nextExperiment };
+        const sorted = [...s.records].sort((a, b) => a.day - b.day);
+        const cycle: CompletedCycle = {
+          id: `cycle-${Date.now()}`,
+          startedAt: s.onboardedAt ?? `${sorted[0].date}T00:00:00.000Z`,
+          completedAt: new Date().toISOString(),
+          experiment: s.experiment,
+          records: sorted,
+          scoreStart: sorted[0].dailySkinScore,
+          scoreEnd: sorted[sorted.length - 1].dailySkinScore,
+        };
+        return {
+          ...s,
+          cycles: [...s.cycles, cycle],
+          records: [],
+          experiment: nextExperiment,
+          onboardedAt: new Date().toISOString(),
+        };
+      });
+    },
+    [setState],
+  );
+
+  const loadDemo = useCallback(
+    (days: number) => {
+      setState((s) => buildDemoState(days, s));
+    },
+    [setState],
+  );
+
   const reset = useCallback(() => {
     void clearPhotos();
     setOverride(EMPTY_STATE);
@@ -218,6 +304,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     return Math.min(max + 1, CHALLENGE_LENGTH);
   }, [state.records]);
 
+  const cycleComplete = useMemo(
+    () => new Set(state.records.map((r) => r.day)).size >= CHALLENGE_LENGTH,
+    [state.records],
+  );
+
   const value = useMemo<StoreValue>(
     () => ({
       state,
@@ -233,8 +324,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       removeHeroPhoto,
       saveAvatarPhoto,
       removeAvatarPhoto,
+      setExperiment,
+      setCheckIn,
+      setInviteCode,
+      startNextCycle,
+      loadDemo,
       reset,
       nextDay,
+      cycleComplete,
     }),
     [
       state,
@@ -250,8 +347,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       removeHeroPhoto,
       saveAvatarPhoto,
       removeAvatarPhoto,
+      setExperiment,
+      setCheckIn,
+      setInviteCode,
+      startNextCycle,
+      loadDemo,
       reset,
       nextDay,
+      cycleComplete,
     ],
   );
 
