@@ -309,3 +309,208 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ------------------------------------------------------------------------
+ * Touch feel — v2 motion layer.
+ * Everything here is CSS-only so it degrades to nothing under
+ * prefers-reduced-motion (handled above) or <html data-motion="reduce">.
+ * ---------------------------------------------------------------------- */
+
+/* Pressable: every button/link squishes under the finger. */
+button,
+a[href],
+[role="button"],
+[role="tab"],
+summary {
+  -webkit-tap-highlight-color: transparent;
+  transition-property: transform, opacity, background-color, color, box-shadow, border-color;
+  transition-duration: 160ms;
+  transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+button:active,
+a[href]:active,
+[role="button"]:active,
+[role="tab"]:active {
+  transform: scale(0.97);
+  transition-duration: 70ms;
+}
+/* Opt out for full-bleed media links (the hero cover, product images). */
+.no-press:active {
+  transform: none;
+}
+
+/* Route enter: the page fades in and the main column's children rise in a
+   short stagger. The wrapper itself only animates opacity — a transform on
+   it would turn it into the containing block for the fixed BottomNav. */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.page-in {
+  animation: fade-in 220ms ease-out both;
+}
+.page-in main > *,
+.stagger > * {
+  animation: page-in 420ms cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+.page-in main > *:nth-child(1), .stagger > *:nth-child(1) { animation-delay: 20ms; }
+.page-in main > *:nth-child(2), .stagger > *:nth-child(2) { animation-delay: 60ms; }
+.page-in main > *:nth-child(3), .stagger > *:nth-child(3) { animation-delay: 100ms; }
+.page-in main > *:nth-child(4), .stagger > *:nth-child(4) { animation-delay: 140ms; }
+.page-in main > *:nth-child(5), .stagger > *:nth-child(5) { animation-delay: 180ms; }
+.page-in main > *:nth-child(6), .stagger > *:nth-child(6) { animation-delay: 220ms; }
+.page-in main > *:nth-child(n + 7), .stagger > *:nth-child(n + 7) { animation-delay: 250ms; }
+/* Full-screen camera/loading layouts opt out of the stagger. */
+.no-stagger main > * {
+  animation: none;
+}
+
+/* Sheet: bottom-anchored panels slide up. */
+@keyframes sheet-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.sheet-up {
+  animation: sheet-up 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Pop: a chip/pill that was just selected. */
+@keyframes pop {
+  0% {
+    transform: scale(0.92);
+  }
+  60% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.pop {
+  animation: pop 260ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Draw-in for SVG polylines/paths (charts). */
+@keyframes draw-line {
+  from {
+    stroke-dashoffset: var(--draw-len, 1000);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.draw-line {
+  stroke-dasharray: var(--draw-len, 1000);
+  stroke-dashoffset: var(--draw-len, 1000);
+  animation: draw-line 900ms cubic-bezier(0.2, 0.8, 0.2, 1) 120ms forwards;
+}
+@keyframes dot-in {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.dot-in {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: dot-in 260ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Toggle switch (Settings / Routine). */
+.switch {
+  position: relative;
+  display: inline-flex;
+  width: 52px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: var(--color-surface-container-highest);
+  transition: background-color 200ms ease;
+}
+.switch[data-on="true"] {
+  background: var(--color-primary);
+}
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.switch[data-on="true"]::after {
+  transform: translateX(20px);
+}
+.switch:active::after {
+  width: 30px;
+}
+.switch[data-on="true"]:active::after {
+  transform: translateX(16px);
+}
+
+/* Bottom nav: active pill springs in. */
+@keyframes nav-pill {
+  from {
+    transform: scale(0.8);
+    opacity: 0.4;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.nav-pill-in {
+  animation: nav-pill 260ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Soft skeleton shimmer for images still loading. */
+@keyframes shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+.shimmer {
+  background: linear-gradient(90deg, #efeeea 25%, #f7f6f2 50%, #efeeea 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+/* Settings > "모션 줄이기" mirrors prefers-reduced-motion. */
+html[data-motion="reduce"] *,
+html[data-motion="reduce"] *::before,
+html[data-motion="reduce"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}

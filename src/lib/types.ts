@@ -180,7 +180,59 @@ export interface HeroPhoto {
   y: number;
 }
 
+/** Sign-in providers the login sheet offers. Auth is mocked locally in MVP. */
+export type AuthProvider = "google" | "apple" | "kakao" | "email" | "guest";
+
+export interface User {
+  id: string;
+  provider: AuthProvider;
+  name: string;
+  email?: string;
+  /** Remote avatar URL from the provider, if any. */
+  avatarUrl?: string;
+  signedInAt: string;
+}
+
+export const PROVIDER_LABELS: Record<AuthProvider, string> = {
+  google: "Google",
+  apple: "Apple",
+  kakao: "카카오",
+  email: "이메일",
+  guest: "게스트",
+};
+
+/** User preferences edited on /settings. */
+export interface Settings {
+  /** Same-time capture reminder — the single biggest completion lever. */
+  reminderEnabled: boolean;
+  /** "HH:MM", 24h. */
+  reminderTime: string;
+  /** 0 = Sunday … 6 = Saturday. */
+  reminderDays: number[];
+  /** Fill the ring and shoot automatically once the frame is stable. */
+  autoCapture: boolean;
+  /** Show the previous day's photo over the camera by default. */
+  ghostOverlay: boolean;
+  /** Light vibration on taps where the platform supports it. */
+  haptics: boolean;
+  /** Collapse decorative motion (also honours prefers-reduced-motion). */
+  reduceMotion: boolean;
+}
+
+export const DEFAULT_SETTINGS: Settings = {
+  reminderEnabled: false,
+  reminderTime: "21:00",
+  reminderDays: [0, 1, 2, 3, 4, 5, 6],
+  autoCapture: true,
+  ghostOverlay: true,
+  haptics: true,
+  reduceMotion: false,
+};
+
 export interface AppState {
+  /** null until the user passes the login screen (guest counts as a user). */
+  user: User | null;
+  settings: Settings;
   survey: Survey | null;
   onboardedAt: string | null;
   records: DayRecord[];

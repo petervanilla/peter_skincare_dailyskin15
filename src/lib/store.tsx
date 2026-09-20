@@ -12,12 +12,22 @@ import {
 } from "react";
 import { buildDemoState } from "./demo";
 import { clearPhotos, putPhoto } from "./photoStore";
-import type { AppState, CompletedCycle, DayRecord, Experiment, Survey } from "./types";
-import { CHALLENGE_LENGTH } from "./types";
+import type {
+  AppState,
+  CompletedCycle,
+  DayRecord,
+  Experiment,
+  Settings,
+  Survey,
+  User,
+} from "./types";
+import { CHALLENGE_LENGTH, DEFAULT_SETTINGS } from "./types";
 
 const STORAGE_KEY = "dailyskin15:state:v1";
 
 const EMPTY_STATE: AppState = {
+  user: null,
+  settings: DEFAULT_SETTINGS,
   survey: null,
   onboardedAt: null,
   records: [],
@@ -54,6 +64,11 @@ interface StoreValue {
   /** Stores a picked profile photo, replacing the stock avatar everywhere it's shown. */
   saveAvatarPhoto: (dataUrl: string) => Promise<void>;
   removeAvatarPhoto: () => void;
+  /** Records a (mock) sign-in; the login screen calls this. */
+  signIn: (user: User) => void;
+  /** Clears the session but keeps records, so a re-login finds them again. */
+  signOut: () => void;
+  updateSettings: (patch: Partial<Settings>) => void;
   /** Sets (or clears) the one variable under test this cycle. */
   setExperiment: (experiment: Experiment | null) => void;
   /** Answers the daily check-in for a day that already has a capture. */
@@ -87,6 +102,8 @@ function loadState(): AppState {
       ...parsed,
       records: parsed.records ?? [],
       cycles: parsed.cycles ?? [],
+      // New settings keys get their defaults without wiping saved ones.
+      settings: { ...DEFAULT_SETTINGS, ...(parsed.settings ?? {}) },
     };
   } catch {
     return EMPTY_STATE;
@@ -226,6 +243,24 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setState((s) => ({ ...s, avatarPhotoKey: null }));
   }, [setState]);
 
+  const signIn = useCallback(
+    (user: User) => {
+      setState((s) => ({ ...s, user, nickname: s.nickname === "Amy" ? user.name : s.nickname }));
+    },
+    [setState],
+  );
+
+  const signOut = useCallback(() => {
+    setState((s) => ({ ...s, user: null }));
+  }, [setState]);
+
+  const updateSettings = useCallback(
+    (patch: Partial<Settings>) => {
+      setState((s) => ({ ...s, settings: { ...s.settings, ...patch } }));
+    },
+    [setState],
+  );
+
   const setExperiment = useCallback(
     (experiment: Experiment | null) => {
       setState((s) => ({ ...s, experiment }));
@@ -324,6 +359,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       removeHeroPhoto,
       saveAvatarPhoto,
       removeAvatarPhoto,
+      signIn,
+      signOut,
+      updateSettings,
       setExperiment,
       setCheckIn,
       setInviteCode,
@@ -347,6 +385,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       removeHeroPhoto,
       saveAvatarPhoto,
       removeAvatarPhoto,
+      signIn,
+      signOut,
+      updateSettings,
       setExperiment,
       setCheckIn,
       setInviteCode,

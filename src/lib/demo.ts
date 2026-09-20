@@ -129,6 +129,13 @@ export function buildDemoState(days: number, base: AppState, today = new Date())
   const records = buildDemoRecords(days, today);
   return {
     ...base,
+    user: base.user ?? {
+      id: "demo-user",
+      provider: "google",
+      name: "하은",
+      email: "haeun.demo@gmail.com",
+      signedInAt: new Date().toISOString(),
+    },
     survey: DEMO_SURVEY,
     onboardedAt: new Date(`${records[0].date}T09:00:00`).toISOString(),
     records,
