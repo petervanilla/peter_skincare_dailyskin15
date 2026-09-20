@@ -1,31 +1,72 @@
 "use client";
 
-import Image from "next/image";
 import { useMemo, useState } from "react";
 import { Icon } from "@/components/Icon";
-import { CATEGORY_LABELS, PRODUCTS, type ProductCategoryId } from "@/lib/products";
+import { ProductSheet } from "@/components/ProductSheet";
+import { ProductTile } from "@/components/ProductTile";
+import { haptic } from "@/lib/haptics";
+import {
+  ACTIVE_LABELS,
+  CATALOG_ATTRIBUTION,
+  CATEGORY_LABELS,
+  PRODUCTS,
+  type Product,
+  type ProductCategoryId,
+} from "@/lib/products";
 
-/** Browsable + searchable product grid — the full catalog behind the personalized picks above it. */
-export function ProductCatalog() {
+type Filter = "all" | "kbeauty" | ProductCategoryId;
+
+interface ProductCatalogProps {
+  /** Product id to open on mount (Shop deep link `?product=`). */
+  initialProductId?: string | null;
+}
+
+/** Browsable + searchable catalog of real products behind the personalized picks. */
+export function ProductCatalog({ initialProductId = null }: ProductCatalogProps) {
   const [query, setQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState<ProductCategoryId | "all">("all");
+  const [filter, setFilter] = useState<Filter>("all");
+  const [brand, setBrand] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Product | null>(
+    () => PRODUCTS.find((p) => p.id === initialProductId) ?? null,
+  );
 
-  // Only categories actually present in PRODUCTS get a chip, so there's
-  // never a filter that turns up zero results.
-  const categories = [...new Set(PRODUCTS.map((p) => p.categoryId))];
+  const categories = useMemo(
+    () =>
+      (Object.keys(CATEGORY_LABELS) as ProductCategoryId[]).filter((c) =>
+        PRODUCTS.some((p) => p.category === c),
+      ),
+    [],
+  );
+  const brands = useMemo(() => [...new Set(PRODUCTS.map((p) => p.brand))].sort(), []);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return PRODUCTS.filter((p) => {
-      if (activeCategory !== "all" && p.categoryId !== activeCategory) return false;
+      if (filter === "kbeauty" && !p.kbeauty) return false;
+      if (filter !== "all" && filter !== "kbeauty" && p.category !== filter) return false;
+      if (brand && p.brand !== brand) return false;
       if (!q) return true;
-      return (
-        p.name.toLowerCase().includes(q) ||
-        CATEGORY_LABELS[p.categoryId].toLowerCase().includes(q) ||
-        p.tags.some((t) => t.toLowerCase().includes(q))
-      );
+      const hay = [
+        p.brand,
+        p.name,
+        p.highlight ?? "",
+        CATEGORY_LABELS[p.category],
+        ...p.actives.map((a) => ACTIVE_LABELS[a]),
+      ]
+        .join(" ")
+        .toLowerCase();
+      return hay.includes(q);
     });
-  }, [query, activeCategory]);
+  }, [query, filter, brand]);
+
+  const pick = (f: Filter) => {
+    haptic("tap");
+    setFilter(f);
+  };
+
+  const fetched = CATALOG_ATTRIBUTION.fetchedAt
+    ? CATALOG_ATTRIBUTION.fetchedAt.slice(0, 10).replaceAll("-", ".")
+    : "";
 
   return (
     <div className="flex flex-col gap-4">
@@ -38,24 +79,28 @@ export function ProductCatalog() {
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="제품명, 성분, 고민으로 검색"
+          placeholder="브랜드, 제품명, 성분으로 검색"
           className="w-full rounded-full border border-outline-variant bg-pure-white py-3 pr-4 pl-11 font-body-md text-body-md outline-none focus:border-primary"
         />
       </div>
 
       <div className="no-scrollbar flex gap-2 overflow-x-auto">
-        <FilterChip
-          label="전체"
-          active={activeCategory === "all"}
-          onClick={() => setActiveCategory("all")}
-        />
+        <FilterChip label="전체" active={filter === "all"} onClick={() => pick("all")} />
+        <FilterChip label="K-뷰티" active={filter === "kbeauty"} onClick={() => pick("kbeauty")} />
         {categories.map((id) => (
           <FilterChip
             key={id}
             label={CATEGORY_LABELS[id]}
-            active={activeCategory === id}
-            onClick={() => setActiveCategory(id)}
+            active={filter === id}
+            onClick={() => pick(id)}
           />
+        ))}
+      </div>
+
+      <div className="no-scrollbar flex gap-1.5 overflow-x-auto">
+        <BrandChip label="모든 브랜드" active={brand === null} onClick={() => setBrand(null)} />
+        {brands.map((b) => (
+          <BrandChip key={b} label={b} active={brand === b} onClick={() => setBrand(b)} />
         ))}
       </div>
 
@@ -64,46 +109,37 @@ export function ProductCatalog() {
           검색 결과가 없어요. 다른 검색어로 시도해 보세요.
         </p>
       ) : (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="stagger grid grid-cols-2 gap-3">
           {filtered.map((p) => (
-            <article
+            <ProductTile
               key={p.id}
-              className="flex flex-col overflow-hidden rounded-2xl bg-pure-white shadow-[0_4px_20px_rgba(46,104,93,0.05)]"
-            >
-              <div className="shimmer relative aspect-square w-full bg-surface-container-low">
-                <Image
-                  src={p.image}
-                  alt={p.name}
-                  fill
-                  sizes="220px"
-                  className="object-cover"
-                />
-              </div>
-              <div className="flex flex-1 flex-col gap-1 p-3">
-                <span className="font-label-sm text-[10px] tracking-wide text-on-surface-variant uppercase">
-                  {CATEGORY_LABELS[p.categoryId]}
-                </span>
-                <h4 className="line-clamp-2 font-label-bold text-label-bold text-on-surface">
-                  {p.name}
-                </h4>
-                <div className="mt-1 flex flex-wrap gap-1">
-                  {p.tags.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-full bg-surface-container px-2 py-0.5 font-label-sm text-[10px] text-on-surface-variant"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-                <p className="mt-auto pt-2 font-headline-md text-headline-md text-primary">
-                  {p.price.toLocaleString()}원
-                </p>
-              </div>
-            </article>
+              product={p}
+              onClick={() => {
+                haptic("select");
+                setSelected(p);
+              }}
+            />
           ))}
         </div>
       )}
+
+      <footer className="flex flex-col gap-1 px-1 pt-2 font-label-sm text-[11px] leading-4 text-on-surface-variant">
+        <p>
+          제품 정보·사진:{" "}
+          <a
+            href={CATALOG_ATTRIBUTION.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2"
+          >
+            {CATALOG_ATTRIBUTION.source}
+          </a>{" "}
+          (ODbL · CC BY-SA){fetched ? ` · ${fetched} 기준` : ""}
+        </p>
+        <p>K-뷰티 항목은 제품명과 대표 성분만 표기해요.</p>
+      </footer>
+
+      <ProductSheet product={selected} open={selected !== null} onClose={() => setSelected(null)} />
     </div>
   );
 }
@@ -123,8 +159,32 @@ function FilterChip({
       onClick={onClick}
       className={`shrink-0 rounded-full px-4 py-2 font-label-bold text-label-bold transition-colors ${
         active
-          ? "bg-primary text-pure-white"
+          ? "pop bg-primary text-pure-white"
           : "bg-surface-container text-on-surface-variant hover:bg-surface-container-highest"
+      }`}
+    >
+      {label}
+    </button>
+  );
+}
+
+function BrandChip({
+  label,
+  active,
+  onClick,
+}: {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`shrink-0 rounded-full border px-3 py-1 font-label-sm text-label-sm transition-colors ${
+        active
+          ? "border-primary bg-secondary-container text-primary"
+          : "border-outline-variant bg-pure-white text-on-surface-variant"
       }`}
     >
       {label}

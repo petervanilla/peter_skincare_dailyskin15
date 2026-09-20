@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 import { Icon } from "@/components/Icon";
 import { haptic } from "@/lib/haptics";
 import { TopAppBar } from "@/components/TopAppBar";
@@ -63,20 +63,50 @@ const SUGGESTIONS: Record<ExperimentKind, string[]> = {
 };
 
 export default function ExperimentPage() {
+  return (
+    <Suspense fallback={<div className="p-margin-main">불러오는 중…</div>}>
+      <ExperimentGate />
+    </Suspense>
+  );
+}
+
+function ExperimentGate() {
   const { state, hydrated } = useStore();
+  const params = useSearchParams();
+  // A product sheet can hand over `?kind=&title=` to seed a new variable.
+  const seedTitle = params.get("title");
+  const seedKindParam = params.get("kind");
+  const seedKind = KIND_ORDER.includes(seedKindParam as ExperimentKind)
+    ? (seedKindParam as ExperimentKind)
+    : null;
   // The form seeds its own state from the stored experiment, so it must not
   // mount until localStorage has been read — otherwise it would seed from the
   // empty server-render state and never show the existing variable.
   if (!hydrated) return <div className="p-margin-main">불러오는 중…</div>;
-  return <ExperimentForm key={state.experiment?.id ?? "new"} existing={state.experiment} />;
+  return (
+    <ExperimentForm
+      key={state.experiment?.id ?? "new"}
+      existing={state.experiment}
+      seedTitle={seedTitle}
+      seedKind={seedKind}
+    />
+  );
 }
 
-function ExperimentForm({ existing }: { existing: Experiment | null }) {
+function ExperimentForm({
+  existing,
+  seedTitle,
+  seedKind,
+}: {
+  existing: Experiment | null;
+  seedTitle: string | null;
+  seedKind: ExperimentKind | null;
+}) {
   const router = useRouter();
   const { nextDay, setExperiment } = useStore();
 
-  const [kind, setKind] = useState<ExperimentKind>(existing?.kind ?? "add-product");
-  const [title, setTitle] = useState(existing?.title ?? "");
+  const [kind, setKind] = useState<ExperimentKind>(seedKind ?? existing?.kind ?? "add-product");
+  const [title, setTitle] = useState(existing?.title || seedTitle || "");
   const [target, setTarget] = useState<TargetIndex | undefined>(existing?.target);
   const [startDay, setStartDay] = useState<number | null>(existing?.startDay ?? null);
 

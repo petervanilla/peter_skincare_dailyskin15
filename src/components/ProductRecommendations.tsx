@@ -1,30 +1,32 @@
 "use client";
 
-import Image from "next/image";
+import { useState } from "react";
 import { Icon } from "@/components/Icon";
-import { IMG } from "@/lib/assets";
-import { CATEGORY_ICON, CATEGORY_IMAGE } from "@/lib/products";
-import { recommendProductCategories } from "@/lib/recommendations";
+import { ProductSheet } from "@/components/ProductSheet";
+import { ActiveChips, ProductImage } from "@/components/ProductTile";
+import { haptic } from "@/lib/haptics";
+import { deriveNeeds, focusHeadline, recommendProducts, type ProductMatch } from "@/lib/matching";
 import { latestRecord } from "@/lib/scoring";
 import { useStore } from "@/lib/store";
 
 /**
- * 제품 추천 (spec §12) content — rule-based candidate filter, then a plain
- * language reason. Shared between the Shop tab and the Progress page's
- * 제품 추천 tab, so it renders in place there instead of navigating away
- * from the "Day N of 15" context.
+ * 제품 추천 (spec §12) — the four indices + survey become "needs", needs
+ * become ingredient matches, and every pick explains itself in one line.
+ * Shared between the Shop tab and the Progress page's 제품 추천 tab.
  */
 export function ProductRecommendations() {
   const { state, hydrated } = useStore();
+  const [selected, setSelected] = useState<ProductMatch | null>(null);
 
   if (!hydrated) return <div className="p-margin-main">불러오는 중…</div>;
 
   const today = latestRecord(state.records);
-  const categories = recommendProductCategories(state.survey, today);
+  const needs = deriveNeeds(state.survey, today);
+  const headline = focusHeadline(needs);
+  const picks = recommendProducts(state.survey, today, { diversify: true, limit: 4 });
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Centred hero, ported from the approved comp */}
       <section className="flex flex-col items-center pb-1 text-center">
         <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-secondary-fixed px-4 py-1.5 text-on-secondary-fixed">
           <Icon name="shield" filled size={16} />
@@ -33,83 +35,72 @@ export function ProductRecommendations() {
           </span>
         </div>
         <h1 className="mb-2 font-display-hero-mobile text-display-hero-mobile text-primary">
-          Calm &amp; Protect
+          {headline.title}
         </h1>
-        <p className="max-w-md font-body-md text-body-md text-on-surface-variant">
-          설문 응답
-          {today ? ` + Day ${today.day} 지표` : ""}를 규칙에 넣어 제품 &quot;유형&quot;을
-          골랐어요. 특정 브랜드나 치료 효과를 보장하지 않아요.
+        <p className="max-w-md font-body-md text-body-md break-keep text-on-surface-variant">
+          설문{today ? ` + Day ${today.day} 지표` : ""}를 규칙에 넣어 성분을 매칭했어요. 특정
+          브랜드나 효과를 보장하지 않아요.
         </p>
+        <p className="mt-1 font-label-sm text-label-sm text-on-surface-variant">{headline.caption}</p>
       </section>
 
-      <section className="flex flex-col gap-4">
-        {categories.map((c) => (
-          <article
-            key={c.id}
-            className="flex flex-col overflow-hidden rounded-[24px] bg-pure-white p-gutter shadow-[0_4px_20px_rgba(46,104,93,0.05)]"
+      <div className="no-scrollbar flex gap-2 overflow-x-auto">
+        {needs.slice(0, 4).map((n) => (
+          <span
+            key={n.id}
+            className="shrink-0 rounded-full bg-tertiary-fixed px-3 py-1.5 font-label-sm text-label-sm text-on-tertiary-fixed"
           >
-            <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-xl bg-surface-container-low">
-              <Image
-                src={CATEGORY_IMAGE[c.id] ?? IMG.productSkinTexture}
-                alt={c.category}
-                fill
-                sizes="430px"
-                className="object-cover"
-              />
-              <div className="absolute top-2 left-2 rounded bg-glass-overlay px-2 py-1 font-label-bold text-[10px] text-primary backdrop-blur-md">
-                {c.category}
-              </div>
-              {/* Lavender = DESIGN.md's AI-insight color — this pick came
-                  straight out of the rule engine reading today's sub-scores,
-                  not a generic catalog listing. */}
-              <div className="absolute top-2 right-2 flex items-center gap-1 rounded-full bg-tertiary-fixed px-2.5 py-1 text-on-tertiary-fixed shadow-sm">
-                <Icon name="auto_awesome" size={12} filled />
-                <span className="font-label-bold text-[10px]">
-                  {today ? `Day ${today.day} 지표 맞춤` : "맞춤 추천"}
-                </span>
-              </div>
-            </div>
+            <b className="font-label-bold">{n.label}</b> · {n.reason}
+          </span>
+        ))}
+      </div>
 
-            <div className="flex flex-1 flex-col justify-between py-3">
-              <div>
-                <h3 className="mb-1 font-headline-md text-headline-md leading-tight text-primary">
-                  {c.category}
-                </h3>
-                <div className="mb-3 flex flex-wrap gap-2">
-                  {c.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full bg-surface-container px-3 py-1 font-label-sm text-label-sm text-on-surface-variant"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-auto rounded-lg border border-tertiary-fixed-dim/40 bg-tertiary-fixed/20 p-3">
-                <div className="flex items-start gap-2">
-                  <Icon
-                    name={CATEGORY_ICON[c.id] ?? "check_circle"}
-                    size={18}
-                    className="mt-0.5 text-tertiary-container"
-                  />
-                  <div>
-                    <span className="block font-label-bold text-label-bold text-tertiary-container">
-                      Why it fits your skin
-                    </span>
-                    <span className="font-body-md text-sm text-on-surface-variant">{c.why}</span>
-                  </div>
-                </div>
-              </div>
+      <section className="stagger flex flex-col gap-3">
+        {picks.map((m) => (
+          <button
+            key={m.product.id}
+            type="button"
+            onClick={() => {
+              haptic("select");
+              setSelected(m);
+            }}
+            className="flex items-start gap-3 rounded-[24px] bg-pure-white p-3 text-left shadow-[0_4px_20px_rgba(46,104,93,0.05)]"
+          >
+            <ProductImage
+              product={m.product}
+              sizes="72px"
+              className="h-[72px] w-[72px] shrink-0 rounded-xl"
+            />
+            <div className="flex min-w-0 flex-1 flex-col gap-1">
+              <span className="font-label-sm text-[10px] tracking-wide text-on-surface-variant uppercase">
+                {m.product.brand}
+              </span>
+              <h3 className="line-clamp-2 font-label-bold text-label-bold text-on-surface">
+                {m.product.name}
+              </h3>
+              <p className="font-label-sm text-label-sm break-keep text-primary">{m.reason}</p>
+              <ActiveChips actives={m.product.actives} hits={m.hits} />
+              {m.cautions.length ? (
+                <p className="font-label-sm text-[11px] text-[#7a4b00]">
+                  {m.cautions.join(" · ")}
+                </p>
+              ) : null}
             </div>
-          </article>
+            <Icon name="chevron_right" className="mt-6 shrink-0 text-on-surface-variant" size={20} />
+          </button>
         ))}
       </section>
 
       <p className="px-2 text-center font-label-sm text-label-sm text-on-surface-variant">
         피부에 지속적인 불편이 있다면 전문가와 상담하세요.
       </p>
+
+      <ProductSheet
+        product={selected?.product ?? null}
+        match={selected}
+        open={selected !== null}
+        onClose={() => setSelected(null)}
+      />
     </div>
   );
 }

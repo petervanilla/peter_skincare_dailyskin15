@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
+import { ProductPicks } from "@/components/ProductPicks";
 import { Switch } from "@/components/Switch";
 import { haptic } from "@/lib/haptics";
 import { IMG } from "@/lib/assets";
@@ -155,14 +156,13 @@ export default function RoutinePage() {
           </div>
         ) : null}
 
-        <Link
-          href="/shop"
-          className="flex items-center gap-3 rounded-2xl bg-pure-white p-4 shadow-[0_4px_20px_rgba(46,104,93,0.05)] transition-colors hover:bg-secondary-container"
-        >
-          <Icon name="shopping_bag" className="text-primary" />
-          <span className="flex-1 font-label-bold text-label-bold">나를 위한 맞춤 제품 추천</span>
-          <Icon name="chevron_right" className="text-primary" />
-        </Link>
+        <ProductPicks
+          survey={state.survey}
+          record={today}
+          variant="rail"
+          limit={4}
+          title="오늘 루틴에 맞는 제품"
+        />
 
         <p className="px-2 text-center font-label-sm text-label-sm text-on-surface-variant">
           이 루틴은 생활 관리 가이드로 치료나 처방을 대신하지 않아요.

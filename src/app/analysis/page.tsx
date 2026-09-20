@@ -7,6 +7,7 @@ import { IMG } from "@/lib/assets";
 import { Suspense } from "react";
 import { BottomNav } from "@/components/BottomNav";
 import { Icon } from "@/components/Icon";
+import { ProductPicks } from "@/components/ProductPicks";
 import { StoredPhoto } from "@/components/StoredPhoto";
 import { TopAppBar } from "@/components/TopAppBar";
 import { buildCarePlan } from "@/lib/recommendations";
@@ -203,6 +204,9 @@ function AnalysisContent() {
           </p>
         </section>
 
+        {/* Skin state → products (deck: 분석 결과 → 맞춤 제품) */}
+        <ProductPicks survey={state.survey} record={record} limit={3} variant="list" />
+
         {/* Priority protocol */}
         <section className="relative overflow-hidden rounded-lg border border-tertiary-fixed-dim/40 bg-tertiary-fixed/25 p-5">
           <div className="flex flex-col">
@@ -227,6 +231,13 @@ function AnalysisContent() {
             >
               오늘의 케어 루틴 시작하기
               <Icon name="science" size={16} className="ml-2" />
+            </Link>
+            <Link
+              href="/shop"
+              className="mt-2 flex items-center justify-center gap-1 py-1 font-label-sm text-label-sm text-tertiary-container"
+            >
+              이 상태에 맞는 제품 보기
+              <Icon name="chevron_right" size={16} />
             </Link>
           </div>
         </section>

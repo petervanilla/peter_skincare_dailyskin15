@@ -8,6 +8,8 @@ import { Icon } from "@/components/Icon";
 import { StepChart } from "@/components/StepChart";
 import { TopAppBar } from "@/components/TopAppBar";
 import { AnimatedNumber } from "@/components/AnimatedNumber";
+import { ProductImage } from "@/components/ProductTile";
+import { recommendProducts } from "@/lib/matching";
 import { Confetti } from "@/components/ui/confetti";
 import { haptic } from "@/lib/haptics";
 import {
@@ -287,6 +289,11 @@ export default function ReportPage() {
           </p>
           <h3 className="mt-2 font-headline-md text-headline-md">{suggestion.title}</h3>
           <p className="mt-2 font-body-md text-body-md text-on-tertiary-fixed/80">{suggestion.detail}</p>
+
+          {suggestion.kind === "add-product" || suggestion.kind === "observe" ? (
+            <CandidateProducts survey={state.survey} record={latest} />
+          ) : null}
+
           <button
             type="button"
             disabled={!cycleComplete}
@@ -362,5 +369,49 @@ function InsightRow({ index, insight }: { index: number; insight: Insight }) {
         <p className="mt-0.5 font-label-sm text-label-sm text-on-surface-variant">{insight.detail}</p>
       </div>
     </li>
+  );
+}
+
+/**
+ * Two products for the report's top need — tapping prefills the next
+ * experiment with "{brand} {name} 추가" so the variable is a real product.
+ */
+function CandidateProducts({
+  survey,
+  record,
+}: {
+  survey: Parameters<typeof recommendProducts>[0];
+  record: Parameters<typeof recommendProducts>[1];
+}) {
+  const picks = recommendProducts(survey, record, { limit: 2, diversify: true });
+  if (!picks.length) return null;
+  return (
+    <div className="mt-4 rounded-2xl bg-pure-white/60 p-3">
+      <p className="mb-2 font-label-sm text-[10px] font-bold tracking-[0.18em] text-on-tertiary-fixed/70 uppercase">
+        후보 제품 · 탭하면 실험 변수로
+      </p>
+      <ul className="stagger flex flex-col gap-2">
+        {picks.map((m) => (
+          <li key={m.product.id}>
+            <Link
+              href={`/experiment?kind=add-product&title=${encodeURIComponent(`${m.product.brand} ${m.product.name} 추가`)}`}
+              onClick={() => haptic("select")}
+              className="flex items-center gap-3 rounded-xl bg-pure-white p-2"
+            >
+              <ProductImage product={m.product} sizes="48px" className="h-12 w-12 shrink-0 rounded-lg" />
+              <div className="min-w-0 flex-1">
+                <p className="line-clamp-1 font-label-bold text-label-bold text-on-surface">
+                  {m.product.brand} {m.product.name}
+                </p>
+                <p className="line-clamp-1 font-label-sm text-label-sm text-on-surface-variant">
+                  {m.reason}
+                </p>
+              </div>
+              <Icon name="add_circle" size={20} className="shrink-0 text-tertiary-container" />
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

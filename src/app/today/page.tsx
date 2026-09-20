@@ -10,7 +10,9 @@ import { CheckInSheet } from "@/components/CheckInSheet";
 import { CoachCard } from "@/components/CoachCard";
 import { HeroCover } from "@/components/HeroCover";
 import { Icon } from "@/components/Icon";
+import { ProductImage } from "@/components/ProductTile";
 import { haptic } from "@/lib/haptics";
+import { recommendProducts } from "@/lib/matching";
 import { buildInsights } from "@/lib/insights";
 import { isReminderDue, maybeNotifyOnce } from "@/lib/reminder";
 import { buildCarePlan } from "@/lib/recommendations";
@@ -206,6 +208,8 @@ export default function TodayPage() {
           ) : null}
 
           <CoachCard insights={insights} limit={2} showMoreLink />
+
+          {today ? <TodayPick survey={state.survey} record={today} /> : null}
 
           <Link
             href="/routine"
@@ -426,5 +430,53 @@ function DayStrip({
         );
       })}
     </div>
+  );
+}
+
+/** One product matched to today's indices — the shortest path from score to shelf. */
+function TodayPick({
+  survey,
+  record,
+}: {
+  survey: Parameters<typeof recommendProducts>[0];
+  record: NonNullable<Parameters<typeof recommendProducts>[1]>;
+}) {
+  const pick = recommendProducts(survey, record, { limit: 1 })[0];
+  if (!pick) return null;
+  return (
+    <section className="rounded-[24px] bg-pure-white p-4 shadow-[0_4px_20px_rgba(46,104,93,0.05)]">
+      <div className="mb-3 flex items-center justify-between">
+        <div className="flex items-center gap-1.5 text-tertiary-container">
+          <Icon name="auto_awesome" size={14} filled />
+          <span className="font-label-sm text-[10px] font-bold tracking-[0.18em] uppercase">
+            오늘의 매칭 제품
+          </span>
+        </div>
+        <Link
+          href="/shop"
+          onClick={() => haptic("tap")}
+          className="font-label-sm text-label-sm text-primary"
+        >
+          더 보기
+        </Link>
+      </div>
+      <Link
+        href={`/shop?product=${pick.product.id}`}
+        onClick={() => haptic("tap")}
+        className="flex items-center gap-3"
+      >
+        <ProductImage product={pick.product} sizes="56px" className="h-14 w-14 shrink-0 rounded-xl" />
+        <div className="min-w-0 flex-1">
+          <p className="font-label-sm text-[10px] tracking-wide text-on-surface-variant uppercase">
+            {pick.product.brand}
+          </p>
+          <p className="line-clamp-1 font-label-bold text-label-bold text-on-surface">
+            {pick.product.name}
+          </p>
+          <p className="line-clamp-2 font-label-sm text-label-sm text-primary">{pick.reason}</p>
+        </div>
+        <Icon name="chevron_right" className="shrink-0 text-on-surface-variant" />
+      </Link>
+    </section>
   );
 }

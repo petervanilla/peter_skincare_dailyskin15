@@ -27,6 +27,8 @@ npm test
 
 프로필 화면 하단 "데모 · 개발자" 버튼으로도 불러올 수 있습니다. 데모 수치는 실제 점수 엔진과 같은 경로로 생성됩니다 (`src/lib/demo.ts`).
 
+제품 카탈로그는 Open Beauty Facts 스냅샷입니다. 갱신: `node scripts/fetch-products.mjs` (라이선스: `public/products/ATTRIBUTION.md`).
+
 디벨롭 방향과 Mobbin 레퍼런스는 `docs/DEVELOP_PLAN.md` 에 정리돼 있습니다.
 
 ## 화면 연결도
@@ -92,6 +94,8 @@ src/
     insights.ts   Skin Coach 규칙 엔진 (Day-1 델타 · 실험 반응 창 · 루틴 분리 · 습관)
     demo.ts       결정적 데모 시드 (/?demo=N)
     shareCard.ts  얼굴 없는 결과 카드 PNG 렌더 · 공유
+    products.ts   제품 카탈로그 (Open Beauty Facts + K-뷰티 큐레이션)
+    matching.ts   피부 지표 × 성분 매칭 → 제품 추천 (이유·주의 포함)
     recommendations.ts  룰 기반 케어/제품 추천
     store.tsx     localStorage 기반 앱 상태
     photoStore.ts IndexedDB 사진 저장

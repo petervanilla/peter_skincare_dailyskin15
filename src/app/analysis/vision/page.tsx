@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { IMG } from "@/lib/assets";
+import { PRODUCTS } from "@/lib/products";
 
 /**
  * AI Vision Analysis (Stitch screen "AI 피부 분석 — 시각화").
@@ -49,6 +50,13 @@ const LABELS = [
   },
 ] as const;
 
+/** Under-image status lines; the last one is the product matching step. */
+const STEPS = [
+  "피부 표면의 미세한 지형을 매핑하고 있어요.",
+  "네 가지 지표를 Day 1 기준과 맞춰 보고 있어요.",
+  `성분 매칭 중 · ${PRODUCTS.length}개 제품 비교`,
+] as const;
+
 export default function VisionPage() {
   return (
     <Suspense fallback={<div className="p-margin-main">분석 중…</div>}>
@@ -62,10 +70,15 @@ function VisionContent() {
   const params = useSearchParams();
   const day = params.get("day");
   const [visible, setVisible] = useState(0);
+  const [step, setStep] = useState(0);
 
   useEffect(() => {
     const timers = LABELS.map((_, i) =>
       window.setTimeout(() => setVisible(i + 1), 400 + i * 450),
+    );
+    // Status copy advances on the same clock; the matching line lands last.
+    const stepTimers = STEPS.map((_, i) =>
+      window.setTimeout(() => setStep(i), i === 0 ? 0 : 900 + (i - 1) * 900),
     );
     const done = window.setTimeout(
       () => router.replace(day ? `/analysis?day=${day}` : "/analysis"),
@@ -73,6 +86,7 @@ function VisionContent() {
     );
     return () => {
       timers.forEach(window.clearTimeout);
+      stepTimers.forEach(window.clearTimeout);
       window.clearTimeout(done);
     };
   }, [router, day]);
@@ -84,8 +98,16 @@ function VisionContent() {
           <h1 className="font-display-hero-mobile text-display-hero-mobile mb-stack-sm text-primary">
             AI Vision Analysis
           </h1>
-          <p className="mx-auto max-w-md font-body-md text-body-md text-on-surface-variant">
-            피부 표면의 미세한 지형을 매핑하고 있어요.
+          <p
+            key={step}
+            className="page-in mx-auto flex max-w-md items-center justify-center gap-2 font-body-md text-body-md text-on-surface-variant"
+          >
+            {step === STEPS.length - 1 ? (
+              <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-tertiary-fixed text-on-tertiary-fixed">
+                <span className="material-symbols-outlined filled text-[14px]">auto_awesome</span>
+              </span>
+            ) : null}
+            {STEPS[step]}
           </p>
         </div>
 
