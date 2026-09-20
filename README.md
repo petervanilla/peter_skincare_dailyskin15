@@ -16,7 +16,18 @@ npm run dev
 npm test
 ```
 
-`npm test` 는 픽셀 분석 파이프라인과 점수 엔진을 합성 프레임으로 검증합니다 (카메라·브라우저 불필요).
+`npm test` 는 픽셀 분석 파이프라인·점수 엔진·Skin Coach 인사이트 엔진을 합성 데이터로 검증합니다 (카메라·브라우저 불필요).
+
+### 데모 (Live Demo)
+
+빈 상태 대신 15일 기록이 채워진 앱을 바로 보려면:
+
+- `http://localhost:3000/?demo=12` — 12일차 진행 중 (Coach · Response Graph · 체크인)
+- `http://localhost:3000/?demo=15` — 15일 완주 (완주 리포트 · 다음 15일 실험 시작)
+
+프로필 화면 하단 "데모 · 개발자" 버튼으로도 불러올 수 있습니다. 데모 수치는 실제 점수 엔진과 같은 경로로 생성됩니다 (`src/lib/demo.ts`).
+
+디벨롭 방향과 Mobbin 레퍼런스는 `docs/DEVELOP_PLAN.md` 에 정리돼 있습니다.
 
 ## 화면 연결도
 
@@ -39,10 +50,15 @@ npm test
 │  bottom nav: Today / Progress / Routine / Profile        │
 └──┬────────────┬──────────────┬─────────────┬────────────┘
    ▼            ▼              ▼             ▼
-[/progress]  [/routine]   [/products]   [/challenge]
+[/progress]  [/routine]   [/shop]       [/leaderboard]
    │            │                            │
    ▼            ▼                            ▼
-[/compare]  [/face-yoga]              [/leaderboard]
+[/compare]  [/face-yoga]              [/challenge]  초대코드 · 결과 카드
+   │
+   ▼
+[/report]  Day-N / 15일 완주 리포트 ─▶ 다음 15일 실험 시작 (사이클 아카이브)
+
+[/experiment]  이번 15일의 실험 — 변수 1개 설정 (Today에서 진입)
 ```
 
 | 라우트 | Stitch 원본 화면 |
@@ -61,6 +77,8 @@ npm test
 | `/products` | 나를 위한 맞춤 제품 추천 |
 | `/challenge` | 친구와 함께하는 챌린지 랭킹 |
 | `/leaderboard` | 학교/반별 챌린지 랭킹 |
+| `/experiment` | (v2) 이번 15일의 실험 — 변수 1개 |
+| `/report` | (v2) Day-N / 15일 완주 리포트 · AI Coach · 다음 15일 |
 
 ## 구조
 
@@ -71,6 +89,9 @@ src/
   lib/
     analysis.ts   픽셀 분석 파이프라인 (ROI → 4대 지표 + 촬영 품질)
     scoring.ts    명세 §7-1 가중치 점수 · Visual Skin Age Index
+    insights.ts   Skin Coach 규칙 엔진 (Day-1 델타 · 실험 반응 창 · 루틴 분리 · 습관)
+    demo.ts       결정적 데모 시드 (/?demo=N)
+    shareCard.ts  얼굴 없는 결과 카드 PNG 렌더 · 공유
     recommendations.ts  룰 기반 케어/제품 추천
     store.tsx     localStorage 기반 앱 상태
     photoStore.ts IndexedDB 사진 저장

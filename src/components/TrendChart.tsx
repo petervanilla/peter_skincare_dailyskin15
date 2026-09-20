@@ -29,11 +29,33 @@ function valueFor(p: Point, key: SeriesKey) {
  * indicators keep their own colored lines, and hovering (or tapping, for
  * touch) a legend chip isolates just that line.
  */
-export function TrendChart({ records }: { records: Point[] }) {
+interface TrendChartProps {
+  records: Point[];
+  /** Day the experiment variable was introduced — drawn as a dashed marker. */
+  experimentStartDay?: number;
+  experimentTitle?: string;
+  /**
+   * Routine check-in per day. `false` renders that day's score dot hollow so
+   * off-days are visible on the line — the "Response Graph" from the deck.
+   */
+  routineDays?: Record<number, boolean | undefined>;
+}
+
+export function TrendChart({
+  records,
+  experimentStartDay,
+  experimentTitle,
+  routineDays,
+}: TrendChartProps) {
   const [focused, setFocused] = useState<SeriesKey | null>(null);
   const width = 320;
   const height = 170;
   const pad = 16;
+  const hasExperiment =
+    experimentStartDay !== undefined &&
+    experimentStartDay >= 1 &&
+    experimentStartDay <= CHALLENGE_LENGTH;
+  const hasRoutineData = routineDays ? Object.values(routineDays).some((v) => v !== undefined) : false;
 
   if (records.length < 2) {
     return (
@@ -78,6 +100,29 @@ export function TrendChart({ records }: { records: Point[] }) {
           style={{ transition: "opacity 200ms ease" }}
         />
 
+        {hasExperiment ? (
+          <g aria-label={experimentTitle ? `실험 시작: ${experimentTitle}` : "실험 시작"}>
+            <line
+              x1={xs(experimentStartDay)}
+              x2={xs(experimentStartDay)}
+              y1={pad - 4}
+              y2={height - pad}
+              stroke="#cbbeff"
+              strokeWidth="1.5"
+              strokeDasharray="4 3"
+            />
+            <text
+              x={xs(experimentStartDay) + 4}
+              y={pad + 2}
+              fontSize="8"
+              fill="#544594"
+              fontWeight="600"
+            >
+              실험 시작
+            </text>
+          </g>
+        ) : null}
+
         {SERIES.map((s) => {
           const path = records
             .map((r, i) => `${i === 0 ? "M" : "L"} ${xs(r.day)} ${ys(valueFor(r, s.key))}`)
@@ -92,15 +137,20 @@ export function TrendChart({ records }: { records: Point[] }) {
                 strokeWidth={s.key === "score" ? 3 : 2.5}
                 strokeLinecap="round"
               />
-              {records.map((r) => (
-                <circle
-                  key={r.day}
-                  cx={xs(r.day)}
-                  cy={ys(valueFor(r, s.key))}
-                  r={s.key === "score" ? 3.5 : 3}
-                  fill={s.color}
-                />
-              ))}
+              {records.map((r) => {
+                const hollow = s.key === "score" && routineDays?.[r.day] === false;
+                return (
+                  <circle
+                    key={r.day}
+                    cx={xs(r.day)}
+                    cy={ys(valueFor(r, s.key))}
+                    r={s.key === "score" ? 3.5 : 3}
+                    fill={hollow ? "#ffffff" : s.color}
+                    stroke={s.color}
+                    strokeWidth={hollow ? 2 : 0}
+                  />
+                );
+              })}
             </g>
           );
         })}
@@ -127,6 +177,27 @@ export function TrendChart({ records }: { records: Point[] }) {
           </button>
         ))}
       </div>
+
+      {hasRoutineData || hasExperiment ? (
+        <p className="mt-2 flex flex-wrap gap-x-3 gap-y-1 font-label-sm text-[11px] text-on-surface-variant">
+          {hasRoutineData ? (
+            <>
+              <span className="flex items-center gap-1">
+                <span className="h-2 w-2 rounded-full bg-primary" /> 루틴한 날
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="h-2 w-2 rounded-full border-2 border-primary bg-pure-white" /> 루틴 건너뛴 날
+              </span>
+            </>
+          ) : null}
+          {hasExperiment ? (
+            <span className="flex items-center gap-1">
+              <span className="h-3 w-0 border-l-2 border-dashed border-tertiary-fixed-dim" /> 실험 시작
+              {experimentTitle ? ` · ${experimentTitle}` : ""}
+            </span>
+          ) : null}
+        </p>
+      ) : null}
     </div>
   );
 }

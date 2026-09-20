@@ -143,7 +143,7 @@ export default function LeaderboardPage() {
           className="shiny-button flex items-center justify-center gap-2 rounded-full bg-primary py-4 font-label-bold text-label-bold text-pure-white shadow-md transition-opacity hover:opacity-90 active:scale-95"
         >
           <Icon name="military_tech" size={18} />
-          내 7-Day 챌린지 순위 · 공유하기
+          내 Friends Challenge · 공유하기
         </Link>
 
         <section className="flex flex-col gap-2">

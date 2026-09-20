@@ -339,6 +339,17 @@ export interface QualityCheck {
   message: string;
   /** 0–1, drives the progress ring on the scan screen. */
   progress: number;
+  /** Per-signal pass/fail for the continuity strip on the scan screen. */
+  signals: CaptureSignals;
+}
+
+export interface CaptureSignals {
+  /** Exposure inside the usable band (not too dark, not blown out). */
+  light: boolean;
+  /** Sharp enough — no motion blur. */
+  focus: boolean;
+  /** A subject is actually filling the guide oval. */
+  frame: boolean;
 }
 
 export function checkCaptureQuality(imageData: ImageData): QualityCheck {
@@ -373,5 +384,10 @@ export function checkCaptureQuality(imageData: ImageData): QualityCheck {
     ok: !failed,
     message: failed ? failed[1] : "좋아요. 그대로 1초만!",
     progress: passed / checks.length,
+    signals: {
+      light: exposure >= 55 && exposure <= 215,
+      focus: sharpness >= 45,
+      frame: centreVariation >= 12,
+    },
   };
 }

@@ -6,8 +6,11 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatedNumber } from "@/components/AnimatedNumber";
 import { AppHeader } from "@/components/AppHeader";
 import { BottomNav } from "@/components/BottomNav";
+import { CheckInSheet } from "@/components/CheckInSheet";
+import { CoachCard } from "@/components/CoachCard";
 import { HeroCover } from "@/components/HeroCover";
 import { Icon } from "@/components/Icon";
+import { buildInsights } from "@/lib/insights";
 import { buildCarePlan } from "@/lib/recommendations";
 import { currentStreak, latestRecord, previousRecord, scoreDelta } from "@/lib/scoring";
 import { useStore } from "@/lib/store";
@@ -15,7 +18,7 @@ import { CHALLENGE_LENGTH } from "@/lib/types";
 
 /** Main Dashboard (spec §8) — ported from design/screens/05-hero-dashboard. */
 export default function TodayPage() {
-  const { state, hydrated, nextDay } = useStore();
+  const { state, hydrated, nextDay, setCheckIn, cycleComplete } = useStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -33,6 +36,8 @@ export default function TodayPage() {
   const capturedToday = today?.date === new Date().toISOString().slice(0, 10);
   /** No record at all yet — the very first visit after onboarding. */
   const isFirstEver = !today;
+  const experiment = state.experiment;
+  const insights = buildInsights(state.records, experiment);
 
   return (
     <div className="min-h-dvh pb-32">
@@ -114,15 +119,78 @@ export default function TodayPage() {
 
         {/* Primary actions */}
         <section className="flex flex-col gap-4">
-          <Link
-            href="/scan"
-            className={`shiny-button lavender-glow flex w-full items-center justify-center gap-2 rounded-full bg-tertiary-fixed py-4 font-label-bold text-label-bold text-on-tertiary-fixed shadow-md transition-all hover:opacity-90 active:scale-95 ${
-              isFirstEver ? "pulse-cta" : ""
-            }`}
-          >
-            <Icon name="center_focus_strong" />
-            {capturedToday ? "촬영하기" : isFirstEver ? "첫 기록 남기고 시작하기" : "오늘의 피부 기록하기"}
-          </Link>
+          {cycleComplete ? (
+            <>
+              <Link
+                href="/report"
+                className="shiny-button lavender-glow flex w-full items-center justify-center gap-2 rounded-full bg-primary py-4 font-label-bold text-label-bold text-pure-white shadow-md transition-all hover:opacity-90 active:scale-95"
+              >
+                <Icon name="summarize" />
+                15일 리포트 보기
+              </Link>
+              <Link
+                href="/scan"
+                className="-mt-2 flex items-center justify-center gap-1 py-1 font-label-sm text-label-sm text-on-surface-variant transition-colors hover:text-primary"
+              >
+                <Icon name="photo_camera" size={14} />
+                다시 촬영
+              </Link>
+            </>
+          ) : (
+            <Link
+              href="/scan"
+              className={`shiny-button lavender-glow flex w-full items-center justify-center gap-2 rounded-full bg-tertiary-fixed py-4 font-label-bold text-label-bold text-on-tertiary-fixed shadow-md transition-all hover:opacity-90 active:scale-95 ${
+                isFirstEver ? "pulse-cta" : ""
+              }`}
+            >
+              <Icon name="center_focus_strong" />
+              {capturedToday ? "촬영하기" : isFirstEver ? "첫 기록 남기고 시작하기" : "오늘의 피부 기록하기"}
+            </Link>
+          )}
+
+          {/* One-variable experiment — the deck's "Skin Experiment Platform" */}
+          {experiment ? (
+            <Link
+              href="/experiment"
+              className="flex items-center gap-3 rounded-2xl border border-tertiary-fixed-dim/50 bg-tertiary-fixed/40 px-4 py-3 transition-colors hover:bg-tertiary-fixed active:bg-tertiary-fixed"
+            >
+              <Icon name="science" size={20} className="text-tertiary-container" />
+              <p className="min-w-0 flex-1 truncate font-label-bold text-label-bold text-on-tertiary-fixed">
+                실험 중: {experiment.title}
+                <span className="font-label-sm text-label-sm text-on-tertiary-fixed/70">
+                  {" "}
+                  · Day {experiment.startDay}부터
+                </span>
+              </p>
+              <Icon name="chevron_right" size={20} className="text-tertiary-container" />
+            </Link>
+          ) : (
+            <Link
+              href="/experiment"
+              className="flex items-center gap-4 rounded-[24px] bg-tertiary-fixed p-5 text-on-tertiary-fixed transition-colors hover:bg-tertiary-fixed-dim active:bg-tertiary-fixed-dim"
+            >
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-pure-white/60 text-tertiary-container">
+                <Icon name="science" size={26} />
+              </div>
+              <div className="min-w-0 flex-1 break-keep">
+                <h3 className="font-label-bold text-label-bold">이번 15일, 무엇을 실험할까요?</h3>
+                <p className="mt-0.5 font-label-sm text-label-sm text-on-tertiary-fixed/70">
+                  한 번에 하나만 바꿔야 무엇이 효과였는지 알 수 있어요.
+                </p>
+              </div>
+              <Icon name="chevron_right" className="text-tertiary-container" />
+            </Link>
+          )}
+
+          {today && capturedToday ? (
+            <CheckInSheet
+              record={today}
+              experiment={experiment}
+              onChange={(patch) => setCheckIn(today.day, patch)}
+            />
+          ) : null}
+
+          <CoachCard insights={insights} limit={2} showMoreLink />
 
           <Link
             href="/routine"
